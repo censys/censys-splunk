@@ -1,3 +1,4 @@
+from base64 import decodestring
 import ConfigParser
 import json
 import logging
@@ -12,7 +13,7 @@ import urllib2
 import splunk.entity as entity
 
 class EventLog(object):
-    """docstring for EventLog"""
+    """A generic class to talk to the Censys Enterprise Platform logbook API"""
     def __init__(self, key):
         super(EventLog, self).__init__()
         self.key = key
@@ -21,46 +22,54 @@ class EventLog(object):
             self.latest = int(open('{0}/static/latest_id'.format(self.appserver_dir), 'r').read())
         except IOError:
             self.latest = -1
-        self.includedLogTypes = ('HOST',
-                                 'HOST_CERT',
-                                 'HOST_CVE',
-                                 'HOST_PORT',
-                                 'HOST_SERVICE',
-                                 'HOST_SOFTWARE',
-                                 'DOMAIN',
-                                 'DOMAIN_EXPIRATION_DATE',
-                                 'DOMAIN_MAIL_EXCHANGE_SERVER',
-                                 'DOMAIN_NAME_SERVER',
-                                 'DOMAIN_REGISTRAR',
-                                 'HOSTNAME')
-        self.body = {'data': {'filters':
-                        {'general': {'includedLogTypes': self.includedLogTypes}},
-                                     'limit': 1000,
-                                     'offset': 0}}
+        self.includedLogTypes = ('CERT',
+                                'HOST',
+                                'HOST_CERT',
+                                'HOST_CVE',
+                                'HOST_PORT',
+                                'HOST_SERVICE',
+                                'HOST_SOFTWARE',
+                                'DOMAIN',
+                                'DOMAIN_EXPIRATION_DATE',
+                                'DOMAIN_MAIL_EXCHANGE_SERVER',
+                                'DOMAIN_NAME_SERVER',
+                                'DOMAIN_REGISTRAR')
+        self.body = {'data': {'general': {'includedLogTypes': self.includedLogTypes }}}
         self.logger = logging.getLogger('censys_enterprise')
         self.logger.setLevel(logging.DEBUG)
         # handler = logging.StreamHandler()
-        file_handler = logging.handlers.RotatingFileHandler(os.environ['SPLUNK_HOME'] + '/var/log/splunk/my_search_command.log', maxBytes=25000000, backupCount=5)
+        file_handler = logging.handlers.RotatingFileHandler(os.environ['SPLUNK_HOME'] + '/var/log/splunk/censys_enterprise.log', maxBytes=25000000, backupCount=5)
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-        file_handler.setFormatter(formatter)        
+        file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
         self.fetch_more = True
 
     def main(self):
+        events = self.get_events()
+        events.update(json.loads(decodestring(events['nextWindowCursor'])))
+        self.print_events(events)
+        cursor = events['nextWindowCursor']
         while self.fetch_more:
-            events = self.get_events()
-            self.print_events(events)
-            self.body['data']['offset'] = self.body['data'].get('offset', 0) + 1000
+            events = self.get_events(cursor)
+            if len(events.get('results', [])) < 1 or not self.fetch_more:
+                break
+            else:
+                self.print_events(events)
+                cursor = events['nextWindowCursor']
         self.save_latest()
 
-    def get_events(self):
-        self.logger.debug("get_events() - offset: %d" % self.body['data']['offset'])
+    def get_events(self, cursor=None):
+        self.logger.debug("get_events() - {}".format(cursor or self.body))
         baseurl = 'https://app.censys.io/n/api/protected/beta/getLogbookData?betaApiKey={0}'
         req = urllib2.Request(baseurl.format(self.key))
         req.add_header('Content-Type', 'application/json')
         try:
             gcontext = ssl._create_unverified_context()
-            resp = urllib2.urlopen(req, json.dumps(self.body), context=gcontext)
+            if cursor:
+                data = {"data": cursor}
+            else:
+                data = self.body
+            resp = urllib2.urlopen(req, json.dumps(data), context=gcontext)
             logs = json.loads(resp.read())
         except urllib2.URLError, e:
             self.logger.warning('Error seen: {0}'.format(e))
@@ -68,12 +77,21 @@ class EventLog(object):
         return logs
 
     def print_events(self, logs):
-        for row in logs['rows'][::-1]:
+        silence = False
+        for row in logs['results'][::-1]:
             row['timestamp'] = time.ctime(row.pop('logTime')/1000)
             if row['id'] <= self.latest:
-                self.logger.debug("setting fetch_more to false")
+                if not silence:
+                    self.logger.debug("setting fetch_more to false")
+                    silence = True
                 self.fetch_more = False
-                continue                
+                continue
+            # don't emit null values
+            # http://www.georgestarcher.com/splunk-null-thinking/
+            # 1. Consumes license for the string of the field name in all the events. This can be real bad at volume.
+            # 2. It throws off all the Splunk auto statistics for field vs event coverage.
+            # 3. Makes it hard to do certain search techniques.
+            row = {k: v for k, v in row.items() if v is not None}
             print(json.dumps(row))
             self.latest = max(self.latest, row['id'])
 
