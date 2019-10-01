@@ -19,7 +19,7 @@ modtime = 1567782357.153849000
 version = 7.2.3
 modtime = 1567794422.529286000
 
-[inputs/script%3A%2F%2F%24SPLUNK_HOME%2Fetc%2Fapps%2Ftesting_1%2Fbin%2Fcensys_enterprise_logs.sh]
+[inputs/script%3A%2F%2F%24SPLUNK_HOME%2Fetc%2Fapps%2Fcensys%2Fbin%2Fcensys_enterprise_logs.sh]
 owner = jose
 version = 7.2.3
 modtime = 1568053962.407022000
