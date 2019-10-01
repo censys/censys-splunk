@@ -282,7 +282,10 @@
           <query>type="HOST_CVE" logSubType="ADD" logData.cvss&gt;=5.0 
 | eval days=(now()-_time)/86400
 | rangemap field=days green=0-30 yellow=30-60 red=60-99999 
-| chart count by range</query>
+| chart count by range
+| replace green with "0-30 days" 
+| replace yelow with "30-60 days" 
+| replace red with "60+ days"</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -319,7 +322,7 @@
         <option name="trellis.enabled">0</option>
         <option name="trellis.scales.shared">1</option>
         <option name="trellis.size">medium</option>
-        <option name="charting.fieldColors">{"green":0x65A637,"yellow":0xF7BC38,"red":0xD93F3C}</option>
+        <option name="charting.fieldColors">{"0-30 days":0x65A637,"30-60 days":0xF7BC38,"60+ days":0xD93F3C}</option>
       </chart>
     </panel>
   </row>
