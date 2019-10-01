@@ -6,7 +6,7 @@
       <title>New CVEs for Hosts</title>
       <single>
         <search>
-          <query>host="censys" logType="HOST_CVE" | timechart span=24h count</query>
+          <query>host="censys" type="HOST_CVE" | timechart span=24h count</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -34,7 +34,7 @@
       <title>Hosts Added and Removed</title>
       <single>
         <search>
-          <query>host="censys" logType="HOST" | timechart span=24h count</query>
+          <query>host="censys" type="HOST" | timechart span=24h count</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -62,7 +62,7 @@
       <title>Port Changes for Hosts</title>
       <single>
         <search>
-          <query>host="censys" logType="HOST_PORT" | timechart span=24h count</query>
+          <query>host="censys" type="HOST_PORT" | timechart span=24h count</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -90,7 +90,7 @@
       <title>Service Changes on Hosts</title>
       <single>
         <search>
-          <query>host="censys" logType="HOST_SERVICE" | timechart span=24h count</query>
+          <query>host="censys" type="HOST_SERVICE" | timechart span=24h count</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -118,7 +118,7 @@
       <title>Software Changes on Hosts</title>
       <single>
         <search>
-          <query>host="censys" logType="HOST_SOFTWARE" | timechart span=24h count</query>
+          <query>host="censys" type="HOST_SOFTWARE" | timechart span=24h count</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -146,7 +146,7 @@
       <title>Certificates</title>
       <single>
         <search>
-          <query>host="censys" logType="CERT" | timechart span=24h count</query>
+          <query>host="censys" type="CERT" | timechart span=24h count</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -176,7 +176,7 @@
       <title>Events by type for past day</title>
       <chart>
         <search>
-          <query>host="censys" | timechart span=1h count by logType</query>
+          <query>host="censys" | timechart span=1h count by type</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -219,9 +219,9 @@
   <row>
     <panel>
       <map>
-        <title>Event Locations</title>
+        <title>Event Locations for Past Day</title>
         <search>
-          <query>host="censys"| iplocation ipAddress | geostats count</query>
+          <query>host="censys"| iplocation ip | geostats count</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
         </search>
@@ -233,10 +233,10 @@
   </row>
   <row>
     <panel>
-      <title>CVSS Score Distribution</title>
+      <title>CVSS Score Distribution Last 30 Days</title>
       <chart>
         <search>
-          <query>host="censys" logType="HOST_CVE" | top logData.severityScore</query>
+          <query>host="censys" type="HOST_CVE" | top logData.cvss</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -279,7 +279,10 @@
       <title>CVE Days Age Since Discovery</title>
       <chart>
         <search>
-          <query>host="censys" logType="HOST_CVE" logSubType="ADD" logData.severityScore&gt;=5.0 | eval days=(now()-(logTime/1000))/86400 | stats count by days</query>
+          <query>type="HOST_CVE" logSubType="ADD" logData.cvss&gt;=5.0 
+| eval days=(now()-_time)/86400
+| rangemap field=days green=0-30 yellow=30-60 red=60-99999 
+| chart count by range</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -316,47 +319,16 @@
         <option name="trellis.enabled">0</option>
         <option name="trellis.scales.shared">1</option>
         <option name="trellis.size">medium</option>
+        <option name="charting.fieldColors">{"green":0x65A637,"yellow":0xF7BC38,"red":0xD93F3C}</option>
       </chart>
     </panel>
   </row>
   <row>
     <panel>
-      <title>Recently Discovered Hostnames</title>
+      <title>Domain Discovery</title>
       <table>
         <search>
-          <query>logType="HOSTNAME" | table timestamp logData.hostname | sort timestamp</query>
-          <earliest>-30d@d</earliest>
-          <latest>now</latest>
-          <sampleRatio>1</sampleRatio>
-        </search>
-        <option name="count">20</option>
-        <option name="dataOverlayMode">none</option>
-        <option name="drilldown">none</option>
-        <option name="percentagesRow">false</option>
-        <option name="rowNumbers">false</option>
-        <option name="totalsRow">false</option>
-        <option name="wrap">true</option>
-      </table>
-    </panel>
-    <panel>
-      <title>Domain MX Changes</title>
-      <table>
-        <search>
-          <query>host="censys"  logType="DOMAIN_MAIL_EXCHANGE_SERVER" | table timestamp domain logData.mailExchangeServer | sort timestamp | uniq</query>
-          <earliest>-30d@d</earliest>
-          <latest>now</latest>
-          <sampleRatio>1</sampleRatio>
-        </search>
-        <option name="count">10</option>
-        <option name="drilldown">none</option>
-        <option name="refresh.display">progressbar</option>
-      </table>
-    </panel>
-    <panel>
-      <title>Domain Nameserver Changes</title>
-      <table>
-        <search>
-          <query>host="censys"  logType="DOMAIN_NAME_SERVER" | table timestamp domain logData.nameServer | sort timestamp | uniq</query>
+          <query>host="censys"  type="DOMAIN" | table timestamp name | sort timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -370,7 +342,44 @@
       <title>Domain Registration Changes</title>
       <table>
         <search>
-          <query>host="censys"  logType="DOMAIN_REGISTRAR" | table timestamp domain logData.registrar | sort timestamp | uniq</query>
+          <query>host="censys"  type="DOMAIN_REGISTRAR" | table timestamp name logData.registrar | sort timestamp | uniq</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">10</option>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Recently Discovered Hostnames</title>
+      <table>
+        <search>
+          <query>type="HOSTNAME" | table timestamp logData.dns | sort timestamp</query>
+          <earliest>-30d@d</earliest>
+          <latest>now</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Domain MX Changes</title>
+      <table>
+        <search>
+          <query>host="censys"  type="DOMAIN_MAIL_EXCHANGE_SERVER" | table timestamp name logData.mxServers | sort timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -381,10 +390,10 @@
       </table>
     </panel>
     <panel>
-      <title>Domain Discovery</title>
+      <title>Domain Nameserver Changes</title>
       <table>
         <search>
-          <query>host="censys"  logType="DOMAIN" | table timestamp domain | sort timestamp | uniq</query>
+          <query>host="censys"  type="DOMAIN_NAME_SERVER" | table timestamp name logData.nameservers | sort timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>

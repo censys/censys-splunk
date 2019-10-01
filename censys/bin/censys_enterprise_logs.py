@@ -4,6 +4,7 @@ import json
 import logging
 import optparse
 import os
+import re
 import ssl
 import sys
 import time
@@ -22,6 +23,7 @@ class EventLog(object):
             self.latest = int(open('{0}/static/latest_id'.format(self.appserver_dir), 'r').read())
         except IOError:
             self.latest = -1
+        """
         self.includedLogTypes = ('CERT',
                                 'HOST',
                                 'HOST_CERT',
@@ -35,18 +37,19 @@ class EventLog(object):
                                 'DOMAIN_NAME_SERVER',
                                 'DOMAIN_REGISTRAR')
         self.body = {'data': {'general': {'includedLogTypes': self.includedLogTypes }}}
+        """
+        self.body = {}
         self.logger = logging.getLogger('censys_enterprise')
         self.logger.setLevel(logging.DEBUG)
         # handler = logging.StreamHandler()
-        file_handler = logging.handlers.RotatingFileHandler(os.environ['SPLUNK_HOME'] + '/var/log/splunk/censys_enterprise.log', maxBytes=25000000, backupCount=5)
+        handler = logging.handlers.RotatingFileHandler(os.environ['SPLUNK_HOME'] + '/var/log/splunk/censys_enterprise.log', maxBytes=25000000, backupCount=5)
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-        file_handler.setFormatter(formatter)
-        self.logger.addHandler(file_handler)
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
         self.fetch_more = True
 
     def main(self):
         events = self.get_events()
-        events.update(json.loads(decodestring(events['nextWindowCursor'])))
         self.print_events(events)
         cursor = events['nextWindowCursor']
         while self.fetch_more:
@@ -61,37 +64,44 @@ class EventLog(object):
     def get_events(self, cursor=None):
         self.logger.debug("get_events() - {}".format(cursor or self.body))
         baseurl = 'https://app.censys.io/n/api/protected/beta/getLogbookData?betaApiKey={0}'
-        req = urllib2.Request(baseurl.format(self.key))
+        req = urllib2.Request(baseurl.format(self.key), cursor or json.dumps(self.body))
         req.add_header('Content-Type', 'application/json')
+        req.add_header('accept', 'application/json')
         try:
             gcontext = ssl._create_unverified_context()
             if cursor:
-                data = {"data": cursor}
+                data = {"input": cursor}
             else:
                 data = self.body
             resp = urllib2.urlopen(req, json.dumps(data), context=gcontext)
             logs = json.loads(resp.read())
         except urllib2.URLError, e:
             self.logger.warning('Error seen: {0}'.format(e))
-            logs = {'rows': []}
+            self.fetch_more = False
+            logs = {'results': [], 'nextWindowCursor': "e30="}
         return logs
 
-    def print_events(self, logs):
+    def print_events(self, logs):        
+        def convert(name):
+            # camelCase to snake_case
+            s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+            return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+        
         silence = False
         for row in logs['results'][::-1]:
-            row['timestamp'] = time.ctime(row.pop('logTime')/1000)
             if row['id'] <= self.latest:
                 if not silence:
                     self.logger.debug("setting fetch_more to false")
                     silence = True
                 self.fetch_more = False
                 continue
-            # don't emit null values
+            # convert to snake_case
+            # also - don't emit null values
             # http://www.georgestarcher.com/splunk-null-thinking/
             # 1. Consumes license for the string of the field name in all the events. This can be real bad at volume.
             # 2. It throws off all the Splunk auto statistics for field vs event coverage.
             # 3. Makes it hard to do certain search techniques.
-            row = {k: v for k, v in row.items() if v is not None}
+            row = dict([ (convert(k), v) for k,v in row.items() if v is not None ])
             print(json.dumps(row))
             self.latest = max(self.latest, row['id'])
 
