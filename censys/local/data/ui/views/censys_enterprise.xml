@@ -200,7 +200,7 @@
         <option name="charting.chart.nullValueMode">gaps</option>
         <option name="charting.chart.showDataLabels">none</option>
         <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
-        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.stackMode">stacked</option>
         <option name="charting.chart.style">shiny</option>
         <option name="charting.drilldown">none</option>
         <option name="charting.layout.splitSeries">0</option>
@@ -345,7 +345,7 @@
       <title>Domain Registration Changes</title>
       <table>
         <search>
-          <query>host="censys"  type="DOMAIN_REGISTRAR" | table timestamp name logData.registrar | sort timestamp | uniq</query>
+          <query>host="censys"  type="DOMAIN_REGISTRAR" | table timestamp name log_data.registrar | sort timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
