@@ -63,10 +63,11 @@ class EventLog(object):
 
     def get_events(self, cursor=None):
         self.logger.debug("get_events() - {}".format(cursor or self.body))
-        baseurl = 'https://app.censys.io/n/api/protected/beta/getLogbookData?betaApiKey={0}'
+        baseurl = 'https://app.censys.io/n/api/protected/beta/getLogbookData'
         req = urllib2.Request(baseurl.format(self.key), cursor or json.dumps(self.body))
         req.add_header('Content-Type', 'application/json')
         req.add_header('accept', 'application/json')
+        req.add_header('Censys-Beta-Api-Key', self.key)
         try:
             gcontext = ssl._create_unverified_context()
             if cursor:
