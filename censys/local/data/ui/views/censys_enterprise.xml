@@ -236,7 +236,7 @@
       <title>CVSS Score Distribution Last 30 Days</title>
       <chart>
         <search>
-          <query>host="censys" type="HOST_CVE" | top logData.cvss</query>
+          <query>host="censys" type="HOST_CVE" | top log_data.cvss</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -279,7 +279,7 @@
       <title>CVE Days Age Since Discovery</title>
       <chart>
         <search>
-          <query>type="HOST_CVE" logSubType="ADD" logData.cvss&gt;=5.0 
+          <query>type="HOST_CVE" log_sub_type="ADD" log_data.cvss&gt;=5.0 
 | eval days=(now()-_time)/86400
 | rangemap field=days green=0-30 yellow=30-60 red=60-99999 
 | chart count by range
@@ -361,7 +361,7 @@
       <title>Recently Discovered Hostnames</title>
       <table>
         <search>
-          <query>type="HOSTNAME" | table timestamp logData.dns | sort timestamp</query>
+          <query>type="HOSTNAME" | table timestamp log_data.dns | sort timestamp</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -382,7 +382,7 @@
       <title>Domain MX Changes</title>
       <table>
         <search>
-          <query>host="censys"  type="DOMAIN_MAIL_EXCHANGE_SERVER" | table timestamp name logData.mxServers | sort timestamp | uniq</query>
+          <query>host="censys"  type="DOMAIN_MAIL_EXCHANGE_SERVER" | table timestamp name log_data.mxServer | sort timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -396,7 +396,7 @@
       <title>Domain Nameserver Changes</title>
       <table>
         <search>
-          <query>host="censys"  type="DOMAIN_NAME_SERVER" | table timestamp name logData.nameservers | sort timestamp | uniq</query>
+          <query>host="censys"  type="DOMAIN_NAME_SERVER" | table timestamp name log_ata.nameserver | sort timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
