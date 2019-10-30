@@ -1,3 +1,4 @@
+<!-- https://dev.splunk.com/enterprise/docs/developapps/setuppage/configepentfields -->
 <setup>
 	<block title="Censys Search API Configuration" endpoint="storage/passwords" entity="_new">
 		<text>Use your Censys Search API credentials found on this page: https://censys.io/account/api </text>
