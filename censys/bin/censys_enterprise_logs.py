@@ -8,7 +8,7 @@ import re
 import ssl
 import sys
 import time
-import logging
+import logging, logging.handlers
 import urllib2
 
 import splunk.entity as entity
@@ -23,25 +23,9 @@ class EventLog(object):
             self.latest = int(open('{0}/static/latest_id'.format(self.appserver_dir), 'r').read())
         except IOError:
             self.latest = -1
-        """
-        self.includedLogTypes = ('CERT',
-                                'HOST',
-                                'HOST_CERT',
-                                'HOST_CVE',
-                                'HOST_PORT',
-                                'HOST_SERVICE',
-                                'HOST_SOFTWARE',
-                                'DOMAIN',
-                                'DOMAIN_EXPIRATION_DATE',
-                                'DOMAIN_MAIL_EXCHANGE_SERVER',
-                                'DOMAIN_NAME_SERVER',
-                                'DOMAIN_REGISTRAR')
-        self.body = {'data': {'general': {'includedLogTypes': self.includedLogTypes }}}
-        """
         self.body = {}
         self.logger = logging.getLogger('censys_enterprise')
         self.logger.setLevel(logging.DEBUG)
-        # handler = logging.StreamHandler()
         handler = logging.handlers.RotatingFileHandler(os.environ['SPLUNK_HOME'] + '/var/log/splunk/censys_enterprise.log', maxBytes=25000000, backupCount=5)
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
         handler.setFormatter(formatter)
@@ -63,31 +47,30 @@ class EventLog(object):
 
     def get_events(self, cursor=None):
         self.logger.debug("get_events() - {}".format(cursor or self.body))
-        baseurl = 'https://app.censys.io/n/api/protected/beta/getLogbookData'
-        req = urllib2.Request(baseurl.format(self.key), cursor or json.dumps(self.body))
+        baseurl = 'https://app.censys.io/api/beta/logbook/getLogbookData'
+        req = urllib2.Request(baseurl, cursor or json.dumps(self.body))
         req.add_header('Content-Type', 'application/json')
         req.add_header('accept', 'application/json')
         req.add_header('Censys-Beta-Api-Key', self.key)
         try:
             gcontext = ssl._create_unverified_context()
             if cursor:
-                data = {"input": cursor}
+                data = {"nextWindowCursor": cursor}
             else:
                 data = self.body
-            resp = urllib2.urlopen(req, json.dumps(data), context=gcontext)
-            logs = json.loads(resp.read())
+            resp = urllib2.urlopen(req, json.dumps(data), context=gcontext).read()
+            logs = json.loads(resp)
         except urllib2.URLError, e:
             self.logger.warning('Error seen: {0}'.format(e))
             self.fetch_more = False
             logs = {'results': [], 'nextWindowCursor': "e30="}
         return logs
 
-    def print_events(self, logs):        
+    def print_events(self, logs):
         def convert(name):
             # camelCase to snake_case
             s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
             return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
-        
         silence = False
         for row in logs['results'][::-1]:
             if row['id'] <= self.latest:
@@ -111,22 +94,10 @@ class EventLog(object):
             f.write(str(self.latest))
 
 if __name__ == '__main__':
-    myapp = 'censys_enterprise_logs'
+    myapp = 'censys'
     parser = optparse.OptionParser(usage="%prog [<config file path>]")
     (options, args) = parser.parse_args(sys.argv[1:])
 
-    cp = ConfigParser.ConfigParser()
-    if len(sys.argv) == 1:
-        config_path = os.path.abspath(__file__)
-        config_path = os.path.dirname(config_path)
-        config_path = os.path.join(config_path, "splunk_conf/censys.conf")
-    else:
-        config_path = sys.argv[1]
-    cp.read(config_path)
-    config = dict(cp.items('censys'))
-    beta_api_key = config['beta_api_key']
-
-    """
     sessionKey = sys.stdin.readline().strip()
 
     if len(sessionKey) == 0:
@@ -141,11 +112,12 @@ if __name__ == '__main__':
         raise Exception("Could not get %s credentials from splunk. Error: %s"
                         % (myapp, str(e)))
     try:
-        beta_api_key = entities.items()[0]['beta_api_key']
+        for k,entity in entities.items():
+            if entity.get('realm', False):
+               beta_api_key = entity['realm']
     except IndexError:
         raise Exception('Not enough items')
     except KeyError:
         raise Exception('No beta_api_key found')
-    """
     evlog = EventLog(beta_api_key)
     evlog.main()
