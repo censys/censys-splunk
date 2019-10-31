@@ -10,8 +10,6 @@ import urllib2
 import splunk.Intersplunk
 import splunk.entity as entity
 
-CENSYS_API_URL = "https://censys.io/api/v1"
-
 PORTS = ("protocols", )
 
 BANNERS = ('110.pop3.starttls.banner',
