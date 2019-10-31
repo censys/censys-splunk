@@ -15,25 +15,26 @@ CENSYS_API_URL = "https://censys.io/api/v1"
 PORTS = ("protocols", )
 
 BANNERS = ('110.pop3.starttls.banner',
-         '143.imap.starttls.banner',
-         '16992.http.get.headers.server',
-         '21.ftp.banner.banner',
-         '22.ssh.v2.banner.raw',
-         '23.telnet.banner',
-         '2323.telnet.banner.banner',
-         '25.smtp.starttls.banner',
-         '3306.mysql.banner.server_version',
-         '443.https.get.headers.server',
-         '445.smb.banner.smb_version.version_string',
-         '465.smtp.tls.banner',
-         '5432.postgres.banner.supported_versions',
-         '587.smtp.starttls.banner',
-         '6443.kubernetes.banner.metadata.description',
-         '7547.cwmp.get.headers.server',
-         '80.http.get.headers.server',
-         '8888.http.get.headers.server',
-         '993.imaps.tls.banner',
-         '995.pop3s.tls.banner')
+           '143.imap.starttls.banner',
+           '16992.http.get.headers.server',
+           '21.ftp.banner.banner',
+           '22.ssh.v2.banner.raw',
+           '23.telnet.banner.banner',
+           '2323.telnet.banner.banner',
+           '25.smtp.starttls.banner',
+           '3306.mysql.banner.server_version',
+           '443.https.get.headers.server',
+           '445.smb.banner.smb_version.version_string',
+           '465.smtp.tls.banner',
+           '5432.postgres.banner.supported_versions',
+           '587.smtp.starttls.banner',
+           '6443.kubernetes.banner.metadata.description',
+           '7547.cwmp.get.headers.server',
+           '80.http.get.headers.server',
+           '8888.http.get.headers.server',
+           '993.imaps.tls.banner',
+           '995.pop3s.tls.banner'
+           )
 
 DESCRIPTION = ("metadata.description", )
 
