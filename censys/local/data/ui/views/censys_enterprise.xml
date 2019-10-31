@@ -331,7 +331,7 @@
       <title>Domain Discovery</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="DOMAIN" | table timestamp name | sort timestamp | uniq</query>
+          <query>host="censys_enterprise" type="DOMAIN" | table timestamp name | sort -timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -345,7 +345,7 @@
       <title>Domain Registration Changes</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="DOMAIN_REGISTRAR" | table timestamp name log_data.registrar | sort timestamp | uniq</query>
+          <query>host="censys_enterprise" type="DOMAIN_REGISTRAR" | table timestamp name log_data.registrar | sort -timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -361,7 +361,7 @@
       <title>Recently Discovered Hostnames</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="HOSTNAME" | table timestamp log_data.dns | sort timestamp</query>
+          <query>host="censys_enterprise" type="HOSTNAME" | table timestamp log_data.dns | sort -timestamp</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -382,7 +382,7 @@
       <title>Domain MX Changes</title>
       <table>
         <search>
-          <query>host="censys_enterprise"  type="DOMAIN_MAIL_EXCHANGE_SERVER" | table timestamp name log_data.mxServer | sort timestamp | uniq</query>
+          <query>host="censys_enterprise"  type="DOMAIN_MAIL_EXCHANGE_SERVER" | table timestamp name log_data.mxServer | sort -timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -396,7 +396,7 @@
       <title>Domain Nameserver Changes</title>
       <table>
         <search>
-          <query>host="censys_enterprise"  type="DOMAIN_NAME_SERVER" | table timestamp name log_data.nameserver | sort timestamp | uniq</query>
+          <query>host="censys_enterprise"  type="DOMAIN_NAME_SERVER" | table timestamp name log_data.nameserver | sort -timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
