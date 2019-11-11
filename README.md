@@ -38,11 +38,15 @@ Install this app on your search head/s as you would with any other app, then res
 
 ### Configuration
 
-Edit the file `$SPLUNK_HOME/etc/apps/censys/bin/splunk_conf/censys.conf` and input your Censys API ID and secret, and optionally your Censys Enterprise Platform API key.
+The app supports Censys' two products, and depending on what you have you may have one or both sets of API credentials. 
+
+**SaaS users** can configure the app, which feeds dashboards from the logbook API, using the "inputs" section under the "settings" menu. From the platform UI, find your API key under the "Admin" view and copy it here. It will then be able to poll the API for logbook entries. A logbook dashboard is also included.
+
+**Search users** configure your API ID and secret under the "manage apps" menu, and for the Censys app click "set up". Find your API credentials and copy them here. This will unlock the "censys" streaming command. 
 
 ## Usage
 
-`... | censys [ip address field] {title, ports, banners, description, tls_names}`
+The "censys" streaming command lets you enrich results by IP address. Syntax: `... | censys [ip address field] {title, ports, banners, description, tls_names}`
 
 ### Dashboard
 
