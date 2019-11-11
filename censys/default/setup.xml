@@ -1,46 +1,14 @@
+<!-- https://dev.splunk.com/enterprise/docs/developapps/setuppage/configepentfields -->
 <setup>
-	<!-- http://dev.splunk.com/view/SP-CAAAE9B -->
-	<block title="Censys Search API Configuration" endpoint="censys/update_censys" entity="setupentity">
+	<block title="Censys Search API Configuration" endpoint="storage/passwords" entity="_new">
 		<text>Use your Censys Search API credentials found on this page: https://censys.io/account/api </text>
-		<input field="api_id">
+		<input field="username">
 			<label>API ID</label>
 			<type>text</type>
 		</input>
-		<input field="api_secret">
+		<input field="password">
 			<label>API Secret</label>
 			<type>text</type>
 		</input>
 	</block>
-	<block title="Censys Enterprise API Configuration" endpoint="censys/update_censys" entity="setupentity">
-		<text>Use your Censys Enterprise API credentials found on this page: https://app.censys.io/account/api</text>
-		<input field="beta_api_key">
-			<label>Enterprise API ID</label>
-			<type>text</type>
-		</input>
-	</block>
-	<!-- 
-	<block title="Censys Enterprise Events" endpoint="storage/passwords" entity="_new">
-		<text>Choose which Censys Enterprise Platform events you wish to poll</text>
-		<input field="hosts">
-			<label>Enable Hosts Feed</label>
-			<type>bool</type>
-		</input>
-		<input field="certificates">
-			<label>Enable Certificate Feed</label>
-			<type>bool</type>
-		</input>
-		<input field="software">
-			<label>Enable Software Feed</label>
-			<type>bool</type>
-		</input>
-		<input field="cve">
-			<label>Enable CVE Feed</label>
-			<type>bool</type>
-		</input>
-		<input field="ports">
-			<label>Enable Port/Services Feed</label>
-			<type>bool</type>
-		</input>
-	</block> 
-		-->
 </setup>

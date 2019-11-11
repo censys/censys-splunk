@@ -16,7 +16,7 @@ Enables you to rapidly query Censys by IP, port, domain, or certificate hash, an
 
 Version 1.0.x of Censys-Splunk is compatible with:
 
-| Splunk Enterprise versions | 7.3.x |
+| Splunk Enterprise versions | 7.2.x |
 | Platforms                  | Platform independent |
 | Vendor Products            | Censys Basic, Pro and Enterprise; Censys Enterprise Platform |
 | Lookup file changes        | None |
@@ -28,9 +28,9 @@ Version 1.0.x of Censys-Splunk is compatible with:
 **Hardware requirements**
 - None
 
-**Softwrae requirements**
+**Software requirements**
 To function properly, Censys-Splunk requires the following software:
-- Splunk Enterprise 7.3+
+- Splunk Enterprise 7.2+
 
 ### Installation
 

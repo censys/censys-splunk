@@ -1,50 +1,51 @@
 {
-  "schemaVersion": "2.0.0",
+  "schemaVersion": "2.0.0", 
   "info": {
-    "title": "Censys Enterprise",
+    "title": "Censys", 
     "id": {
-      "group": null,
-      "name": "censys",
-      "version": "1.0.0"
-    },
+      "group": null, 
+      "name": "censys", 
+      "version": "1.0.12"
+    }, 
     "author": [
       {
-        "name": "Censys",
-        "email": null,
-        "company": "Censys.io"
+        "name": "Censys", 
+        "email": null, 
+        "company": null
       }
-    ],
-    "releaseDate": null,
-    "description": "Censys Enterprise App for Splunk",
+    ], 
+    "releaseDate": null, 
+    "description": "Censys Enterprise App for Splunk", 
     "classification": {
-      "intendedAudience": null,
-      "categories": ["Security & Compliance"],
+      "intendedAudience": null, 
+      "categories": [], 
       "developmentStatus": null
-    },
-    "commonInformationModels": null,
+    }, 
+    "commonInformationModels": null, 
     "license": {
-      "name": null,
-      "text": null,
+      "name": null, 
+      "text": null, 
       "uri": null
-    },
+    }, 
     "privacyPolicy": {
-      "name": null,
-      "text": null,
+      "name": null, 
+      "text": null, 
       "uri": null
-    },
+    }, 
     "releaseNotes": {
-      "name": null,
-      "text": null,
+      "name": null, 
+      "text": null, 
       "uri": null
     }
-  },
-  "dependencies": null,
-  "tasks": null,
-  "inputGroups": null,
-  "incompatibleApps": null,
-  "platformRequirements": null,
+  }, 
+  "dependencies": null, 
+  "tasks": null, 
+  "inputGroups": null, 
+  "incompatibleApps": null, 
+  "platformRequirements": null, 
   "supportedDeployments": [
-    "*"
-  ],
-  "targetWorkloads": ["_search_heads"]
+    "_standalone", 
+    "_distributed"
+  ], 
+  "targetWorkloads": null
 }

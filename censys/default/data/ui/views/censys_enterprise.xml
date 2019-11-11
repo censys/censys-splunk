@@ -6,7 +6,7 @@
       <title>New CVEs for Hosts</title>
       <single>
         <search>
-          <query>host="censys_enterprise" type="HOST_CVE" | timechart span=24h count</query>
+          <query>host="censys_enterprise" type="HOST_CVE" log_sub_type=ADD | timechart span=24h count</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -146,7 +146,7 @@
       <title>Certificates</title>
       <single>
         <search>
-          <query>host="censys_enterprise" type="CERT" | timechart span=24h count</query>
+          <query>host="censys_enterprise" type="CERT" log_sub_type=ADD | timechart span=24h count</query>
           <earliest>-24h@h</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>

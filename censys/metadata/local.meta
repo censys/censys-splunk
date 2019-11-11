@@ -13,16 +13,11 @@ modtime = 1567699601.672796000
 [views/censys_enterprise]
 owner = jose
 version = 7.2.3
-modtime = 1567782357.153849000
+modtime = 1572613488.257946000
 
 [app/install/is_configured]
 version = 7.2.3
-modtime = 1567794422.529286000
-
-[inputs/script%3A%2F%2F%24SPLUNK_HOME%2Fetc%2Fapps%2Fcensys%2Fbin%2Fcensys_enterprise_logs.sh]
-owner = jose
-version = 7.2.3
-modtime = 1568053962.407022000
+modtime = 1573494710.192586000
 
 [workflow_actions/Censys%20IP%20Info]
 access = read : [ * ], write : [ admin, power ]
@@ -51,3 +46,13 @@ export = system
 owner = nobody
 version = 7.2.3
 modtime = 1568161029.380012000
+
+[]
+access = read : [ * ], write : [ * ]
+export = none
+version = 7.2.3
+modtime = 1572290883.296573000
+
+[views/activity_breakdown]
+version = 7.2.3
+modtime = 1572547005.989444000
