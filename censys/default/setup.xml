@@ -2,19 +2,12 @@
 <setup>
 	<block title="Censys Search API Configuration" endpoint="storage/passwords" entity="_new">
 		<text>Use your Censys Search API credentials found on this page: https://censys.io/account/api </text>
-		<input field="name">
+		<input field="username">
 			<label>API ID</label>
 			<type>text</type>
 		</input>
 		<input field="password">
 			<label>API Secret</label>
-			<type>text</type>
-		</input>
-	</block>
-	<block title="Censys Enterprise API Configuration" endpoint="storage/passwords" entity="_new">
-		<text>Use your Censys Enterprise API credentials found on this page: https://app.censys.io/account/api</text>
-		<input field="realm">
-			<label>Enterprise API ID</label>
 			<type>text</type>
 		</input>
 	</block>
