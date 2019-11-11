@@ -1,5 +1,14 @@
 <nav search_view="search">
-  <view name="search" default='true' />
+    
+    <collection label="Censys">
+      <a href="/manager/censys/apps/local/censys/setup?action=edit">Configuration</a>
+      <divider />
+      <a href="http://censys.io/documentation" target="_blank">Documentation</a>
+      <a href="http://answers.splunk.com/ask/?appid=NNN" target="_blank">Send Feedback</a>
+    </collection>
+    
+  <view name="activity_breakdown" default="true"/>
+  <view name="search" />
   <view name="datasets" />
   <view name="reports" />
   <view name="alerts" />
