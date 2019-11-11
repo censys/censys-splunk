@@ -84,7 +84,7 @@ except Exception, e:
 
 try:
     for k,entity in entities.items():
-        if entity.get('realm', False):
+        if entity['eai:acl']['app'] == 'censys':
            config['api_id'] = entity['username']
            config['api_secret'] = entity['clear_password']
 except Exception, e:
