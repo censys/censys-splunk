@@ -1,17 +1,14 @@
-from base64 import decodestring
-import ConfigParser
 import json
-import logging
+import logging, logging.handlers
 import optparse
 import os
+import random
 import re
 import ssl
 import sys
 import time
-import logging, logging.handlers
 import urllib2
 
-import splunk.entity as entity
 import splunklib.client as client
 
 
@@ -20,6 +17,7 @@ class EventLog(object):
 
     def __init__(self, key):
         super(EventLog, self).__init__()
+        time.sleep(random.randint(0, 45))
         self.key = key
         self.appserver_dir = "{0}/../appserver".format(
             os.path.dirname(os.path.abspath(__file__))
@@ -71,7 +69,7 @@ class EventLog(object):
                 data = self.body
             resp = urllib2.urlopen(req, json.dumps(data), context=gcontext).read()
             logs = json.loads(resp)
-        except urllib2.URLError, e:
+        except urllib2.URLError as e:
             self.logger.warning("Error seen: {0}".format(e))
             self.fetch_more = False
             logs = {"results": [], "nextWindowCursor": "e30="}
