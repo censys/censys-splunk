@@ -92,7 +92,8 @@ class EventLog(object):
             # convert to snake_case
             # also - don't emit null values
             # http://www.georgestarcher.com/splunk-null-thinking/
-            # 1. Consumes license for the string of the field name in all the events. This can be real bad at volume.
+            # 1. Consumes license for the string of the field name in all the events. 
+            #    This can be real bad at volume.
             # 2. It throws off all the Splunk auto statistics for field vs event coverage.
             # 3. Makes it hard to do certain search techniques.
             row = dict([(convert(k), v) for k, v in row.items() if v is not None])
