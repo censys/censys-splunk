@@ -10,7 +10,7 @@ import urllib2
 import splunk.Intersplunk
 import splunk.entity as entity
 
-PORTS = ("protocols", )
+PROTOCOLS = ("protocols", )
 
 BANNERS = ('110.pop3.starttls.banner',
            '143.imap.starttls.banner',
@@ -50,7 +50,7 @@ TLS_NAMES = ('110.pop3.starttls.tls.certificate.parsed.names',
              '993.imaps.tls.tls.certificate.parsed.names',
              '995.pop3s.tls.tls.certificate.parsed.names')
 
-FIELDS = {'ports': PORTS,
+FIELDS = {'protocols': PROTOCOLS,
           'banners': BANNERS,
           'description': DESCRIPTION,
           'titles': TITLES,
