@@ -75,7 +75,7 @@ if len(sessionKey) == 0:
 try:
     entities = entity.getEntities(['admin', 'passwords'], namespace=myapp,
                                   owner='nobody', sessionKey=sessionKey)
-except Exception, e:
+except Exception as e:
     logger.fatal("getEntities: Could not get {0} credentials from splunk. Error: {1}".format(myapp, e))
     splunk.Intersplunk.outputResults([
         splunk.Intersplunk.generateErrorResults(
@@ -87,9 +87,9 @@ try:
         if entity['eai:acl']['app'] == 'censys':
            config['api_id'] = entity['username']
            config['api_secret'] = entity['clear_password']
-except Exception, e:
+except Exception as e:
     logger.fatal("entities.items(): Could not get {0} credentials from splunk. Error: {1}".format(myapp, e))
-    splunk.Intersplunk.outputResults([        
+    splunk.Intersplunk.outputResults([
         splunk.Intersplunk.generateErrorResults(
         "entities.items(): Could not get {0} credentials from splunk. Error: {1}".format(myapp, e))])
     sys.exit(1)
@@ -105,7 +105,7 @@ except IndexError:
     splunk.Intersplunk.outputResults([splunk.Intersplunk.generateErrorResults('Usage: censys inputfield {0}'.format(', '.join(FIELDS.keys())))])
     sys.exit(0)
 
-if not FIELDS.has_key(output):
+if not FIELDS.get(output, False):
     splunk.Intersplunk.outputResults([splunk.Intersplunk.generateErrorResults('Invalid output field, valid options are: {0}'.format(', '.join(FIELDS.keys())))])
     sys.exit(0)
 
@@ -135,7 +135,7 @@ try:
                 event[k] = v
 except:
     import traceback
-    stack =  traceback.format_exc()
+    stack = traceback.format_exc()
     events = splunk.Intersplunk.generateErrorResults("Error : Traceback: " + str(stack))
 
 splunk.Intersplunk.outputResults(events)
