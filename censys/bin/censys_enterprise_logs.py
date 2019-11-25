@@ -67,7 +67,9 @@ class EventLog(object):
                 data = {"nextWindowCursor": cursor}
             else:
                 data = self.body
-            resp = urllib2.urlopen(req, json.dumps(data), context=gcontext).read()
+            opener = urllib2.build_opener()
+            opener.addheaders = [('User-Agent', 'Censys-TA for Splunk 1.0.x')]
+            resp = opener.urlopen(req, json.dumps(data), context=gcontext).read()
             logs = json.loads(resp)
         except urllib2.URLError as e:
             self.logger.warning("Error seen: {0}".format(e))
