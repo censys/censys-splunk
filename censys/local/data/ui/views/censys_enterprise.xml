@@ -1,14 +1,23 @@
-<dashboard>
+<form>
   <label>Censys Enterprise</label>
   <description>Events from Censys Enterprise service</description>
+  <fieldset submitButton="false">
+    <input type="time" token="field1">
+      <label></label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
   <row>
     <panel>
       <title>New CVEs for Hosts</title>
       <single>
         <search>
-          <query>host="censys_enterprise" type="HOST_CVE" | timechart span=24h count</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+          <query>host="censys_enterprise" type="HOST_CVE" log_sub_type=ADD | timechart span=24h count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="colorBy">value</option>
@@ -35,8 +44,8 @@
       <single>
         <search>
           <query>host="censys_enterprise" type="HOST" | timechart span=24h count</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="colorBy">value</option>
@@ -63,8 +72,8 @@
       <single>
         <search>
           <query>host="censys_enterprise" type="HOST_PORT" | timechart span=24h count</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="colorBy">value</option>
@@ -91,8 +100,8 @@
       <single>
         <search>
           <query>host="censys_enterprise" type="HOST_SERVICE" | timechart span=24h count</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="colorBy">value</option>
@@ -119,8 +128,8 @@
       <single>
         <search>
           <query>host="censys_enterprise" type="HOST_SOFTWARE" | timechart span=24h count</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="colorBy">value</option>
@@ -146,9 +155,9 @@
       <title>Certificates</title>
       <single>
         <search>
-          <query>host="censys_enterprise" type="CERT" | timechart span=24h count</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+          <query>host="censys_enterprise" type="CERT" log_sub_type=ADD | timechart span=24h count</query>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="colorBy">value</option>
@@ -173,12 +182,12 @@
   </row>
   <row>
     <panel>
-      <title>Events by type for past day</title>
+      <title>Recent Events by Type</title>
       <chart>
         <search>
           <query>host="censys_enterprise" | timechart span=1h count by type</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
@@ -219,11 +228,11 @@
   <row>
     <panel>
       <map>
-        <title>Event Locations for Past Day</title>
+        <title>Recent Event Locations</title>
         <search>
           <query>host="censys_enterprise"  | iplocation ip | geostats count</query>
-          <earliest>-24h@h</earliest>
-          <latest>now</latest>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
         </search>
         <option name="drilldown">none</option>
         <option name="mapping.type">marker</option>
@@ -233,12 +242,12 @@
   </row>
   <row>
     <panel>
-      <title>CVSS Score Distribution Last 30 Days</title>
+      <title>CVSS Score Distribution</title>
       <chart>
         <search>
           <query>host="censys_enterprise" type="HOST_CVE" | top log_data.cvss</query>
-          <earliest>-30d@d</earliest>
-          <latest>now</latest>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
@@ -286,8 +295,8 @@
 | replace green with "0-30 days" 
 | replace yelow with "30-60 days" 
 | replace red with "60+ days"</query>
-          <earliest>-30d@d</earliest>
-          <latest>now</latest>
+          <earliest>$field1.earliest$</earliest>
+          <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
@@ -331,7 +340,7 @@
       <title>Domain Discovery</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="DOMAIN" | table timestamp name | sort -timestamp | uniq</query>
+          <query>host="censys_enterprise" type="DOMAIN" log_sub_type="add"  | table timestamp name | sort -timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -361,7 +370,7 @@
       <title>Recently Discovered Hostnames</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="HOSTNAME" | table timestamp log_data.dns | sort -timestamp</query>
+          <query>host="censys_enterprise" type="HOSTNAME" log_sub_type="add"  | table timestamp log_data.dns | sort -timestamp</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -407,4 +416,4 @@
       </table>
     </panel>
   </row>
-</dashboard>
+</form>
