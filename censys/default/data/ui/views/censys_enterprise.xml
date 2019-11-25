@@ -340,7 +340,7 @@
       <title>Domain Discovery</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="DOMAIN" | table timestamp name | sort -timestamp | uniq</query>
+          <query>host="censys_enterprise" type="DOMAIN" log_sub_type="add"  | table timestamp name | sort -timestamp | uniq</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -370,7 +370,7 @@
       <title>Recently Discovered Hostnames</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="HOSTNAME" | table timestamp log_data.dns | sort -timestamp</query>
+          <query>host="censys_enterprise" type="HOSTNAME" log_sub_type="add"  | table timestamp log_data.dns | sort -timestamp</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
