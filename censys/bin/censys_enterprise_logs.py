@@ -61,15 +61,14 @@ class EventLog(object):
         req.add_header("Content-Type", "application/json")
         req.add_header("accept", "application/json")
         req.add_header("Censys-Beta-Api-Key", self.key)
+        req.add_header('User-Agent', 'Censys-TA for Splunk 1.0.x')
         try:
             gcontext = ssl._create_unverified_context()
             if cursor:
                 data = {"nextWindowCursor": cursor}
             else:
                 data = self.body
-            opener = urllib2.build_opener()
-            opener.addheaders = [('User-Agent', 'Censys-TA for Splunk 1.0.x')]
-            resp = opener.urlopen(req, json.dumps(data), context=gcontext).read()
+            resp = urllib2.urlopen(req, json.dumps(data), context=gcontext).read()
             logs = json.loads(resp)
         except urllib2.URLError as e:
             self.logger.warning("Error seen: {0}".format(e))
