@@ -5,7 +5,7 @@
     "id": {
       "group": null, 
       "name": "censys", 
-      "version": "1.0.13"
+      "version": "1.0.14"
     }, 
     "author": [
       {
