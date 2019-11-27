@@ -3,7 +3,7 @@ import json
 import logging
 import os
 import sys
-import urllib2
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
 
 # https://docs.splunk.com/Documentation/Splunk/7.3.1/Search/Writeasearchcommand
 # https://blog.angelalonso.es/2016/03/hunting-exploit-kits-in-enterprise.html
@@ -83,7 +83,7 @@ except Exception as e:
     sys.exit(1)
 
 try:
-    for k,entity in entities.items():
+    for k,entity in list(entities.items()):
         if entity['eai:acl']['app'] == 'censys':
            config['api_id'] = entity['username']
            config['api_secret'] = entity['clear_password']
@@ -102,11 +102,11 @@ try:
     field = sys.argv[1]
     output = sys.argv[2]
 except IndexError:
-    splunk.Intersplunk.outputResults([splunk.Intersplunk.generateErrorResults('Usage: censys inputfield {0}'.format(', '.join(FIELDS.keys())))])
+    splunk.Intersplunk.outputResults([splunk.Intersplunk.generateErrorResults('Usage: censys inputfield {0}'.format(', '.join(list(FIELDS.keys()))))])
     sys.exit(0)
 
 if not FIELDS.get(output, False):
-    splunk.Intersplunk.outputResults([splunk.Intersplunk.generateErrorResults('Invalid output field, valid options are: {0}'.format(', '.join(FIELDS.keys())))])
+    splunk.Intersplunk.outputResults([splunk.Intersplunk.generateErrorResults('Invalid output field, valid options are: {0}'.format(', '.join(list(FIELDS.keys()))))])
     sys.exit(0)
 
 try:
@@ -124,14 +124,14 @@ try:
                     "page": 1,
                     "flatten": True,
                     "fields": FIELDS.get(output)}
-            request = urllib2.Request('https://censys.io/api/v1/search/ipv4', json.dumps(data))
+            request = six.moves.urllib.request.Request('https://censys.io/api/v1/search/ipv4', json.dumps(data))
             request.add_header("Authorization", "Basic %s" % auth64)
-            req = urllib2.urlopen(request)
+            req = six.moves.urllib.request.urlopen(request)
             resp = json.loads(req.read())
             req.close()
             cache[ip] = resp
         for r in resp.get('results', []):
-            for k,v in r.items():
+            for k,v in list(r.items()):
                 event[k] = v
 except:
     import traceback

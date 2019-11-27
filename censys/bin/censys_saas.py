@@ -43,7 +43,7 @@ class MyScript(Script):
 			service.storage_passwords.create(password, username)
 
 		except Exception as e:
-			raise Exception, "An error occurred updating credentials. Please ensure your user account has admin_all_objects and/or list_storage_passwords capabilities. Details: %s" % str(e)
+			raise Exception("An error occurred updating credentials. Please ensure your user account has admin_all_objects and/or list_storage_passwords capabilities. Details: %s" % str(e))
 
 	def mask_password(self, session_key, username):
 		try:

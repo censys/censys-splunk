@@ -1,3 +1,4 @@
+from __future__ import print_function
 import json
 import logging, logging.handlers
 import optparse
@@ -7,8 +8,8 @@ import re
 import ssl
 import sys
 import time
-import urllib2
-
+import six.moves.urllib.request, six.moves.urllib.error, six.moves.urllib.parse
+ 
 import splunklib.client as client
 
 
@@ -57,7 +58,7 @@ class EventLog(object):
     def get_events(self, cursor=None):
         self.logger.debug("get_events() - {}".format(cursor or self.body))
         baseurl = "https://app.censys.io/api/beta/logbook/getLogbookData"
-        req = urllib2.Request(baseurl, cursor or json.dumps(self.body))
+        req = six.moves.urllib.request.Request(baseurl, cursor or json.dumps(self.body))
         req.add_header("Content-Type", "application/json")
         req.add_header("accept", "application/json")
         req.add_header("Censys-Beta-Api-Key", self.key)
@@ -68,9 +69,9 @@ class EventLog(object):
                 data = {"nextWindowCursor": cursor}
             else:
                 data = self.body
-            resp = urllib2.urlopen(req, json.dumps(data), context=gcontext).read()
+            resp = six.moves.urllib.request.urlopen(req, json.dumps(data), context=gcontext).read()
             logs = json.loads(resp)
-        except urllib2.URLError as e:
+        except six.moves.urllib.error.URLError as e:
             self.logger.warning("Error seen: {0}".format(e))
             self.fetch_more = False
             logs = {"results": [], "nextWindowCursor": "e30="}
@@ -97,7 +98,7 @@ class EventLog(object):
             #    This can be real bad at volume.
             # 2. It throws off all the Splunk auto statistics for field vs event coverage.
             # 3. Makes it hard to do certain search techniques.
-            row = dict([(convert(k), v) for k, v in row.items() if v is not None])
+            row = dict([(convert(k), v) for k, v in list(row.items()) if v is not None])
             print(json.dumps(row))
             self.latest = max(self.latest, row["id"])
 
