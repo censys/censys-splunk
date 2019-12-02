@@ -114,6 +114,8 @@ try:
     for event in events:
         try:
             ip = event[field]
+            if not ip:
+                raise KeyError
         except KeyError:
             continue
 
