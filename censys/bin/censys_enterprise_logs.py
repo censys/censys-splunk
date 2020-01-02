@@ -60,7 +60,7 @@ class EventLog(object):
         baseurl = "https://app.censys.io/api/beta/logbook/getLogbookData"
         req = six.moves.urllib.request.Request(baseurl, cursor or json.dumps(self.body))
         req.add_header("Content-Type", "application/json")
-        req.add_header("accept", "application/json")
+        req.add_header("Accept", "application/json")
         req.add_header("Censys-Beta-Api-Key", self.key)
         req.add_header('User-Agent', 'Censys-TA for Splunk 1.0.x')
         try:
