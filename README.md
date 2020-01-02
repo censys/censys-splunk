@@ -16,7 +16,9 @@ Enables you to rapidly query Censys by IP, port, domain, or certificate hash, an
 
 Version 1.0.x of Censys-Splunk is compatible with:
 
-| Splunk Enterprise versions | 7.2.x |
+|   | |
+|----------------------------|-------|
+| Splunk Enterprise versions | 7.2.x, 8.0.x |
 | Platforms                  | Platform independent |
 | Vendor Products            | Censys Basic, Pro and Enterprise; Censys Enterprise Platform |
 | Lookup file changes        | None |
@@ -30,7 +32,7 @@ Version 1.0.x of Censys-Splunk is compatible with:
 
 **Software requirements**
 To function properly, Censys-Splunk requires the following software:
-- Splunk Enterprise 7.2+
+- Splunk Enterprise 7.2+ or 8.0.0+
 
 ### Installation
 
@@ -46,7 +48,7 @@ The app supports Censys' two products, and depending on what you have you may ha
 
 ## Usage
 
-The "censys" streaming command lets you enrich results by IP address. Syntax: `... | censys [ip address field] {title, ports, banners, description, tls_names}`
+The "censys" streaming command lets you enrich results by IP address. Syntax: `... | censys [ip address field] {title, protocols, banners, description, tls_names}`
 
 ### Dashboard
 
@@ -59,7 +61,7 @@ The app introduces a new streaming command, `censys`, which allows you to perfor
 - The name of the field containing the IP address to query (e.g. dst_ip)
 - The name of the enrichment you wish to perform, one of: 
   - title - the web page title if there is any, on ports 80, 443, 8080, and 8888
-  - ports - the ports and protocols found open on the host
+  - protocols - the ports and protocols found open on the host
   - banners - the banners of 20 common protocols and HTTP server information
   - description - the device description, if known
   - tls_names - the DNS names found on any TLS certificates observed on the host
@@ -67,7 +69,7 @@ The app introduces a new streaming command, `censys`, which allows you to perfor
 In searches containing IP addresses, this `censys` command can be used to enrich events. For example:
 
 	host="apache"
-	| censys clientip ports
+	| censys clientip protocols
 	| mvexpand protocols
 	| top protocols
 
