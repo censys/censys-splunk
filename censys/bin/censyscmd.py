@@ -128,7 +128,7 @@ try:
                     "fields": FIELDS.get(output)}
             request = six.moves.urllib.request.Request('https://censys.io/api/v1/search/ipv4', json.dumps(data))
             request.add_header("Authorization", "Basic %s" % auth64)
-            req.add_header('User-Agent', 'Censys-TA for Splunk 1.0.x')
+            request.add_header('User-Agent', 'Censys-TA for Splunk 1.0.x')
             req = six.moves.urllib.request.urlopen(request)
             resp = json.loads(req.read())
             req.close()
