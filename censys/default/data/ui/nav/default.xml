@@ -3,8 +3,7 @@
     <collection label="Censys">
       <a href="/manager/censys/apps/local/censys/setup?action=edit">Configuration</a>
       <divider />
-      <a href="http://censys.io/documentation" target="_blank">Documentation</a>
-      <a href="http://answers.splunk.com/ask/?appid=NNN" target="_blank">Send Feedback</a>
+      <a href="http://censys.io/integrations/splunk" target="_blank">Documentation</a>
     </collection>
     
   <view name="activity_breakdown" default="true"/>
