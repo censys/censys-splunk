@@ -7,7 +7,7 @@
 			<type>text</type>
 		</input>
 		<input field="password">
-			<label>API Secret</label>
+			<label>Secret</label>
 			<type>text</type>
 		</input>
 	</block>
