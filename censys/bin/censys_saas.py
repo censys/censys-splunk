@@ -11,15 +11,15 @@ class MyScript(Script):
 	CLEAR_PASSWORD = None
 
 	def get_scheme(self):
-		scheme = Scheme("Censys Enterprise Platform for Splunk")
-		scheme.description = ("Configure Splunk to use Censys.")
+		scheme = Scheme("Censys Enterprise Platform for Splunk.")
+		scheme.description = ("Configure Splunk to use the Censys Enterprise Platform, find your API key at https://app.censys.io/admin .")
 		scheme.use_external_validation = False
 		scheme.streaming_mode_xml = True
 		scheme.use_single_instance = False
 
 		password_arg = Argument(
 			name="beta_api_key",
-			title="SaaS API Key",
+			title="Beta API Key",
 			data_type=Argument.data_type_string,
 			required_on_create=True,
 			required_on_edit=True
