@@ -399,13 +399,17 @@
       </chart>
     </panel>
     <panel>
-      <title>CVE Severity Score vs Window of Exposure</title>
+      <title>CVE Window of Exposure vs Severity Score</title>
       <chart>
         <search>
-          <query>host="censys_enterprise" type="HOST_CVE"
-| transaction ip log_data.cve startswith="ADD" endswith="REMOVE"
-| eval days=duration/86400
-| table days log_data.cvss</query>
+          <query>host="censys_enterprise" type="HOST_CVE" 
+          | transaction ip log_data.cve startswith="ADD" endswith="REMOVE" 
+          | eval days=duration/86400 
+          | eval days=round(days,1) 
+          | table log_data.cvss days 
+          | rename log_data.cvss AS "CVE Severity Score" 
+          | rename days AS "Number of Days CVE was Open" 
+          </query>
           <earliest>0</earliest>
           <latest></latest>
           <sampleRatio>1</sampleRatio>
@@ -418,8 +422,8 @@
         <option name="charting.axisX.abbreviation">none</option>
         <option name="charting.axisX.scale">linear</option>
         <option name="charting.axisY.abbreviation">none</option>
-        <option name="charting.axisY.maximumNumber">10.0</option>
-        <option name="charting.axisY.minimumNumber">0</option>
+        <option name="charting.axisX.maximumNumber">10.0</option>
+        <option name="charting.axisX.minimumNumber">0</option>
         <option name="charting.axisY.scale">linear</option>
         <option name="charting.axisY2.abbreviation">none</option>
         <option name="charting.axisY2.enabled">0</option>
