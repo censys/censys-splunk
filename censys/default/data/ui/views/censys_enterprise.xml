@@ -542,10 +542,18 @@
       </table>
     </panel>
     <panel>
-      <title>Domain Nameserver Changes</title>
+      <title>Mail Exchange Server Changes</title>
       <table>
         <search>
-          <query>host="censys_enterprise"  type="DOMAIN_NAME_SERVER" | table timestamp name log_data.nameserver | sort -timestamp | uniq</query>
+          <query>host="censys_enterprise"  type="DOMAIN_MAIL_EXCHANGE_SERVER" 
+          | table timestamp log_sub_type log_data.mxServer name
+          | sort -timestamp 
+          | uniq
+          | rename timestamp AS Timestamp
+          | rename log_sub_type AS "Event Subtype"
+          | rename log_data.mxServer AS "Mail Exchange Server Name"
+          | rename name AS "Parent Domain"
+          </query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
