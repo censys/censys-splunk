@@ -549,7 +549,15 @@
       <title>Domain Nameserver Changes</title>
       <table>
         <search>
-          <query>host="censys_enterprise"  type="DOMAIN_NAME_SERVER" | table timestamp name log_data.nameserver | sort -timestamp | uniq</query>
+          <query>host="censys_enterprise"  type="DOMAIN_NAME_SERVER" 
+          | table timestamp log_sub_type log_data.nameserver name
+          | sort -timestamp 
+          | uniq
+          | rename timestamp AS Timestamp 
+          | rename log_sub_type AS "Event Subtype"
+          | rename name AS "Parent Domain" 
+          | rename log_data.nameserver AS "Nameserver"
+          </query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
