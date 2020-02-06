@@ -452,7 +452,13 @@
       <title>Newly Discovered Domains</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="DOMAIN" log_sub_type="add"  | table timestamp name | sort -timestamp | uniq</query>
+          <query>host="censys_enterprise" type="DOMAIN" log_sub_type="add" 
+          | table timestamp name 
+          | sort -timestamp 
+          | uniq 
+          | rename name AS "Domain Name" 
+          | rename timestamp AS Timestamp
+          </query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -463,10 +469,18 @@
       </table>
     </panel>
     <panel>
-      <title>Domain Registration Changes</title>
+      <title>Domain Registrar Changes</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="DOMAIN_REGISTRAR" | table timestamp name log_data.registrar | sort -timestamp | uniq</query>
+          <query>host="censys_enterprise" type="DOMAIN_REGISTRAR" 
+          | table timestamp log_sub_type log_data.registrar name
+          | sort -timestamp 
+          | uniq 
+          | rename timestamp AS Timestamp 
+          | rename log_sub_type AS "Event Subtype"
+          | rename log_data.registrar AS Registrar 
+          | rename name AS "Domain Name" 
+          </query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -482,7 +496,13 @@
       <title>Newly Discovered Hostnames</title>
       <table>
         <search>
-          <query>host="censys_enterprise" type="HOSTNAME" log_sub_type="add"  | table timestamp log_data.dns | sort -timestamp</query>
+          <query>host="censys_enterprise" type="HOSTNAME" log_sub_type="add"  
+          | table timestamp log_data.dns name 
+          | sort -timestamp
+          | rename timestamp AS Timestamp
+          | rename log_data.dns AS Hostname
+          | rename name AS "Parent Domain"
+          </query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -500,10 +520,18 @@
   </row>
   <row>
     <panel>
-      <title>Domain MX Changes</title>
+      <title>Mail Exchange Server Changes</title>
       <table>
         <search>
-          <query>host="censys_enterprise"  type="DOMAIN_MAIL_EXCHANGE_SERVER" | table timestamp name log_data.mxServer | sort -timestamp | uniq</query>
+          <query>host="censys_enterprise"  type="DOMAIN_MAIL_EXCHANGE_SERVER" 
+          | table timestamp log_sub_type log_data.mxServer name
+          | sort -timestamp 
+          | uniq
+          | rename timestamp AS Timestamp
+          | rename log_sub_type AS "Event Subtype"
+          | rename log_data.mxServer AS "Mail Exchange Server Name"
+          | rename name AS "Parent Domain"
+          </query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
