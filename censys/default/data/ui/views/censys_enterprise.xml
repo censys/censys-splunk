@@ -549,7 +549,7 @@
       </table>
     </panel>
     <panel>
-      <title>Domain Nameserver Changes</title>
+      <title>Mail Exchange Server Changes</title>
       <table>
         <search>
           <query>host="censys_enterprise"  type="DOMAIN_NAME_SERVER" 
