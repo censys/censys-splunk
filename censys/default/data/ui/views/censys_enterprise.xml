@@ -235,7 +235,7 @@
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
-        <option name="colorBy">value</option>
+        <option name="colorBy">trend</option>
         <option name="colorMode">none</option>
         <option name="drilldown">none</option>
         <option name="numberPrecision">0</option>
@@ -247,10 +247,10 @@
         <option name="trellis.enabled">0</option>
         <option name="trellis.scales.shared">1</option>
         <option name="trellis.size">medium</option>
-        <option name="trendColorInterpretation">standard</option>
+        <option name="trendColorInterpretation">inverse</option>
         <option name="trendDisplayMode">absolute</option>
         <option name="unitPosition">after</option>
-        <option name="useColors">0</option>
+        <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
       </single>
     </panel>
@@ -263,7 +263,7 @@
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
-        <option name="colorBy">value</option>
+        <option name="colorBy">trend</option>
         <option name="colorMode">none</option>
         <option name="drilldown">none</option>
         <option name="numberPrecision">0</option>
@@ -275,10 +275,10 @@
         <option name="trellis.enabled">0</option>
         <option name="trellis.scales.shared">1</option>
         <option name="trellis.size">medium</option>
-        <option name="trendColorInterpretation">standard</option>
+        <option name="trendColorInterpretation">inverse</option>
         <option name="trendDisplayMode">absolute</option>
         <option name="unitPosition">after</option>
-        <option name="useColors">0</option>
+        <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
       </single>
     </panel>
@@ -291,7 +291,7 @@
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
-        <option name="colorBy">value</option>
+        <option name="colorBy">trend</option>
         <option name="colorMode">none</option>
         <option name="drilldown">none</option>
         <option name="numberPrecision">0</option>
@@ -303,10 +303,10 @@
         <option name="trellis.enabled">0</option>
         <option name="trellis.scales.shared">1</option>
         <option name="trellis.size">medium</option>
-        <option name="trendColorInterpretation">standard</option>
+        <option name="trendColorInterpretation">inverse</option>
         <option name="trendDisplayMode">absolute</option>
         <option name="unitPosition">after</option>
-        <option name="useColors">0</option>
+        <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
       </single>
     </panel>
@@ -319,7 +319,7 @@
           <latest>$field1.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
-        <option name="colorBy">value</option>
+        <option name="colorBy">trend</option>
         <option name="colorMode">none</option>
         <option name="drilldown">none</option>
         <option name="numberPrecision">0</option>
@@ -331,10 +331,10 @@
         <option name="trellis.enabled">0</option>
         <option name="trellis.scales.shared">1</option>
         <option name="trellis.size">medium</option>
-        <option name="trendColorInterpretation">standard</option>
+        <option name="trendColorInterpretation">inverse</option>
         <option name="trendDisplayMode">absolute</option>
         <option name="unitPosition">after</option>
-        <option name="useColors">0</option>
+        <option name="useColors">1</option>
         <option name="useThousandSeparators">1</option>
       </single>
     </panel>
@@ -470,6 +470,7 @@
         <option name="count">10</option>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
+        <option name="wrap">false</option>        
       </table>
     </panel>
     <panel>
@@ -492,6 +493,7 @@
         <option name="count">10</option>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
+        <option name="wrap">false</option>        
       </table>
     </panel>
   </row>
@@ -518,7 +520,7 @@
         <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">false</option>
         <option name="totalsRow">false</option>
-        <option name="wrap">true</option>
+        <option name="wrap">false</option>
       </table>
     </panel>
   </row>
@@ -543,20 +545,21 @@
         <option name="count">10</option>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
+        <option name="wrap">false</option>         
       </table>
     </panel>
     <panel>
       <title>Mail Exchange Server Changes</title>
       <table>
         <search>
-          <query>host="censys_enterprise"  type="DOMAIN_MAIL_EXCHANGE_SERVER" 
-          | table timestamp log_sub_type log_data.mxServer name
+          <query>host="censys_enterprise"  type="DOMAIN_NAME_SERVER" 
+          | table timestamp log_sub_type log_data.nameserver name
           | sort -timestamp 
           | uniq
-          | rename timestamp AS Timestamp
+          | rename timestamp AS Timestamp 
           | rename log_sub_type AS "Event Subtype"
-          | rename log_data.mxServer AS "Mail Exchange Server Name"
-          | rename name AS "Parent Domain"
+          | rename name AS "Parent Domain" 
+          | rename log_data.nameserver AS "Nameserver"
           </query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
@@ -565,6 +568,7 @@
         <option name="count">10</option>
         <option name="drilldown">none</option>
         <option name="refresh.display">progressbar</option>
+        <option name="wrap">false</option> 
       </table>
     </panel>
   </row>
