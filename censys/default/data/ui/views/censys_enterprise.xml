@@ -359,7 +359,7 @@
       <title>CVE Severity Score Distribution for Last 30 Days</title>
       <chart>
         <search>
-          <query>host="censys_enterprise" type="HOST_CVE" | top log_data.cvss</query>
+          <query>host="censys_enterprise" type="HOST_CVE" | top log_data.cvss | rename log_data.cvss AS "Severity Score"</query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
           <sampleRatio>1</sampleRatio>
@@ -549,7 +549,7 @@
       </table>
     </panel>
     <panel>
-      <title>Mail Exchange Server Changes</title>
+      <title>Nameserver Changes</title>
       <table>
         <search>
           <query>host="censys_enterprise"  type="DOMAIN_NAME_SERVER" 
@@ -558,8 +558,8 @@
           | uniq
           | rename timestamp AS Timestamp 
           | rename log_sub_type AS "Event Subtype"
-          | rename name AS "Parent Domain" 
           | rename log_data.nameserver AS "Nameserver"
+          | rename name AS "Parent Domain"             
           </query>
           <earliest>-30d@d</earliest>
           <latest>now</latest>
