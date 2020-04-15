@@ -18,7 +18,7 @@ Version 1.0.x of Censys-Splunk is compatible with:
 
 |   | |
 |----------------------------|-------|
-| Splunk Enterprise versions | 7.2.x, 8.0.x |
+| Splunk Enterprise versions | 7.2.x, 7.3.x, 8.0.x |
 | Platforms                  | Platform independent |
 | Vendor Products            | Censys Basic, Pro and Enterprise; Censys Enterprise Platform |
 | Lookup file changes        | None |
