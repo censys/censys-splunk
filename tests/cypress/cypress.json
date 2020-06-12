@@ -1,0 +1,11 @@
+{
+  "baseUrl": "http://localhost:8000/",
+  "integrationFolder": "./e2e",
+  "viewportWidth": 1400,
+  "viewportHeight": 900,
+  "reporter": "junit",
+  "defaultCommandTimeout": 16000,
+  "reporterOptions": {
+    "mochaFile": "./test-results/results-[hash].xml"
+  }
+}
