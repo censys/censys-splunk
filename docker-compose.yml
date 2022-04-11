@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  censys_splunk:
+    image: splunk/splunk
+    container_name: censys_splunk_addon
+    ports:
+      - 8000:8000
+    restart: "no"
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_HOME=/opt/splunk
+      - SPLUNK_PASSWORD=I<3bigDATA
+    volumes:
+      - ./Splunk_TA_censys:/opt/splunk/etc/apps/Splunk_TA_censys
