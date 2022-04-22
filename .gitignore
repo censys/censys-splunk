@@ -117,3 +117,6 @@ cython_debug/
 !**/app.manifest
 !**/README/*.spec
 !**/static/**/build/
+
+# Build artifacts
+*.tar.gz
