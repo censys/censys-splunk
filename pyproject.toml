@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "censys-splunk"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+license = "Apache-2"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+splunk-appinspect = "^2.18.0"
+splunk-packaging-toolkit = {url = "https://download.splunk.com/misc/packaging-toolkit/splunk-packaging-toolkit-1.0.1.tar.gz"}
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
