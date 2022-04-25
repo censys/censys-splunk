@@ -5,7 +5,7 @@
     "id": {
       "group": null,
       "name": "Splunk_TA_censys",
-      "version": "1.0.6"
+      "version": "1.0.7"
     },
     "author": [
       {
@@ -26,19 +26,19 @@
     },
     "commonInformationModels": null,
     "license": {
-      "name": null,
-      "text": null,
-      "uri": null
+      "name": "Apache 2.0",
+      "text": "./LICENSE",
+      "uri": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
     "privacyPolicy": {
-      "name": null,
+      "name": "Privacy Policy",
       "text": null,
-      "uri": null
+      "uri": "https://censys.io/privacy-policy/"
     },
     "releaseNotes": {
-      "name": null,
-      "text": null,
-      "uri": null
+      "name": "README",
+      "text": "./README.md",
+      "uri": "https://github.com/censys/censys-splunk/blob/main/Splunk_TA_censys/README.md"
     }
   },
   "dependencies": {
