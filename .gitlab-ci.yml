@@ -91,6 +91,7 @@ sast:
   stage: test
   variables:
     SEARCH_MAX_DEPTH: "10"
+    SAST_BANDIT_EXCLUDED_PATHS: "*/aob_py3/*"
 
 kics-iac-sast:
   stage: test
@@ -99,6 +100,7 @@ secret_detection:
   stage: test
   variables:
     SECRET_DETECTION_HISTORIC_SCAN: "true"
+    SECRET_DETECTION_EXCLUDED_PATHS: "**/bin/**/aob_py3"
 
 license_scanning:
   stage: test
