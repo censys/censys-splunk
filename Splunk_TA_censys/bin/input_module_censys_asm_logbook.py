@@ -1,7 +1,7 @@
 # encoding = utf-8
 
 import json
-from typing import Optional
+from typing import Dict, Optional
 
 import requests
 from modinput_wrapper.base_modinput import BaseModInput
@@ -24,16 +24,21 @@ BASE_URL = "https://app.censys.io/api"
 
 
 class CensysAsmInput:
+    input_stanza: str
+    base_url: str
+    opt_censys_asm_api_key: str
+    headers: Dict[str, str]
+
     def __init__(
         self, helper: BaseModInput, event_writer: EventWriter, base_url: str = BASE_URL
     ):
+        """Initialize the CensysAsmInput class."""
         self.helper = helper
         self.event_writer = event_writer
+        self.input_stanza: str = helper.get_input_stanza_names()
+
         self.base_url = base_url
-
-        self.log_level = helper.get_log_level()
-
-        self.opt_censys_asm_api_key = helper.get_arg("censys_asm_api_key")
+        self.opt_censys_asm_api_key: str = helper.get_arg("censys_asm_api_key")
 
         self.headers = {
             "Content-Type": "application/json",
@@ -48,6 +53,7 @@ class CensysAsmInput:
         payload: Optional[dict] = None,
         **kwargs,
     ) -> requests.Response:
+        """Make a call to the Censys ASM API."""
         kwargs = {"headers": self.headers, **kwargs}
         if parameters:
             kwargs["parameters"] = parameters
@@ -56,22 +62,27 @@ class CensysAsmInput:
         return self.helper.send_http_request(self.base_url + path, method, **kwargs)
 
     def get_logbook_cursor(self) -> str:
+        """Get the logbook cursor."""
         response = self._make_call("/v1/logbook-cursor", "POST")
         return response.json()["cursor"]
 
     def get_logbook_events(self, cursor: Optional[str] = None) -> dict:
+        """Get the logbook events."""
         response = self._make_call("/v1/logbook", "GET", parameters={"cursor": cursor})
         return response.json()
 
-    def pull_logbook_events(self, checkpoint_key: str = "asm_logbook_cursor"):
+    def pull_logbook_events(self, checkpoint_key_prefix: str = "asm_logbook_cursor_"):
+        """Pull the logbook events."""
+        checkpoint_key = checkpoint_key_prefix + self.input_stanza
         cursor_state = self.helper.get_check_point(checkpoint_key)
 
         if not cursor_state:
-            self.helper.log_debug("Generating new logbook cursor...")
+            self.helper.log_debug("Getting new logbook cursor...")
             cursor_state = self.get_logbook_cursor()
             self.helper.save_check_point(checkpoint_key, cursor_state)
 
         self.helper.log_debug(f"Logbook cursor: {cursor_state}")
+        self.helper.log_info(f"Pulling logbook events for input '{self.input_stanza}'...")
 
         output_index = self.helper.get_output_index()
         input_type = self.helper.get_input_type()
@@ -80,13 +91,17 @@ class CensysAsmInput:
         end_of_events = False
         while not end_of_events:
             try:
-                logbook_events = self.get_logbook_events(cursor=cursor_state)
+                res = self.get_logbook_events(cursor=cursor_state)
             except requests.HTTPError as e:
                 self.helper.log_error(str(e))
                 break
 
-            end_of_events = logbook_events.get("endOfEvents", False)
-            for logbook_event in logbook_events.get("events", []):
+            logbook_events: list = res.get("events", [])
+            self.helper.log_debug(f"Adding {len(logbook_events)} logbook events")
+
+            end_of_events: bool = res.get("endOfEvents", False)
+            for logbook_event in logbook_events:
+                logbook_event["data_input_name"] = self.input_stanza
                 event = self.helper.new_event(
                     data=json.dumps(logbook_event),
                     index=output_index,
