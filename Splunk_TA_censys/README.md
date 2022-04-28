@@ -38,7 +38,19 @@ docker-compose up
 Open your browser to https://localhost:8000/ and login with your Splunk credentials.
 
 ### Install from Splunkbase
-Coming soon
+
+1. From the Splunk main page, click the **+ Find More Apps** button in the sidebar.
+
+![find_apps](./images/find-apps.png)
+
+2. Type "Censys in the search bar.
+
+3. On the results page, find the "Censys Add-on for Splunk" app card and click the green **Install** button.
+<!-- TODO add image here -->
+
+4. Reenter login credentials to confirm your choice.
+
+
 ## Configure the Add-on
 ### Logbook
 
