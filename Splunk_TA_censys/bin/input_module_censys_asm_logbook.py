@@ -8,7 +8,7 @@ from modinput_wrapper.base_modinput import BaseModInput
 from splunklib.modularinput.event_writer import EventWriter
 from splunklib.modularinput.validation_definition import ValidationDefinition
 
-from .censys_asm import CensysAsmApi, validate_api_key
+from censys_asm import CensysAsmApi, validate_api_key
 
 """
     IMPORTANT
@@ -26,9 +26,9 @@ def use_single_instance_mode():
 class CensysAsmLogbookApi(CensysAsmApi):
     input_stanza: str
 
-    def __init__(self, helper: BaseModInput, base_url: str = ...):
+    def __init__(self, helper: BaseModInput):
         """Initialize the CensysAsmLogbookApi class."""
-        super().__init__(helper.get_arg("censys_asm_api_key"), helper, base_url)
+        super().__init__(helper.get_arg("censys_asm_api_key"), helper)
         self.input_stanza: str = helper.get_input_stanza_names()
 
     def get_logbook_cursor(self) -> Optional[str]:
@@ -53,7 +53,7 @@ class CensysAsmLogbookApi(CensysAsmApi):
                 self.helper.log_debug(
                     f"Setting check point: {checkpoint_key} to {cursor_state}"
                 )
-                self.helper.set_check_point(checkpoint_key, cursor_state)
+                self.helper.save_check_point(checkpoint_key, cursor_state)
         return cursor_state
 
     def get_logbook_events(self, cursor: Optional[str] = None) -> dict:

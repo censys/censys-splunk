@@ -52,7 +52,7 @@ class CensysAsmApi:
     def validate(self):
         """Validate the API key."""
         res = self._make_call(
-            "/assets/hosts", "GET", parameters={"pageSize": 1, "pageNumber": 1}
+            "/v1/assets/hosts", "GET", parameters={"pageSize": 1, "pageNumber": 1}
         )
         res.raise_for_status()
 
