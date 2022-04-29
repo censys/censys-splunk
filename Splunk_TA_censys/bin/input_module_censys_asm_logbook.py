@@ -8,7 +8,7 @@ from modinput_wrapper.base_modinput import BaseModInput
 from splunklib.modularinput.event_writer import EventWriter
 from splunklib.modularinput.validation_definition import ValidationDefinition
 
-from censys_asm import CensysAsmApi, validate_api_key
+from censys_asm import CensysAsmApi
 
 """
     IMPORTANT
@@ -100,7 +100,7 @@ class CensysAsmLogbookApi(CensysAsmApi):
 def validate_input(helper: BaseModInput, definition: ValidationDefinition):
     """Validate the input stanza configurations."""
     censys_asm_api_key = definition.parameters.get("censys_asm_api_key", None)
-    validate_api_key(helper, censys_asm_api_key)
+    # validate_api_key(helper, censys_asm_api_key)
 
 
 def collect_events(helper: BaseModInput, ew: EventWriter):
