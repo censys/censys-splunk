@@ -17,7 +17,7 @@ Splunkbase: <https://splunkbase.splunk.com/app/6399>
 1. Your Censys ASM API key
 
     Find your key on the Censys ASM [integrations page][censys-asm-integrations].
-    ![API_key](./images/api_key.png)
+    ![API_key](./static/api_key.png)
 
 2. A Splunk account and installation.
 
@@ -27,7 +27,7 @@ Splunkbase: <https://splunkbase.splunk.com/app/6399>
 
 1. From the Splunk main page, click the **+ Find More Apps** button in the sidebar.
 
-![find_apps](./images/find-apps.png)
+![find_apps](./static/find_apps.png)
 
 2. Type "Censys in the search bar.
 
@@ -47,7 +47,7 @@ From the Inputs page, select Create New Input. Fill out the following fields:
 - Adjust the Interval field if desired. This determines how frequently data will be fetched from Censys ASM.
 <!-- TODO say anything about default index? -->
 
-![logbook_config](./images/logbook_config.png)
+![logbook_config](./static/logbook_config.png)
 
 ### Risks
 
