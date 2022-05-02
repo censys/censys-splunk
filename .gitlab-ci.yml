@@ -38,16 +38,24 @@ make requirements txt:
     paths:
       - "$PIP_REQUIREMENTS_FILE"
 
-package add-on:
+.package:
   extends: .poetry
   stage: build
-  script:
-    - poetry run slim package Splunk_TA_censys
   dependencies:
     - make requirements txt
   artifacts:
     paths:
       - "*.tar.gz"
+
+package add-on:
+  extends: .package
+  script:
+    - poetry run slim package Splunk_TA_censys
+
+package asm app:
+  extends: .package
+  script:
+    - poetry run slim package censys_asm_app
 
 appinspect add-on:
   extends: .poetry
@@ -59,6 +67,17 @@ appinspect add-on:
   artifacts:
     paths:
       - "*-appinspect.json"
+
+appinspect asm app:
+  extends: .poetry
+  stage: test
+  script:
+    - poetry run splunk-appinspect inspect censys_asm_app-*.tar.gz --output-file asm-appinspect.json --included-tags cloud --included-tags future --included-tags python3_version
+  dependencies:
+    - package asm app
+  artifacts:
+    paths:
+      - "*-asm-appinspect.json"
 
 # lint:
 #   extends: .poetry
