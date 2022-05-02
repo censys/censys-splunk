@@ -57,27 +57,26 @@ package asm app:
   script:
     - poetry run slim package censys_asm_app
 
-appinspect add-on:
+.appinspect:
   extends: .poetry
   stage: test
-  script:
-    - poetry run splunk-appinspect inspect Splunk_TA_censys-*.tar.gz --output-file add-on-appinspect.json --included-tags cloud --included-tags future --included-tags python3_version
-  dependencies:
-    - package add-on
   artifacts:
     paths:
       - "*-appinspect.json"
 
+appinspect add-on:
+  extends: .appinspect
+  script:
+    - poetry run splunk-appinspect inspect Splunk_TA_censys-*.tar.gz --output-file add-on-appinspect.json --included-tags cloud --included-tags future --included-tags python3_version
+  dependencies:
+    - package add-on
+
 appinspect asm app:
-  extends: .poetry
-  stage: test
+  extends: .appinspect
   script:
     - poetry run splunk-appinspect inspect censys_asm_app-*.tar.gz --output-file asm-appinspect.json --included-tags cloud --included-tags future --included-tags python3_version
   dependencies:
     - package asm app
-  artifacts:
-    paths:
-      - "*-asm-appinspect.json"
 
 # lint:
 #   extends: .poetry
