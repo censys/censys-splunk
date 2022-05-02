@@ -12,7 +12,8 @@ This guide will help you:
 
 Splunkbase: <https://splunkbase.splunk.com/app/6399>
 
-### Ready to start? Here's what you need:
+## Getting Started
+
 1. Your Censys ASM API key
 
     Find your key on the Censys ASM [integrations page][censys-asm-integrations].
@@ -21,21 +22,6 @@ Splunkbase: <https://splunkbase.splunk.com/app/6399>
 2. A Splunk account and installation.
 
 ## Install the Censys Add-on for Splunk
-
-### Local Installation
-
-`git clone git@gitlab.com:censys/integrations/censys-splunk.git`
-
-This method assumes you have Docker and Docker Compose installed and running on
-your server.
-
-Run the Docker Compose file
-
-```sh
-docker-compose up
-```
-
-Open your browser to https://localhost:8000/ and login with your Splunk credentials.
 
 ### Install from Splunkbase
 
@@ -52,6 +38,7 @@ Open your browser to https://localhost:8000/ and login with your Splunk credenti
 
 
 ## Configure the Add-on
+
 ### Logbook
 
 From the Inputs page, select Create New Input. Fill out the following fields:
@@ -63,7 +50,8 @@ From the Inputs page, select Create New Input. Fill out the following fields:
 ![logbook_config](./images/logbook_config.png)
 
 ### Risks
-Coming soon
+
+> Coming soon...
 
 ## Use the Add-on
 
@@ -71,6 +59,14 @@ Under the Search tab, you can enter queries on your data inputs.
 If you are not familiar with Splunk search syntax, Splunk has the following helpful resources:
 - [Splunk Search Documentation][splunk-search-documentation]
 - [Splunk Search Tutorial][splunk-search-tutorial]
+
+## FAQs
+
+### What if I'm seeing no events in my index?
+
+1. Confirm your [Censys ASM API key](#getting-started) is up to date
+
+2. Confirm your index is accessible
 
 ## License
 
