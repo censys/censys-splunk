@@ -1,0 +1,116 @@
+default:
+  tags:
+    - search
+
+stages:
+  - build
+  - test
+
+variables:
+  PIP_REQUIREMENTS_FILE: "requirements.txt"
+
+.poetry:
+  image: python:3.9
+
+  variables:
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+  cache:
+    key:
+      files:
+        - poetry.lock
+    paths:
+      - .cache/pip
+
+  before_script:
+    - pip install poetry
+    - poetry config virtualenvs.in-project true
+    - poetry install --no-ansi --no-interaction -vv
+    - source `poetry env info --path`/bin/activate
+
+make requirements txt:
+  extends: .poetry
+  stage: build
+  script:
+    - pip install poetry
+    - poetry export -o "$PIP_REQUIREMENTS_FILE"
+  artifacts:
+    paths:
+      - "$PIP_REQUIREMENTS_FILE"
+
+package add-on:
+  extends: .poetry
+  stage: build
+  script:
+    - poetry run slim package Splunk_TA_censys
+  dependencies:
+    - make requirements txt
+  artifacts:
+    paths:
+      - "*.tar.gz"
+
+appinspect add-on:
+  extends: .poetry
+  stage: test
+  script:
+    - poetry run splunk-appinspect inspect Splunk_TA_censys-*.tar.gz --output-file add-on-appinspect.json --included-tags cloud --included-tags future --included-tags python3_version
+  dependencies:
+    - package add-on
+  artifacts:
+    paths:
+      - "*-appinspect.json"
+
+# lint:
+#   extends: .poetry
+#   stage: test
+#   script:
+#     - flake8 src/
+#     - mypy -p censys.cloud_connectors
+
+# .test-template:
+#   extends: .poetry
+#   stage: test
+#   script: pytest
+
+# unit tests:
+#   extends: .test-template
+#   image: python:3.9
+#   script: pytest --cov --cov-report xml
+#   artifacts:
+#     reports:
+#       cobertura: coverage.xml
+
+include:
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/License-Scanning.gitlab-ci.yml
+  - template: Security/SAST-IaC.latest.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+
+sast:
+  stage: test
+  variables:
+    SEARCH_MAX_DEPTH: "10"
+    SAST_BANDIT_EXCLUDED_PATHS: "*/aob_py3/*"
+
+kics-iac-sast:
+  stage: test
+
+secret_detection:
+  stage: test
+  variables:
+    SECRET_DETECTION_HISTORIC_SCAN: "true"
+    SECRET_DETECTION_EXCLUDED_PATHS: "**/bin/**/aob_py3"
+
+license_scanning:
+  stage: test
+  dependencies:
+    - make requirements txt
+
+gemnasium-python-dependency_scanning:
+  stage: test
+  dependencies:
+    - make requirements txt
+  before_script:
+    - rm poetry.lock pyproject.toml
+  # Triggers artifacts download, until https://gitlab.com/gitlab-org/gitlab/-/issues/249569 is implemented
