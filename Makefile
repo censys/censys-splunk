@@ -13,7 +13,7 @@ build:  ## Build Splunk Add-on
 	poetry run slim package Splunk_TA_censys
 
 .PHONY: appinspect
-appinspect:  ## Run Splunk AppInspect
+appinspect: build  ## Run Splunk AppInspect
 	poetry run splunk-appinspect inspect Splunk_TA_censys-$(ADD_ON_VERSION).tar.gz --included-tags cloud
 
 # via https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
