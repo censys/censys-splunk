@@ -40,6 +40,15 @@ class CensysAsmLogbookApi(CensysAsmApi):
             self.helper.log_debug(response.text)
         return logbook_cursor
 
+    def update_logbook_cursor_check_point(self, cursor_state: str, checkpoint_key_prefix: str = "asm_logbook_cursor_"):
+        """Update the logbook cursor check point."""
+        checkpoint_key = checkpoint_key_prefix + self.input_stanza
+        if cursor_state is not None:
+            self.helper.log_debug(
+                f"Setting check point: {checkpoint_key} to {cursor_state}"
+            )
+            self.helper.save_check_point(checkpoint_key, cursor_state)
+
     def get_logbook_cursor_check_point(
         self, checkpoint_key_prefix: str = "asm_logbook_cursor_"
     ):
@@ -95,7 +104,9 @@ class CensysAsmLogbookApi(CensysAsmApi):
                     sourcetype=sourcetype,
                 )
                 event_writer.write_event(event)
-
+            
+            cursor = res.get("nextCursor")
+            self.update_logbook_cursor_check_point(cursor)
 
 def validate_input(helper: BaseModInput, definition: ValidationDefinition):
     """Validate the input stanza configurations."""
