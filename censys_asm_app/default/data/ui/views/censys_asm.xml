@@ -1,0 +1,334 @@
+<form theme="dark" version="1.1">
+  <label>Censys Attack Surface Management</label>
+  <description>Events from Censys Attack Surface Management Platform</description>
+  <fieldset submitButton="false">
+    <input type="time" token="time_range" searchWhenChanged="true">
+      <label>Time Range</label>
+      <default>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="dropdown" token="data_input_name" searchWhenChanged="true">
+      <label>Data Input Name</label>
+      <fieldForLabel>data_input_name</fieldForLabel>
+      <fieldForValue>data_input_name</fieldForValue>
+      <search>
+        <query>sourcetype="censys:asm:logbook" | stats count by data_input_name</query>
+        <earliest>0</earliest>
+        <latest></latest>
+      </search>
+      <choice value="*">All data inputs</choice>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Hosts Added</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST" operation="ASSOCIATE" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="colorBy">trend</option>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">1</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">large</option>
+        <option name="trellis.splitBy">_aggregation</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="trendInterval">-24h</option>
+        <option name="unitPosition">before</option>
+        <option name="useColors">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Hosts Removed</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST" operation="DISASSOCIATE" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>New Protocols</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_PROTOCOL" operation="ADD" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>New Ports</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_PORT" operation="ADD" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>New Host Risks by Severity</title>
+      <chart>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_RISK" operation="ADD" data_input_name=$data_input_name$ | timechart span=24h count by data.severity</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.stackMode">stacked100</option>
+        <option name="charting.drilldown">all</option>
+        <option name="height">355</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Top Host Risks</title>
+      <table>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_RISK" operation="ADD" data_input_name=$data_input_name$
+| table entity.ipAddress data.severity data.transportProtocol data.port data.title
+| rename low as "potaot"
+| rename entity.ipAddress as "IP Address" 
+| rename data.severity as "Severity" 
+| rename data.transportProtocol as "Protocol" 
+| rename data.port as "Port" 
+| rename data.title as "Risk"
+| eval sort_field=case(Severity="critical",1, Severity="high",2, Severity="medium",3, Severity="low",4)
+| sort sort_field | fields - sort_field</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Software Additions</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_SOFTWARE" operation="ADD" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">231</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Software Removals</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_SOFTWARE" operation="REMOVE" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>New CVEs</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_VULNERABILITY" operation="ADD" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="colorBy">trend</option>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>New CDN Hosts</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_CDN" operation="ADD" data_input_name=$data_input_name$ NOT [search sourcetype="censys:asm:logbook" type="HOST_CDN" operation="REMOVE" data_input_name=$data_input_name$] | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>New CVE Risks by Severity Score</title>
+      <chart>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_VULNERABILITY" operation="ADD" data_input_name=$data_input_name$ | timechart span=24h count by data.cvss</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisY.scale">log</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.drilldown">all</option>
+        <option name="height">386</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>Names Hosted in a Content Delivery Network (CDN)</title>
+      <table>
+        <search>
+          <query>(sourcetype="censys:asm:logbook" type="HOST_CERT" operation="ADD" data_input_name=$data_input_name$) OR (sourcetype="censys:asm:logbook" type="HOST_CDN" operation="ADD" data_input_name=$data_input_name$)
+    [| set intersect 
+        [ search sourcetype="censys:asm:logbook" type="HOST_CERT" operation="ADD" 
+        | fields entity.ipAddress 
+        | fields - _*] 
+        [ search sourcetype="censys:asm:logbook" type="HOST_CDN" operation="ADD" 
+        | fields entity.ipAddress 
+        | fields - _*] | fields entity.ipAddress ] | dedup entity.hostname | search NOT entity.hostname="null" 
+| table entity.hostname
+| sort entity.hostname
+| rename entity.hostname as "Name"</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>New Subdomains by Parent Domain</title>
+      <table>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="DOMAIN_SUBDOMAIN" operation="ADD" data_input_name=$data_input_name$ 
+| table entity.domain data.subdomain
+| rename entity.domain as "Domain" 
+| rename data.subdomain as "Subdomain"</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Expiring Domains</title>
+      <table>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="DOMAIN_RISK" operation="ADD" data_input_name=$data_input_name$ | eval epochtime=strptime(timestamp, "%Y-%m-%dT%H:%M:%S") | eval desired_time=strftime(epochtime, "%+")
+| table entity.domain desired_time data.title 
+| rename entity.domain as "Domain" 
+| rename desired_time as "Warning Date" 
+| rename data.title as "Expiration Notes"
+| eval sort_field=case(Severity="critical",1, Severity="high",2, Severity="medium",3, Severity="low",4)
+| sort sort_field | fields - sort_field</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>New Subdomain Names</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="DOMAIN_SUBDOMAIN" operation="ADD" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>New Certificates</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="CERT" operation="ASSOCIATE" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="refresh.display">progressbar</option>
+      </single>
+    </panel>
+    <panel>
+      <title>New Host-Cert Pairings</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_CERT" operation="ADD" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>In-Use Certificates Expiring Soon</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="CERT_RISK" operation="ADD" data_input_name=$data_input_name$ | timechart span=24h count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">232</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Risk Severity Changes</title>
+      <table>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="RISK_USER_CONFIG" operation="ADD" data_input_name=$data_input_name$ | eval epochtime=strptime(timestamp, "%Y-%m-%dT%H:%M:%S") | eval desired_time=strftime(epochtime, "%+") | table desired_time entity.name data.severity data.previousSeverity data.lastUpdatedBy data.changeReason | rename desired_time as Time | rename entity.name as "Risk Name" | rename data.severity as "New Severity" | rename data.previousSeverity as "Previous Severity" | rename data.lastUpdatedBy as "Changed By" | rename data.changeReason as "Note"</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="refresh.display">progressbar</option>
+        <format type="number" field="Time"></format>
+      </table>
+    </panel>
+  </row>
+</form>
