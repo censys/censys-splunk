@@ -5,7 +5,7 @@
     "id": {
       "group": null,
       "name": "Splunk_TA_censys",
-      "version": "1.0.7"
+      "version": "1.0.8"
     },
     "author": [
       {
@@ -22,7 +22,7 @@
         "IT Operations",
         "Security, Fraud & Compliance"
       ],
-      "developmentStatus": null
+      "developmentStatus": "Beta"
     },
     "commonInformationModels": null,
     "license": {
