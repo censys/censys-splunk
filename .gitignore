@@ -110,7 +110,7 @@ cython_debug/
 #.idea/
 
 # Splunk
-**/local/*.conf
+**/local/
 **/metadata/local.meta
 
 # Exceptions
