@@ -1,0 +1,1 @@
+{"id":"##id##","type":"DOMAIN_MAIL_EXCHANGE_SERVER","timestamp":"##timestamp##","operation":"##operation##","entity":{"domain":"##domain##"},"data":{"mailExchange":"##mailExchange##.##domain##"},"data_input_name":"##data_input_name##"}

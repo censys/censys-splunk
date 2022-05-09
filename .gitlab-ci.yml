@@ -10,7 +10,7 @@ variables:
   PIP_REQUIREMENTS_FILE: "requirements.txt"
 
 .poetry:
-  image: python:3.9
+  image: python:3.7
 
   variables:
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
@@ -85,18 +85,10 @@ appinspect asm app:
 #     - flake8 src/
 #     - mypy -p censys.cloud_connectors
 
-# .test-template:
-#   extends: .poetry
-#   stage: test
-#   script: pytest
-
-# unit tests:
-#   extends: .test-template
-#   image: python:3.9
-#   script: pytest --cov --cov-report xml
-#   artifacts:
-#     reports:
-#       cobertura: coverage.xml
+.test-template:
+  extends: .poetry
+  stage: test
+  script: pytest
 
 include:
   - template: Security/Dependency-Scanning.gitlab-ci.yml

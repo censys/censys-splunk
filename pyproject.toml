@@ -15,9 +15,15 @@ sphinx-tabs = {version = "^3.3.1", optional = true}
 
 [tool.poetry.dev-dependencies]
 black = "21.5b1"
+importlib-metadata = { version = ">=4.4", python = "<3.10" }
+pytest = ">5.4.0,<6.3"
+pytest-splunk-addon = {extras = ["docker"], version = "^3.0.6"}
 splunk-appinspect = "^2.18.0"
 splunk-packaging-toolkit = { url = "https://download.splunk.com/misc/packaging-toolkit/splunk-packaging-toolkit-1.0.1.tar.gz" }
-importlib-metadata = { version = ">=4.4", python = "<3.10" }
+
+[tool.pytest.ini_options]
+minversion = "5.4.0"
+testpaths = ["tests"]
 
 [tool.poetry.extras]
 docs = ["Sphinx", "sphinx-copybutton", "sphinx-prompt", "sphinx-tabs", "furo"]

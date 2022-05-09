@@ -1,0 +1,1 @@
+{"id":"##id##","type":"HOST_CERT","timestamp":"##timestamp##","operation":"##operation##","entity":{"hostname":"##hostname##","ipAddress":"##ip##"},"data":{"sha256":"##sha256##"},"data_input_name":"##data_input_name##"}

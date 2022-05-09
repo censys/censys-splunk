@@ -1,0 +1,1 @@
+{"id":"##id##","type":"DOMAIN_SUBDOMAIN","timestamp":"##timestamp##","operation":"##operation##","entity":{"domain":"##domain##"},"data":{"subdomain":"##subdomain##.##domain##"},"data_input_name":"##data_input_name##"}

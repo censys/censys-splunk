@@ -1,0 +1,1 @@
+{"id":"##id##","type":"DOMAIN_RISK","timestamp":"##timestamp##","operation":"##operation##","entity":{"domain":"##domain##"},"data":{"title":"##title##","severity":"##severity##"},"data_input_name":"##data_input_name##"}

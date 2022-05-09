@@ -1,0 +1,1 @@
+{"id":"##id##","type":"HOST_RISK","timestamp":"##timestamp##","operation":"##operation##","entity":{"ipAddress":"##ip##"},"data":{"port":"##port##","title":"##title##","severity":"##severity##","transportProtocol":"##transportProtocol##"},"data_input_name":"##data_input_name##"}
