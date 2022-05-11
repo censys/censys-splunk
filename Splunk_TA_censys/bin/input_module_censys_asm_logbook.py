@@ -104,7 +104,7 @@ class CensysAsmLogbookApi(CensysAsmApi):
                     sourcetype=sourcetype,
                 )
                 event_writer.write_event(event)
-            
+
             cursor = res.get("nextCursor")
             self.update_logbook_cursor_check_point(cursor)
 
