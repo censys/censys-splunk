@@ -1,4 +1,3 @@
-
 import splunk_ta_censys_declare
 
 from splunk_aoblib.rest_migration import ConfigMigrationHandler

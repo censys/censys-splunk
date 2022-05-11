@@ -45,6 +45,7 @@ tests: test-add-on ## Run tests
 .PHONY: lint
 lint: ## Run linters
 	poetry run isort .
+	poetry run pyupgrade Splunk_TA_censys/bin/*.py --py37
 
 # via https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help

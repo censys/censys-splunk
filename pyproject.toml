@@ -21,6 +21,7 @@ pytest = ">5.4.0,<6.3"
 pytest-splunk-addon = {extras = ["docker"], version = "^3.0.6"}
 splunk-appinspect = "^2.18.0"
 splunk-packaging-toolkit = { url = "https://download.splunk.com/misc/packaging-toolkit/splunk-packaging-toolkit-1.0.1.tar.gz" }
+pyupgrade = "^2.32.1"
 
 [tool.pytest.ini_options]
 minversion = "5.4.0"
