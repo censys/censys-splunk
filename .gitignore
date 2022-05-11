@@ -51,6 +51,9 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Sphinx documentation
+docs/_build/
+
 # IPython
 profile_default/
 ipython_config.py
