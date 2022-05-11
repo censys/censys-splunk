@@ -1,14 +1,14 @@
 
 import splunk_ta_censys_declare
 
-from splunktaucclib.rest_handler.endpoint import (
-    field,
-    validator,
-    RestModel,
-    MultipleModel,
-)
-from splunktaucclib.rest_handler import admin_external, util
 from splunk_aoblib.rest_migration import ConfigMigrationHandler
+from splunktaucclib.rest_handler import admin_external, util
+from splunktaucclib.rest_handler.endpoint import (
+    MultipleModel,
+    RestModel,
+    field,
+    validator
+)
 
 util.remove_http_proxy_env_vars()
 

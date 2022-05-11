@@ -42,6 +42,10 @@ test-asm-app:
 .PHONY: tests
 tests: test-add-on ## Run tests
 
+.PHONY: lint
+lint: ## Run linters
+	poetry run isort .
+
 # via https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help
 help:  ## Show make help

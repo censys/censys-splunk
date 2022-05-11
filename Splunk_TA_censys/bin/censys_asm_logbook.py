@@ -1,17 +1,14 @@
 import splunk_ta_censys_declare
 
+import datetime
+import json
 import os
 import sys
 import time
-import datetime
-import json
-
-import modinput_wrapper.base_modinput
-from splunklib import modularinput as smi
-
-
 
 import input_module_censys_asm_logbook as input_module
+import modinput_wrapper.base_modinput
+from splunklib import modularinput as smi
 
 bin_dir = os.path.basename(__file__)
 

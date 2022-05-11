@@ -6,8 +6,8 @@ This file is genrated by Splunk add-on builder
 """
 
 import os
-import sys
 import re
+import sys
 
 if sys.version_info[0] < 3:
     py_version = "aob_py2"
