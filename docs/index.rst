@@ -17,11 +17,11 @@ Features
 
 **Censys ASM App for Splunk**
 
-- 
+-
 
 **Censys Search App for Splunk**
 
-- 
+-
 
 
 User Guide
