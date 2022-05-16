@@ -1,0 +1,1 @@
+{"id":"##id##","type":"OBJECT_STORAGE","timestamp":"##timestamp##","operation":"##operation##","entity":{"objectStorageName":"##objectStorageName##"},"data_input_name":"##data_input_name##"}

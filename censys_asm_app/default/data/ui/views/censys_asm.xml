@@ -219,10 +219,10 @@
           <query>sourcetype="censys:asm:logbook" type="HOST_RISK" operation="ADD" data_input_name=$data_input_name$
 | table entity.ipAddress data.severity data.transportProtocol data.port data.title
 | rename low as "potaot"
-| rename entity.ipAddress as "IP Address" 
-| rename data.severity as "Severity" 
-| rename data.transportProtocol as "Protocol" 
-| rename data.port as "Port" 
+| rename entity.ipAddress as "IP Address"
+| rename data.severity as "Severity"
+| rename data.transportProtocol as "Protocol"
+| rename data.port as "Port"
 | rename data.title as "Risk"
 | eval sort_field=case(Severity="critical",1, Severity="high",2, Severity="medium",3, Severity="low",4)
 | sort sort_field | fields - sort_field</query>
@@ -279,9 +279,9 @@
       <title>New Subdomains by Parent Domain</title>
       <table>
         <search>
-          <query>sourcetype="censys:asm:logbook" type="DOMAIN_SUBDOMAIN" operation="ADD" data_input_name=$data_input_name$ 
+          <query>sourcetype="censys:asm:logbook" type="DOMAIN_SUBDOMAIN" operation="ADD" data_input_name=$data_input_name$
 | table entity.domain data.subdomain
-| rename entity.domain as "Domain" 
+| rename entity.domain as "Domain"
 | rename data.subdomain as "Subdomain"</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
@@ -310,9 +310,9 @@
       <table>
         <search>
           <query>sourcetype="censys:asm:logbook" type="DOMAIN_RISK" operation="ADD" data_input_name=$data_input_name$ | eval epochtime=strptime(timestamp, "%Y-%m-%dT%H:%M:%S") | eval desired_time=strftime(epochtime, "%+")
-| table entity.domain desired_time data.title 
-| rename entity.domain as "Domain" 
-| rename desired_time as "Warning Date" 
+| table entity.domain desired_time data.title
+| rename entity.domain as "Domain"
+| rename desired_time as "Warning Date"
 | rename data.title as "Expiration Notes"
 | eval sort_field=case(Severity="critical",1, Severity="high",2, Severity="medium",3, Severity="low",4)
 | sort sort_field | fields - sort_field</query>

@@ -1,0 +1,1 @@
+{"id":"##id##","type":"HOST_PROTOCOL","timestamp":"##timestamp##","operation":"##operation##","entity":{"hostname":"##hostname##","ipAddress":"##ip##"},"data":{"protocol":"##protocol##"},"data_input_name":"##data_input_name##"}

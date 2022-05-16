@@ -15,7 +15,6 @@
 # sys.path.insert(0, os.path.abspath('.'))
 from datetime import datetime
 
-
 # -- Project information -----------------------------------------------------
 
 

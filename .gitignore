@@ -115,6 +115,13 @@ cython_debug/
 # Splunk
 **/local/
 **/metadata/local.meta
+.tokenized_events/
+uf_files/
+events.pickle
+generator.lock
+helmut.log
+pytest_splunk_addon.log
+CIM.md
 
 # Exceptions
 !**/app.manifest

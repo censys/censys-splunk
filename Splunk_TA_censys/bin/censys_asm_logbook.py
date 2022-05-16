@@ -1,17 +1,14 @@
 import splunk_ta_censys_declare
 
+import datetime
+import json
 import os
 import sys
 import time
-import datetime
-import json
-
-import modinput_wrapper.base_modinput
-from splunklib import modularinput as smi
-
-
 
 import input_module_censys_asm_logbook as input_module
+import modinput_wrapper.base_modinput
+from splunklib import modularinput as smi
 
 bin_dir = os.path.basename(__file__)
 
@@ -27,12 +24,12 @@ class ModInputcensys_asm_logbook(modinput_wrapper.base_modinput.BaseModInput):
             use_single_instance = input_module.use_single_instance_mode()
         else:
             use_single_instance = False
-        super(ModInputcensys_asm_logbook, self).__init__("splunk_ta_censys", "censys_asm_logbook", use_single_instance)
+        super().__init__("splunk_ta_censys", "censys_asm_logbook", use_single_instance)
         self.global_checkbox_fields = None
 
     def get_scheme(self):
         """overloaded splunklib modularinput method"""
-        scheme = super(ModInputcensys_asm_logbook, self).get_scheme()
+        scheme = super().get_scheme()
         scheme.title = ("Censys ASM Logbook")
         scheme.description = ("Go to the add-on\'s configuration UI and configure modular inputs under the Inputs menu.")
         scheme.use_external_validation = True
@@ -76,7 +73,7 @@ class ModInputcensys_asm_logbook(modinput_wrapper.base_modinput.BaseModInput):
             checkbox_name_file = os.path.join(bin_dir, 'global_checkbox_param.json')
             try:
                 if os.path.isfile(checkbox_name_file):
-                    with open(checkbox_name_file, 'r') as fp:
+                    with open(checkbox_name_file) as fp:
                         self.global_checkbox_fields = json.load(fp)
                 else:
                     self.global_checkbox_fields = []

@@ -1,14 +1,13 @@
-
 import splunk_ta_censys_declare
 
-from splunktaucclib.rest_handler.endpoint import (
-    field,
-    validator,
-    RestModel,
-    DataInputModel,
-)
-from splunktaucclib.rest_handler import admin_external, util
 from splunk_aoblib.rest_migration import ConfigMigrationHandler
+from splunktaucclib.rest_handler import admin_external, util
+from splunktaucclib.rest_handler.endpoint import (
+    DataInputModel,
+    RestModel,
+    field,
+    validator
+)
 
 util.remove_http_proxy_env_vars()
 
@@ -20,29 +19,29 @@ fields = [
         encrypted=False,
         default=None,
         validator=validator.Pattern(
-            regex=r"""^\-[1-9]\d*$|^\d*$""", 
+            regex=r"""^\-[1-9]\d*$|^\d*$""",
         )
-    ), 
+    ),
     field.RestField(
         'index',
         required=True,
         encrypted=False,
         default='default',
         validator=validator.String(
-            min_len=1, 
-            max_len=80, 
+            min_len=1,
+            max_len=80,
         )
-    ), 
+    ),
     field.RestField(
         'censys_asm_api_key',
         required=True,
         encrypted=True,
         default=None,
         validator=validator.String(
-            min_len=0, 
-            max_len=8192, 
+            min_len=0,
+            max_len=8192,
         )
-    ), 
+    ),
 
     field.RestField(
         'disabled',

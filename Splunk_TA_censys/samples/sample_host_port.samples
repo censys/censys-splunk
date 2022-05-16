@@ -1,0 +1,1 @@
+{"id":"##id##","type":"HOST_PORT","timestamp":"##timestamp##","operation":"##operation##","entity":{"hostname":"##hostname##","ipAddress":"##ip##"},"data":{"port":"##port##"},"data_input_name":"##data_input_name##"}

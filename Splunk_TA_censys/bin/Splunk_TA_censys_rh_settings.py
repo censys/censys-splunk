@@ -1,14 +1,13 @@
-
 import splunk_ta_censys_declare
 
-from splunktaucclib.rest_handler.endpoint import (
-    field,
-    validator,
-    RestModel,
-    MultipleModel,
-)
-from splunktaucclib.rest_handler import admin_external, util
 from splunk_aoblib.rest_migration import ConfigMigrationHandler
+from splunktaucclib.rest_handler import admin_external, util
+from splunktaucclib.rest_handler.endpoint import (
+    MultipleModel,
+    RestModel,
+    field,
+    validator
+)
 
 util.remove_http_proxy_env_vars()
 
@@ -20,54 +19,54 @@ fields_proxy = [
         encrypted=False,
         default=None,
         validator=None
-    ), 
+    ),
     field.RestField(
         'proxy_type',
         required=False,
         encrypted=False,
         default='http',
         validator=None
-    ), 
+    ),
     field.RestField(
         'proxy_url',
         required=False,
         encrypted=False,
         default=None,
         validator=validator.String(
-            min_len=0, 
-            max_len=4096, 
+            min_len=0,
+            max_len=4096,
         )
-    ), 
+    ),
     field.RestField(
         'proxy_port',
         required=False,
         encrypted=False,
         default=None,
         validator=validator.Number(
-            min_val=1, 
-            max_val=65535, 
+            min_val=1,
+            max_val=65535,
         )
-    ), 
+    ),
     field.RestField(
         'proxy_username',
         required=False,
         encrypted=False,
         default=None,
         validator=validator.String(
-            min_len=0, 
-            max_len=50, 
+            min_len=0,
+            max_len=50,
         )
-    ), 
+    ),
     field.RestField(
         'proxy_password',
         required=False,
         encrypted=True,
         default=None,
         validator=validator.String(
-            min_len=0, 
-            max_len=8192, 
+            min_len=0,
+            max_len=8192,
         )
-    ), 
+    ),
     field.RestField(
         'proxy_rdns',
         required=False,
@@ -94,7 +93,7 @@ model_logging = RestModel(fields_logging, name='logging')
 endpoint = MultipleModel(
     'splunk_ta_censys_settings',
     models=[
-        model_proxy, 
+        model_proxy,
         model_logging
     ],
 )
