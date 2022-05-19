@@ -27,21 +27,31 @@ Splunkbase: <https://splunkbase.splunk.com/app/6399>
 
 1. From the Splunk main page, click the **+ Find More Apps** button in the sidebar.
 
-![find_apps](./static/find_apps.png)
+    ![find_apps](./static/find_apps.png)
 
-2. Type "Censys in the search bar.
+2. Type "Censys" in the search bar.
 
 3. On the results page, find the "Censys Add-on for Splunk" app card and click the green **Install** button.
-<!-- TODO add image here -->
+
+    <!-- TODO add image here -->
 
 4. Reenter login credentials to confirm your choice.
 
+### Install from file
+
+1. From the Splunk Web home screen, click the gear icon next to Apps.
+2. Click Install app from file.
+3. Locate the downloaded `Splunk_TA_censys-<version>.tar.gz` file and click Upload.
+4. If Splunk Enterprise prompts you to restart, do so.
+5. Verify that the add-on appears in the list of apps and add-ons. You can also find it on the server at `$SPLUNK_HOME/etc/apps/Splunk_TA_censys`.
+6. If you are using separate forwarders in conjunction with your single-instance deployment, be sure to deploy the add-on to your forwarders as well.
 
 ## Configure the Add-on
 
 ### Logbook
 
 From the Inputs page, select Create New Input. Fill out the following fields:
+
 - Name for your data input
 - Censys ASM API key from the Censys ASM [integrations page][censys-asm-integrations]
 - Adjust the Interval field if desired. This determines how frequently data will be fetched from Censys ASM.
@@ -57,6 +67,7 @@ From the Inputs page, select Create New Input. Fill out the following fields:
 
 Under the Search tab, you can enter queries on your data inputs.
 If you are not familiar with Splunk search syntax, Splunk has the following helpful resources:
+
 - [Splunk Search Documentation][splunk-search-documentation]
 - [Splunk Search Tutorial][splunk-search-tutorial]
 
