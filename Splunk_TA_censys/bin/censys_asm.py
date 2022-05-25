@@ -29,8 +29,10 @@ class CensysAsmApi:
         self.helper = helper
         self.base_url = base_url
         self.headers = {
+            "Accept": "application/json",
             "Content-Type": "application/json",
             "Censys-Api-Key": self.censys_asm_api_key,
+            "User-Agent": "Splunk_TA_censys",
         }
 
     def _make_call(
