@@ -13,35 +13,38 @@ Features
 
 **Censys Add-on for Splunk**
 
--
+- Import data from the Censys ASM Logbook API into Splunk
 
 **Censys ASM App for Splunk**
 
--
+- Dashboards for Censys ASM Logbook API
 
-**Censys Search App for Splunk**
+.. **Censys Search App for Splunk**
 
--
-
-
-User Guide
-----------
+.. -
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
+   :caption: Introduction
+   :hidden:
+
+   self
+   faq
+   troubleshooting
+   support
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Getting Started
+   :hidden:
    :glob:
 
    quick-start
    add-on/*
    asm-app/*
-   search-app/*
-   examples
-
-FAQs
-----
 
 .. toctree::
-   :maxdepth: 1
+   :hidden:
+   :glob:
 
-   faq
-   troubleshooting
+   search-app/*

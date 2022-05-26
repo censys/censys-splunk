@@ -130,3 +130,4 @@ CIM.md
 
 # Build artifacts
 *.tar.gz
+*.log

@@ -1,7 +1,14 @@
 {
-    "python.formatting.provider": "black",
-    "python.analysis.extraPaths": [
-        "./Splunk_TA_censys/bin/splunk_ta_censys/aob_py3/"
-    ],
-    "splunk.spec.FilePath": "./Splunk_TA_censys/README/"
+  "python.formatting.provider": "black",
+  "python.analysis.extraPaths": [
+    "./Splunk_TA_censys/bin/splunk_ta_censys/aob_py3/"
+  ],
+  "splunk.spec.FilePath": "./Splunk_TA_censys/README/",
+  "cSpell.words": [
+    "markupsafe",
+    "seealso",
+    "setuptools",
+    "Splunk",
+    "Splunkbase"
+  ]
 }
