@@ -22,3 +22,9 @@ repos:
     rev: 5.10.1
     hooks:
       - id: isort
+  - repo: https://github.com/myint/rstcheck
+    rev: v6.0.0rc1
+    hooks:
+    - id: rstcheck
+      args: ["--config", ".rstcheck.cfg"]
+      additional_dependencies: ["rstcheck[sphinx]"]

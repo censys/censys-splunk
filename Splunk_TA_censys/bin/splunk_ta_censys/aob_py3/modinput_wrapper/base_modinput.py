@@ -28,7 +28,7 @@ TYPE_ACCOUNT = "global_account"
 class BaseModInput(smi.Script):
     '''
     This is a modular input wrapper, which provides some helper
-    functions to read the paramters from setup pages and the arguments
+    functions to read the parameters from setup pages and the arguments
     from input definition
     '''
     LogLevelMapping = {'debug': logging.DEBUG,
