@@ -31,7 +31,11 @@ def release(args: argparse.Namespace):
     password = os.getenv("SPLUNK_PASSWORD")
 
     auth = (user, password)
-    requests.post(url, data=data, files=files, auth=auth)
+    if not all(auth):
+        raise Exception("Missing credentials")
+
+    res = requests.post(url, data=data, files=files, auth=auth)
+    res.raise_for_status()
 
 def main():
     parser = get_parser()
