@@ -671,7 +671,7 @@ pytest = "*"
 
 [[package]]
 name = "pytest-splunk-addon"
-version = "3.0.6"
+version = "3.0.8"
 description = "A Dynamic test tool for Splunk Apps and Add-ons"
 category = "dev"
 optional = false
@@ -1141,7 +1141,7 @@ docs = ["Sphinx", "sphinx-copybutton", "sphinx-prompt", "sphinx-tabs", "furo", "
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "17bc9809a6698501ac255a76fda53d2cf457245305bf128c2ddbb02c7e9edbb9"
+content-hash = "960b4c79f81f5cf4fdd8b27108ea2f437e917a502cae762e434037b37555ea6e"
 
 [metadata.files]
 addonfactory-splunk-conf-parser-lib = [
@@ -1537,8 +1537,8 @@ pytest-ordering = [
     {file = "pytest_ordering-0.6-py3-none-any.whl", hash = "sha256:3f314a178dbeb6777509548727dc69edf22d6d9a2867bf2d310ab85c403380b6"},
 ]
 pytest-splunk-addon = [
-    {file = "pytest-splunk-addon-3.0.6.tar.gz", hash = "sha256:38b39c8dbed6bac45707664bf1ca942b2dc0111b26952bc0afc10be91a482dbc"},
-    {file = "pytest_splunk_addon-3.0.6-py3-none-any.whl", hash = "sha256:a537ac6cd61c10add7d8d23cae59b52a60b83072ba5b65f3a14374a14b8fd10a"},
+    {file = "pytest-splunk-addon-3.0.8.tar.gz", hash = "sha256:3730c730fec246f20bf2466968175a62b1526d39bbc0f5412b73145380083819"},
+    {file = "pytest_splunk_addon-3.0.8-py3-none-any.whl", hash = "sha256:d65972e4a58e96cd8fc1e9d4db5747825ef8eb442a271aef5a5ed7ba61bf160c"},
 ]
 pytest-xdist = [
     {file = "pytest-xdist-2.5.0.tar.gz", hash = "sha256:4580deca3ff04ddb2ac53eba39d76cb5dd5edeac050cb6fbc768b0dd712b4edf"},
