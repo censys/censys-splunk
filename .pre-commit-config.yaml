@@ -6,6 +6,8 @@ repos:
     hooks:
       - id: check-case-conflict
       - id: check-json
+        types: [text] # the json type is too restrictive
+        files: \.(json|samples)$
       - id: check-toml
       - id: check-xml
       - id: check-yaml
@@ -25,6 +27,6 @@ repos:
   - repo: https://github.com/myint/rstcheck
     rev: v6.0.0rc1
     hooks:
-    - id: rstcheck
-      args: ["--config", ".rstcheck.cfg"]
-      additional_dependencies: ["rstcheck[sphinx]"]
+      - id: rstcheck
+        args: ["--config", ".rstcheck.cfg"]
+        additional_dependencies: ["rstcheck[sphinx]"]

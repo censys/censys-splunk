@@ -13,3 +13,6 @@ export = system
 
 [lookups]
 export = system
+
+[workflow_actions]
+export = system
