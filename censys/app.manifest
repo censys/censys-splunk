@@ -38,7 +38,7 @@
     "releaseNotes": {
       "name": "README",
       "text": "./README.md",
-      "uri": "https://github.com/censys/censys-splunk/blob/main/censys_asm_app/README.md"
+      "uri": "https://github.com/censys/censys-splunk/blob/main/censys/README.md"
     }
   },
   "dependencies": {

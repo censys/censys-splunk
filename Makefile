@@ -1,6 +1,6 @@
 POETRY          := $(shell command -v poetry 2> /dev/null)
 ADD_ON_VERSION  := $$(grep version ./Splunk_TA_censys/app.manifest | sed 's/[^0-9.]*//g')
-ASM_APP_VERSION := $$(grep version ./censys_asm_app/app.manifest | sed 's/[^0-9.]*//g')
+ASM_APP_VERSION := $$(grep version ./censys/app.manifest | sed 's/[^0-9.]*//g')
 
 .PHONY: all
 all: help
@@ -15,7 +15,7 @@ build-add-on:  ## Build Splunk Add-on
 
 .PHONY: build-asm-app
 build-asm-app:  ## Build Splunk ASM App
-	poetry run slim package censys_asm_app
+	poetry run slim package censys
 
 .PHONY: build
 build: build-add-on build-asm-app
@@ -26,7 +26,7 @@ appinspect-add-on:  ## Run Splunk AppInspect on Splunk Add-on
 
 .PHONY: appinspect-asm-app
 appinspect-asm-app:  ## Run Splunk AppInspect on Splunk ASM App
-	poetry run splunk-appinspect inspect censys_asm_app-$(ASM_APP_VERSION).tar.gz --included-tags cloud
+	poetry run splunk-appinspect inspect censys-$(ASM_APP_VERSION).tar.gz --included-tags cloud
 
 .PHONY: appinspect
 appinspect: appinspect-add-on appinspect-asm-app  ## Run Splunk AppInspect
