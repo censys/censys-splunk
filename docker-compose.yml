@@ -13,4 +13,4 @@ services:
       - SPLUNK_PASSWORD=I<3bigDATA
     volumes:
       - ./Splunk_TA_censys:/opt/splunk/etc/apps/Splunk_TA_censys
-      - ./censys_asm_app:/opt/splunk/etc/apps/censys_asm_app
+      - ./censys:/opt/splunk/etc/apps/censys
