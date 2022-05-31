@@ -3,6 +3,8 @@ import os
 
 import requests
 
+SPLUNKBASE_BASE_URL = "https://splunkbase.splunk.com/api/v1"
+
 
 def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
@@ -15,7 +17,6 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 def release(args: argparse.Namespace):
-    url = f"https://splunkbase.splunk.com/api/v1/app/{args.appid}/new_release/"
     files = {
         "files[]": open(os.path.basename(args.file), "rb"),
     }
@@ -34,8 +35,29 @@ def release(args: argparse.Namespace):
     if not all(auth):
         raise Exception("Missing credentials")
 
-    res = requests.post(url, data=data, files=files, auth=auth)
+    res = requests.post(
+        f"{SPLUNKBASE_BASE_URL}/app/{args.appid}/new_release/",
+        data=data,
+        files=files,
+        auth=auth,
+    )
     res.raise_for_status()
+
+    package_id = res.json()["id"]
+    print(f"Release created: {package_id}")
+
+    res = requests.get(f"{SPLUNKBASE_BASE_URL}/package/{package_id}/", auth=auth)
+    res.raise_for_status()
+
+    package_status = res.json()
+    package_result = package_status["result"]
+    package_message = package_status["message"]
+    print(f"Package status: {package_result}")
+    print(f"Package message: {package_message}")
+
+    if package_result == "fail":
+        raise Exception(package_message)
+
 
 def main():
     parser = get_parser()

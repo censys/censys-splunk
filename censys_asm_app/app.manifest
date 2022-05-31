@@ -4,7 +4,7 @@
     "title": "Censys ASM App for Splunk",
     "id": {
       "group": null,
-      "name": "censys_asm_app",
+      "name": "censys",
       "version": "4.0.0"
     },
     "author": [
