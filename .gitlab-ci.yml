@@ -96,7 +96,7 @@ release-add-on:
   script:
     - poetry run python ./scripts/release.py -a 6399 -f Splunk_TA_censys-*.tar.gz
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG =~ /^add-on-v[0-9]+\.[0-9]+\.[0-9]+$/
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH && $CI_COMMIT_TAG =~ /^add-on-v[0-9]+\.[0-9]+\.[0-9]+$/
 
 release-asm-app:
   extends: .poetry
@@ -104,7 +104,7 @@ release-asm-app:
   script:
     - poetry run python ./scripts/release.py -a 4830 -f censys_asm_app-*.tar.gz
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" && $CI_COMMIT_TAG =~ /^asm-app-v[0-9]+\.[0-9]+\.[0-9]+$/
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH && $CI_COMMIT_TAG =~ /^asm-app-v[0-9]+\.[0-9]+\.[0-9]+$/
 
 include:
   - template: Security/Dependency-Scanning.gitlab-ci.yml
