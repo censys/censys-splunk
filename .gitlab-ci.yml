@@ -90,6 +90,9 @@ lint:
   stage: test
   script: pytest
 
+unit tests:
+  extends: .test-template
+
 release-add-on:
   extends: .poetry
   stage: publish

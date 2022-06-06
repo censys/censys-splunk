@@ -20,15 +20,19 @@ importlib-metadata = { version = ">=4.4", python = "<3.10" }
 isort = "^5.10.1"
 pre-commit = "^2.19.0"
 pytest = ">5.4.0,<6.3"
+pytest-mock = "^3.7.0"
+pytest-pythonpath = "^0.7.4"
 pytest-splunk-addon = {extras = ["docker"], version = "^3.0.6"}
 pyupgrade = "^2.32.1"
+requests = "^2.27.1"
 splunk-appinspect = "^2.18.0"
 splunk-packaging-toolkit = { url = "https://download.splunk.com/misc/packaging-toolkit/splunk-packaging-toolkit-1.0.1.tar.gz" }
-requests = "^2.27.1"
+parameterized = "^0.8.1"
 
 [tool.pytest.ini_options]
 minversion = "5.4.0"
 testpaths = ["tests"]
+python_paths = ["./Splunk_TA_censys/bin/", "./Splunk_TA_censys/bin/splunk_ta_censys/aob_py3/"]
 
 [tool.poetry.extras]
 docs = ["Sphinx", "sphinx-copybutton", "sphinx-prompt", "sphinx-tabs", "furo", "sphinx_design"]
