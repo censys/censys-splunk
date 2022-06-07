@@ -18,7 +18,7 @@ build-asm-app:  ## Build Splunk ASM App
 	poetry run slim package censys
 
 .PHONY: build
-build: build-add-on build-asm-app
+build: build-add-on build-asm-app  ## Build Splunk Add-on and ASM App
 
 .PHONY: appinspect-add-on
 appinspect-add-on:  ## Run Splunk AppInspect on Splunk Add-on
@@ -46,6 +46,24 @@ tests: test-add-on ## Run tests
 lint: ## Run linters
 	poetry run isort .
 	poetry run pyupgrade Splunk_TA_censys/bin/*.py --py37
+
+.PHONY: link-asm-app
+link-asm-app:  ## Link Splunk ASM App
+	@if [ -z ${SPLUNK_HOME} ]; then echo "SPLUNK_HOME is not set. Please set it and re-run this command."; exit 1; fi
+	ln -s $$(pwd)/censys/ ${SPLUNK_HOME}/etc/apps/censys
+
+.PHONY: link-add-on
+link-add-on:  ## Link Splunk Add-on
+	@if [ -z ${SPLUNK_HOME} ]; then echo "SPLUNK_HOME is not set. Please set it and re-run this command."; exit 1; fi
+	ln -s $$(pwd)/Splunk_TA_censys/ ${SPLUNK_HOME}/etc/apps/Splunk_TA_censys
+
+.PHONY: link
+link: link-asm-app link-add-on  ## Link Splunk Add-on and Splunk ASM App
+
+.PHONY: splunk-restart
+splunk-restart:  ## Restart local Splunk
+	@if [ -z ${SPLUNK_HOME} ]; then echo "SPLUNK_HOME is not set. Please set it and re-run this command."; exit 1; fi
+	${SPLUNK_HOME}/bin/splunk restart
 
 # via https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help

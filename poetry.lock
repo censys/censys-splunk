@@ -1176,8 +1176,8 @@ docs = ["Sphinx", "sphinx-copybutton", "sphinx-prompt", "sphinx-tabs", "furo", "
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.7"
-content-hash = "526af85abdf7c390036a99e295351d63438e56f0192f519b4092b97bf2823538"
+python-versions = "^3.7.0"
+content-hash = "d2fdc024639bfe0b498726a1371f812345799701f3b0503303c12184aca7ac93"
 
 [metadata.files]
 addonfactory-splunk-conf-parser-lib = [

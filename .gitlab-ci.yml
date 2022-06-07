@@ -29,21 +29,37 @@ variables:
     - poetry install --no-ansi --no-interaction -vv
     - source `poetry env info --path`/bin/activate
 
-make requirements txt:
+export requirements txt:
   extends: .poetry
   stage: build
   script:
-    - pip install poetry
     - poetry export -o "$PIP_REQUIREMENTS_FILE"
   artifacts:
     paths:
       - "$PIP_REQUIREMENTS_FILE"
 
+build docs:
+  extends: .poetry
+  stage: build
+  variables:
+    DOCS_DIR: "docs"
+  script:
+    - poetry install -E docs
+    - poetry run sphinx-build -M html $DOCS_DIR $DOCS_DIR/_build/ -W
+  rules:
+    - changes:
+        - $DOCS_DIR/*
+  artifacts:
+    paths:
+      - $DOCS_DIR/_build/html/
+      - pyproject.toml
+      - poetry.lock
+
 .package:
   extends: .poetry
   stage: build
   dependencies:
-    - make requirements txt
+    - export requirements txt
   artifacts:
     paths:
       - "*.tar.gz"
@@ -101,6 +117,8 @@ release-add-on:
   rules:
     - if: $CI_COMMIT_TAG =~ /^add-on-v[0-9]+\.[0-9]+\.[0-9]+$/
       when: manual
+  dependencies:
+    - package add-on
 
 release-asm-app:
   extends: .poetry
@@ -110,6 +128,8 @@ release-asm-app:
   rules:
     - if: $CI_COMMIT_TAG =~ /^asm-app-v[0-9]+\.[0-9]+\.[0-9]+$/
       when: manual
+  dependencies:
+    - package asm app
 
 include:
   - template: Security/Dependency-Scanning.gitlab-ci.yml
@@ -136,12 +156,12 @@ secret_detection:
 license_scanning:
   stage: test
   dependencies:
-    - make requirements txt
+    - export requirements txt
 
 gemnasium-python-dependency_scanning:
   stage: test
   dependencies:
-    - make requirements txt
+    - export requirements txt
   before_script:
     - rm poetry.lock pyproject.toml
   # Triggers artifacts download, until https://gitlab.com/gitlab-org/gitlab/-/issues/249569 is implemented
