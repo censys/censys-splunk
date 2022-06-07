@@ -28,6 +28,5 @@ What to install
 Install the App(s) and Add-on
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- :ref:`Install from Censys Add-on Splunkbase <Censys Add-on for Splunk>`
-
-.. TODO: Add install instructions
+- :ref:`Install the Censys Add-on for Splunk <add-on/index:install from splunkbase (recommended)>`
+- :ref:`Install the Censys ASM App for Splunk <asm-app/index:install from splunkbase (recommended)>`

@@ -11,6 +11,8 @@ This guide will help you:
 
 Splunkbase: `Censys Add-on for Splunk <https://splunkbase.splunk.com/app/6399/>`__
 
+--------
+
 Add-on Prerequisites
 --------------------
 
@@ -22,27 +24,52 @@ Add-on Prerequisites
 
 2. A Splunk account and installation.
 
-Install the Censys Add-on for Splunk
-------------------------------------
+--------
 
-Install from Splunkbase
-^^^^^^^^^^^^^^^^^^^^^^^
+Install the Censys Add-on for Splunk
+-------------------------------------
+
+Install from Splunkbase (Recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. From the Splunk main page, click the **+ Find More Apps** button in the sidebar.
 
     .. image:: ../_static/find_more_apps.png
 
-2. Type "Censys in the search bar.
+2. Type "Censys" in the search bar.
 
 3. On the results page, find the "Censys Add-on for Splunk" app card and click the green **Install** button.
 
-    .. TODO add image here
+    .. image:: ../_static/install_addon.png
 
 4. Reenter login credentials to confirm your choice.
 
+Install from File
+^^^^^^^^^^^^^^^^^
+
+1. Go to the Add-on's page on `Splunkbase <https://splunkbase.splunk.com/app/6399/>`__ and click the **Download** button.
+
+    .. image:: ../_static/download_addon.png
+
+2. From the Splunk Web main page, click the gear icon next to **Apps**, then click **Install app from file**.
+
+    .. image:: ../_static/install_from_file.png
+
+--------
 
 Configure the Add-on
 --------------------
+
+Global Settings
+^^^^^^^^^^^^^^^
+
+If you will be using the same Censys workspace for all Splunk work, you can enter your Censys API in one place, rather than for each input.
+
+1. Click on the Configuration tab at the top of the page
+
+2. Under the Censys Settings tab, enter your API key (check out :ref:`add-on/index:add-on prerequisites` for help finding this)
+
+    .. image:: ../_static/configure_global_settings.png
 
 Logbook
 ^^^^^^^
@@ -50,10 +77,8 @@ Logbook
 From the Inputs page, select Create New Input. Fill out the following fields:
 
 - Name for your data input
-- Censys ASM API key from the Censys ASM `integrations page <https://app.censys.io/integrations/>`__
 - Adjust the Interval field if desired. This determines how frequently data will be fetched from Censys ASM.
-
-.. TODO: say anything about default index?
+- [**Optional**: This will override any :ref:`add-on/index:global settings`] Censys ASM API key from the Censys ASM `integrations page <https://app.censys.io/integrations/>`__
 
 .. image:: ../_static/logbook_config.png
 
@@ -69,8 +94,12 @@ Risks
 
     Coming soon...
 
+--------
+
 Use the Add-on
 --------------
+
+Download our :ref:`Censys ASM App for Splunk<asm-app/index:censys asm app for splunk>`!
 
 Under the Search tab, you can enter queries on your data inputs.
 If you are not familiar with Splunk search syntax, Splunk has the following helpful resources:
@@ -78,12 +107,14 @@ If you are not familiar with Splunk search syntax, Splunk has the following help
 - `Splunk Search Documentation <https://docs.splunk.com/Documentation/Splunk/8.2.5/Search/GetstartedwithSearch?ref=hk/>`_
 - `Splunk Search Tutorial <https://docs.splunk.com/Documentation/Splunk/8.2.5/SearchTutorial/WelcometotheSearchTutorial?ref=hk/>`_
 
+--------
+
 FAQs
 ----
 
 What if I'm seeing no events in my index?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1. Confirm your :ref:`Censys ASM API key <Add-on Prerequisites>` is up to date
+1. Confirm your :ref:`Censys ASM API key <add-on/index:add-on prerequisites>` is up to date
 
 2. Confirm your index is accessible

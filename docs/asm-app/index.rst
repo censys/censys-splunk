@@ -2,3 +2,125 @@ Censys ASM App for Splunk
 =========================
 
 The Censys ASM App for Splunk allows ASM users to visualized Logbook API data with a pre-built dashboard that can be customized with additional views.
+
+    Note: This app is dependent on `Censys Add-on for Splunk <https://splunkbase.splunk.com/app/6399/>`__.
+
+This guide will help you:
+
+- Set up the Censys Add-on for Splunk (if you haven't already)
+- View our Attack Surface Management dashboard and create your own dashboards
+- Set up reports and alerting
+- Move seamlessly between Splunk and Censys ASM
+
+Splunkbase: `Censys ASM App for Splunk <https://splunkbase.splunk.com/app/4830/>`__
+
+ASM App Prerequisites
+---------------------
+
+1. A Splunk account and installation.
+
+2. `Censys Add-on for Splunk <https://splunkbase.splunk.com/app/6399/>`__ installed and configured with your Censys API key.
+
+-------
+
+Install the Censys ASM App for Splunk
+-------------------------------------
+
+Install from Splunkbase (Recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. From the Splunk Web main page, click the **+ Find More Apps** button in the sidebar.
+
+    .. image:: ../_static/find_more_apps.png
+
+2. Type "Censys" in the search bar.
+
+3. On the results page, find the "Censys ASM App for Splunk" app card and click the green **Install** button.
+
+    .. image:: ../_static/install_asm_app.png
+
+4. Reenter login credentials to confirm your choice.
+
+Install from File
+^^^^^^^^^^^^^^^^^
+
+1. Go to the Add-on's page on `Splunkbase <https://splunkbase.splunk.com/app/4830/>`__ and click the **Download** button.
+
+    .. image:: ../_static/download_app.png
+
+2. From the Splunk Web main page, click the gear icon next to **Apps**, then click **Install app from file**.
+
+    .. image:: ../_static/install_from_file.png
+
+---------
+
+Use the App
+-----------
+
+Censys has provided several reports based on ASM data for users to start with.
+These reports can be used for alerting and creating dashboards. Workflow actions provide a seamless transition between Splunk Search and Censys ASM.
+
+Create Alerts from Reports
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To view the pre-configured reports, click the **Reports** tab at the top of the page.
+To create an alert based on a report, click **Open in Search** next to the report you want to use.
+
+    .. image:: ../_static/open_in_search.png
+
+Modify the query to your liking or leave as is, then click **Save As Alert**.
+    
+    .. image:: ../_static/save_as_alert.png
+
+Give your alert a title, set the alert to be scheduled or real-time, and configure the alert's trigger settings and trigger actions.
+
+Interact with Dashboards
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+To view the pre-configured dashboard, click the **Dashboards** tab at the top of the page.
+To view a query in Splunk Search, click on panel.
+
+    .. image:: ../_static/dashboard.png
+
+Workflow Actions
+^^^^^^^^^^^^^^^^
+
+To view more information about this event, click the **Actions** dropdown next to the asset you'd like to view, then **[Domain|Host|Storage Asset|Certificate] in Censys ASM**.
+
+    .. image:: ../_static/workflow_action.png
+
+----
+
+    .. image:: ../_static/asm_dashboard.png
+
+Turn Queries into Reports, Alerts, and Dashboards
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+From Splunk Search, any query can be used to create custom reports, alerts, and dashboards by clicking the **Save As** button in the top right corner.
+A query can be added as a new panel to an existing dashboard or a new dashboard can be created.
+
+Create Reports and Alerts from Scratch
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+One more way to create reports and alerts is by going to **Settings -> Searches, reports, and alerts**.
+
+    .. image:: ../_static/search_report_alert.png
+
+From there, you can manage current reports and alerts, create new reports and alerts from custom queries.
+
+Set a Home Dashboard
+^^^^^^^^^^^^^^^^^^^^
+
+Easily check out the Censys ASM dashboard or your own custom dashboard by setting it as your home dashboard.
+
+    .. image:: ../_static/home_dashboard.png
+
+Now, when you open your Splunk Web main page, you'll easily see changes in your attack surface.
+
+----
+
+Additional information can be found in Splunk documentation:
+
+- `Splunk Alerting Manual <https://docs.splunk.com/Documentation/Splunk/8.2.6/Alert/AlertWorkflowOverview>`__
+- `Splunk Reporting Manual <https://docs.splunk.com/Documentation/Splunk/8.2.6/Report/Createandeditreports>`__
+- `Splunk Search Manual <https://docs.splunk.com/Documentation/Splunk/8.2.6/Search/GetstartedwithSearch>`__
