@@ -4,12 +4,13 @@ Support
 Install and configuration
 -------------------------
 
-    See :ref:`Installation` for more information.
+    - **Add-on:** See :ref:`Add-on Installation <add-on/index:install the censys add-on for splunk>` for more information.
+    - **ASM App:** See :ref:`ASM App Installation <asm-app/index:install the censys asm app for splunk>` for more information.
 
 Troubleshooting an issue?
 -------------------------
 
-    See :ref:`Troubleshooting` for more information.
+    See :ref:`troubleshooting:troubleshooting` for more information.
 
 Need more help?
 ---------------
