@@ -7,9 +7,13 @@
   "splunk.spec.FilePath": "./Splunk_TA_censys/README/",
   "cSpell.words": [
     "markupsafe",
+    "modinput",
+    "modularinput",
     "seealso",
     "setuptools",
+    "sourcetype",
     "Splunk",
-    "Splunkbase"
+    "Splunkbase",
+    "splunklib"
   ]
 }

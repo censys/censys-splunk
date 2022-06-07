@@ -48,7 +48,7 @@ model = RestModel(fields, name=None)
 
 
 endpoint = DataInputModel(
-    "censys_asm_logbook",
+    "censys_asm_risks",
     model,
 )
 

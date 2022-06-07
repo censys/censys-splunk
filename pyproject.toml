@@ -6,7 +6,7 @@ authors = ["Censys, Inc. <support@censys.io>"]
 license = "Apache-2.0"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.7.0"
 furo = {version = "^2022.4.7", optional = true}
 Sphinx = {version = "^4.5.0", optional = true}
 sphinx-copybutton = {version = "^0.5.0", optional = true}

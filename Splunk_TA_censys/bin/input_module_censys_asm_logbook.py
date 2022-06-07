@@ -22,13 +22,18 @@ def use_single_instance_mode():
     return True
 """
 
+CHECKPOINT_KEY_PREFIX = "asm_logbook_cursor_"
+
 
 class CensysAsmLogbookApi(CensysAsmApi):
     input_stanza: str
 
     def __init__(self, helper: BaseModInput):
         """Initialize the CensysAsmLogbookApi class."""
-        super().__init__(helper.get_arg("censys_asm_api_key"), helper)
+        censys_asm_api_key = helper.get_arg(
+            "censys_asm_api_key"
+        ) or helper.get_global_setting("censys_asm_api_key")
+        super().__init__(censys_asm_api_key, helper)
         self.input_stanza: str = helper.get_input_stanza_names()
 
     def get_logbook_cursor(self) -> Optional[str]:
@@ -40,7 +45,9 @@ class CensysAsmLogbookApi(CensysAsmApi):
             self.helper.log_debug(response.text)
         return logbook_cursor
 
-    def update_logbook_cursor_check_point(self, cursor_state: str, checkpoint_key_prefix: str = "asm_logbook_cursor_"):
+    def update_logbook_cursor_check_point(
+        self, cursor_state: str, checkpoint_key_prefix: str = CHECKPOINT_KEY_PREFIX
+    ):
         """Update the logbook cursor check point."""
         checkpoint_key = checkpoint_key_prefix + self.input_stanza
         if cursor_state is not None:
@@ -50,7 +57,7 @@ class CensysAsmLogbookApi(CensysAsmApi):
             self.helper.save_check_point(checkpoint_key, cursor_state)
 
     def get_logbook_cursor_check_point(
-        self, checkpoint_key_prefix: str = "asm_logbook_cursor_"
+        self, checkpoint_key_prefix: str = CHECKPOINT_KEY_PREFIX
     ):
         """Get the logbook cursor and set the check point."""
         checkpoint_key = checkpoint_key_prefix + self.input_stanza
@@ -91,8 +98,8 @@ class CensysAsmLogbookApi(CensysAsmApi):
                 self.helper.log_error(str(e))
                 break
 
-            logbook_events: list = res.get("events", [])
-            self.helper.log_debug(f"Adding {len(logbook_events)} logbook events")
+            logbook_events: list[dict] = res.get("events", [])
+            self.helper.log_debug(f"Adding {len(logbook_events)} logbook events...")
 
             end_of_events: bool = res.get("endOfEvents", False)
             for logbook_event in logbook_events:
@@ -108,10 +115,10 @@ class CensysAsmLogbookApi(CensysAsmApi):
             cursor = res.get("nextCursor")
             self.update_logbook_cursor_check_point(cursor)
 
+
 def validate_input(helper: BaseModInput, definition: ValidationDefinition):
     """Validate the input stanza configurations."""
     censys_asm_api_key = definition.parameters.get("censys_asm_api_key", None)
-    # validate_api_key(helper, censys_asm_api_key)
 
 
 def collect_events(helper: BaseModInput, ew: EventWriter):
