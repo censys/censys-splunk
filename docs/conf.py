@@ -10,10 +10,14 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import sys
 from datetime import datetime
+from pathlib import Path
+
+current_dir = Path(__file__).parent
+sys.path.insert(0, str(current_dir))
+
+import generate_cim
 
 # -- Project information -----------------------------------------------------
 
@@ -82,3 +86,12 @@ copybutton_prompt_text = "$"
 
 # Todos
 todo_include_todos = True
+
+# Generate CIM
+addon_path = current_dir.parent / "Splunk_TA_censys"
+addon_configurations = generate_cim.read_config_files(addon_path)
+addon_samples = generate_cim.read_sample_files(addon_path)
+cim_path = current_dir / "add-on" / "cim.rst"
+generate_cim.write_docs(
+    generate_cim.DEFAULT_TITLE, cim_path, addon_configurations, addon_samples
+)

@@ -29,6 +29,8 @@ requests = "^2.27.1"
 splunk-appinspect = "^2.18.0"
 splunk-packaging-toolkit = { url = "https://download.splunk.com/misc/packaging-toolkit/splunk-packaging-toolkit-1.0.1.tar.gz" }
 parameterized = "^0.8.1"
+addonfactory-splunk-conf-parser-lib = "^0.3.4"
+rst = "^0.1"
 
 [tool.pytest.ini_options]
 minversion = "5.4.0"
