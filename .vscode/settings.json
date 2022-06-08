@@ -6,12 +6,16 @@
   ],
   "splunk.spec.FilePath": "./Splunk_TA_censys/README/",
   "cSpell.words": [
+    "addonfactory",
+    "Confs",
+    "eventtypes",
     "markupsafe",
     "modinput",
     "modularinput",
     "seealso",
     "setuptools",
     "sourcetype",
+    "sourcetypes",
     "Splunk",
     "Splunkbase",
     "splunklib"

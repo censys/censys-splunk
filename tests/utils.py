@@ -12,6 +12,7 @@ from splunklib.modularinput.validation_definition import ValidationDefinition
 
 BASE_URL = "https://app.censys.io/api"
 
+
 class CensysTestCase(unittest.TestCase):
     mocker: MockerFixture
 
@@ -24,7 +25,7 @@ class CensysTestCase(unittest.TestCase):
         """
         # Inject mocker fixture
         self.mocker = mocker
-    
+
     def mock_helper(self) -> MagicMock:
         """Mocks the helper."""
         return self.mocker.create_autospec(BaseModInput)
@@ -32,7 +33,7 @@ class CensysTestCase(unittest.TestCase):
     def mock_event_writer(self) -> MagicMock:
         """Mocks the event writer."""
         return self.mocker.create_autospec(EventWriter)
-    
-    def mock_definition(self) -> MagicMock: 
+
+    def mock_definition(self) -> MagicMock:
         """MOcks the definition."""
         return self.mocker.create_autospec(ValidationDefinition)

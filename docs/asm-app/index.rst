@@ -69,7 +69,7 @@ To create an alert based on a report, click **Open in Search** next to the repor
     .. image:: ../_static/open_in_search.png
 
 Modify the query to your liking or leave as is, then click **Save As Alert**.
-    
+
     .. image:: ../_static/save_as_alert.png
 
 Give your alert a title, set the alert to be scheduled or real-time, and configure the alert's trigger settings and trigger actions.

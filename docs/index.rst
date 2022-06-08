@@ -40,7 +40,8 @@ Features
    :glob:
 
    quick-start
-   add-on/*
+   add-on/index
+   add-on/cim
    asm-app/*
 
 .. toctree::

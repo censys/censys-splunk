@@ -94,8 +94,6 @@ Risks
 
     Coming soon...
 
---------
-
 Use the Add-on
 --------------
 
