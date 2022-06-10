@@ -7,6 +7,7 @@ from unittest.mock import MagicMock
 import pytest
 from modinput_wrapper.base_modinput import BaseModInput
 from pytest_mock import MockerFixture
+from requests import Response
 from splunklib.modularinput.event_writer import EventWriter
 from splunklib.modularinput.validation_definition import ValidationDefinition
 
@@ -35,5 +36,9 @@ class CensysTestCase(unittest.TestCase):
         return self.mocker.create_autospec(EventWriter)
 
     def mock_definition(self) -> MagicMock:
-        """MOcks the definition."""
+        """Mocks the definition."""
         return self.mocker.create_autospec(ValidationDefinition)
+
+    def mock_response(self) -> MagicMock:
+        """Mocks the response."""
+        return self.mocker.create_autospec(Response)
