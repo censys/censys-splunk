@@ -85,11 +85,11 @@ To view a query in Splunk Search, click on panel.
 Workflow Actions
 ^^^^^^^^^^^^^^^^
 
-To view more information about this event, click the **Actions** dropdown next to the asset you'd like to view, then **[Domain|Host|Storage Asset|Certificate] in Censys ASM**.
+From the events page, click the dropdown to the left of the event's timestamp. This will show all the fields for the event.
 
     .. image:: ../_static/workflow_action.png
 
-----
+To view more information about an event, click the **Actions** dropdown next to the asset you'd like to view, then **[Domain|Host|Storage Asset|Certificate] in Censys ASM/Search**.
 
     .. image:: ../_static/asm_dashboard.png
 

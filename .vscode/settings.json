@@ -8,7 +8,10 @@
   "cSpell.words": [
     "addonfactory",
     "Confs",
+    "copybutton",
+    "eventtype",
     "eventtypes",
+    "FIELDALIAS",
     "markupsafe",
     "modinput",
     "modularinput",
@@ -18,6 +21,7 @@
     "sourcetypes",
     "Splunk",
     "Splunkbase",
-    "splunklib"
+    "splunklib",
+    "todos"
   ]
 }

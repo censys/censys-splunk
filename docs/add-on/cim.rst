@@ -3,15 +3,40 @@ Common Information Model Mapping
 ================================
 
 
-Sourcetypes
------------
 
-
+======================
 ``censys:asm:logbook``
-++++++++++++++++++++++
+======================
 
 `Logbook API docs <https://app.censys.io/api-docs>`_
 
+.. list-table:: CIM Models
+    :header-rows: 1
+
+    * -  Tag
+      -  CIM Model
+    * -  ``certificate``
+      -  `Certificates <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Certificates>`_
+    * -  ``inventory``
+      -  `ComputeInventory <https://docs.splunk.com/Documentation/CIM/5.0.1/User/ComputeInventory>`_
+    * -  ``listening``
+      -  `Endpoint <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Endpoint>`_
+    * -  ``network``
+      -  `NetworkResolutionDNS <https://docs.splunk.com/Documentation/CIM/5.0.1/User/NetworkResolutionDNS>`_
+    * -  ``port``
+      -  `NetworkTraffic <https://docs.splunk.com/Documentation/CIM/5.0.1/User/NetworkTraffic>`_
+    * -  ``report``
+      -  `Endpoint <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Endpoint>`_
+    * -  ``service``
+      -  `Endpoint <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Endpoint>`_
+    * -  ``ssl``
+      -  `Certificates <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Certificates>`_
+    * -  ``storage``
+      -  `ComputeInventory <https://docs.splunk.com/Documentation/CIM/5.0.1/User/ComputeInventory>`_
+    * -  ``vulnerability``
+      -  `Vulnerabilities <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Vulnerabilities>`_
+    * -  ``web``
+      -  `Web <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Web>`_
 .. list-table:: Field Aliases
     :header-rows: 1
 
@@ -74,7 +99,19 @@ Sourcetypes
     * -  ``timestamp``
       -  ``creation_time``
 
+
+====================
 ``censys:asm:risks``
-++++++++++++++++++++
+====================
 
 `Risks API docs <https://app.censys.io/api/v2/risk-docs>`_
+
+.. list-table:: CIM Models
+    :header-rows: 1
+
+    * -  Tag
+      -  CIM Model
+    * -  ``report``
+      -  `Endpoint <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Endpoint>`_
+    * -  ``vulnerability``
+      -  `Vulnerabilities <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Vulnerabilities>`_

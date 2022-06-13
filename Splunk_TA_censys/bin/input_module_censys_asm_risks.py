@@ -106,7 +106,7 @@ class CensysAsmRisksApi(CensysAsmApi):
             self.helper.log_debug(f"Adding {total_events} risk events...")
 
             for risk_event in risk_events:
-                risk_event["data_input_name"] = self.input_stanza
+                risk_event["dataInputName"] = self.input_stanza
                 risk_event["riskName"] = self.get_risk_type(risk_event["riskType"]).get(
                     "displayName"
                 )

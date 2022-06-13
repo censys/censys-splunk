@@ -1,1 +1,1 @@
-{"id":"##id##","type":"DOMAIN","timestamp":"##timestamp##","operation":"##operation##","entity":{"domain":"##domain##"},"data_input_name":"##data_input_name##"}
+{"id":"##id##","type":"DOMAIN","timestamp":"##timestamp##","operation":"##operation##","entity":{"domain":"##domain##"},"dataInputName":"##dataInputName##"}

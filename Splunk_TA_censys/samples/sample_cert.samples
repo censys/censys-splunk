@@ -1,1 +1,1 @@
-{"id":"##id##","type":"CERT","timestamp":"##timestamp##","operation":"##operation##","entity":{"sha256":"##sha256##"},"data_input_name":"##data_input_name##"}
+{"id":"##id##","type":"CERT","timestamp":"##timestamp##","operation":"##operation##","entity":{"sha256":"##sha256##"},"dataInputName":"##dataInputName##"}

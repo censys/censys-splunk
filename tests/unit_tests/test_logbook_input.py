@@ -148,7 +148,7 @@ class TestLogbookInput(CensysTestCase):
         }
         expected_calls = []
         for event in test_logbook_events["events"]:
-            event["data_input_name"] = test_input_stanza
+            event["dataInputName"] = test_input_stanza
             expected_calls.append(
                 {
                     "data": json.dumps(event),

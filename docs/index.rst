@@ -41,11 +41,6 @@ Features
 
    quick-start
    add-on/index
-   add-on/cim
    asm-app/*
-
-.. toctree::
-   :hidden:
-   :glob:
-
    search-app/*
+   add-on/cim

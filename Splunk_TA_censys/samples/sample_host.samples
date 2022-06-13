@@ -1,1 +1,1 @@
-{"id":"##id##","type":"HOST","timestamp":"##timestamp##","operation":"##operation##","entity":{"ipAddress":"##ip##"},"data_input_name":"##data_input_name##"}
+{"id":"##id##","type":"HOST","timestamp":"##timestamp##","operation":"##operation##","entity":{"ipAddress":"##ip##"},"dataInputName":"##dataInputName##"}

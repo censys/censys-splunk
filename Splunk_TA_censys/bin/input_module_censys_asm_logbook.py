@@ -103,7 +103,7 @@ class CensysAsmLogbookApi(CensysAsmApi):
 
             end_of_events: bool = res.get("endOfEvents", False)
             for logbook_event in logbook_events:
-                logbook_event["data_input_name"] = self.input_stanza
+                logbook_event["dataInputName"] = self.input_stanza
                 event = self.helper.new_event(
                     data=json.dumps(logbook_event),
                     index=output_index,

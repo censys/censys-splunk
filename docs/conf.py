@@ -17,7 +17,7 @@ from pathlib import Path
 current_dir = Path(__file__).parent
 sys.path.insert(0, str(current_dir))
 
-import generate_cim
+import generate_addon_docs
 
 # -- Project information -----------------------------------------------------
 
@@ -88,10 +88,8 @@ copybutton_prompt_text = "$"
 todo_include_todos = True
 
 # Generate CIM
-addon_path = current_dir.parent / "Splunk_TA_censys"
-addon_configurations = generate_cim.read_config_files(addon_path)
-addon_samples = generate_cim.read_sample_files(addon_path)
-cim_path = current_dir / "add-on" / "cim.rst"
-generate_cim.write_docs(
-    generate_cim.DEFAULT_TITLE, cim_path, addon_configurations, addon_samples
-)
+addon_dir = current_dir.parent / "Splunk_TA_censys"
+addon_configurations = generate_addon_docs.read_config_files(addon_dir)
+addon_samples = generate_addon_docs.read_sample_files(addon_dir)
+output_dir = current_dir / "add-on"
+generate_addon_docs.write_docs(output_dir, addon_configurations, addon_samples)

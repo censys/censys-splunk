@@ -12,6 +12,7 @@ repos:
       - id: check-yaml
       - id: detect-private-key
       - id: end-of-file-fixer
+        exclude: \.*cim.rst$
       - id: mixed-line-ending
       - id: trailing-whitespace
   - repo: https://github.com/asottile/pyupgrade
@@ -33,3 +34,4 @@ repos:
       - id: rstcheck
         args: ["--config", ".rstcheck.cfg"]
         additional_dependencies: ["rstcheck[sphinx]"]
+        exclude: \.*cim.rst$

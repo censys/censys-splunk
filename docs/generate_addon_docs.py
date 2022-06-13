@@ -1,14 +1,18 @@
 import json
-import os
+import re
 from argparse import ArgumentParser, Namespace
 from enum import Enum
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, Optional
 
 from addonfactory_splunk_conf_parser_lib import TABConfigParser
 from rst import rst
 
-DEFAULT_TITLE = "Common Information Model Mapping"
+CIM_TITLE = "Common Information Model Mapping"
+CIM_VERSION = "5.0.1"
+
+FIELDALIAS_PREFIX = "FIELDALIAS-"
+SOURCE_TYPE_PREFIX = "censys:asm:"
 
 Stanza = Sample = Dict[str, str]
 Conf = Dict[str, Stanza]
@@ -42,9 +46,25 @@ class SplunkAppStanzas(str, Enum):
         return self.value
 
 
+FIELDS_TO_SKIP = ["data_input_name"]
+
 SOURCE_TYPE_API_DOC_MAPS = {
     "censys:asm:logbook": "https://app.censys.io/api-docs",
     "censys:asm:risks": "https://app.censys.io/api/v2/risk-docs",
+}
+
+CIM_TAGS_MAP = {
+    "certificate": "Certificates",
+    "inventory": "ComputeInventory",
+    "listening": "Endpoint",
+    "network": "NetworkResolutionDNS",
+    "port": "NetworkTraffic",
+    "report": "Endpoint",
+    "service": "Endpoint",
+    "ssl": "Certificates",
+    "storage": "ComputeInventory",
+    "vulnerability": "Vulnerabilities",
+    "web": "Web",
 }
 
 
@@ -52,17 +72,14 @@ def parse_args() -> Namespace:
     """Parse command line arguments."""
     parser = ArgumentParser(description="Generate CIM documentation")
     parser.add_argument(
-        "--title",
-        dest="title",
-        help="Title for the generated documentation",
-        type=str,
-        default=DEFAULT_TITLE,
+        "--output", dest="output_dir", help="Output directory", required=True, type=Path
     )
     parser.add_argument(
-        "-o", "--output", dest="output", help="Output file", required=True, type=Path
-    )
-    parser.add_argument(
-        "-a", "--addon", dest="addon", help="Add-on directory", required=True, type=Path
+        "--addon",
+        dest="addon_dir",
+        help="Add-on directory",
+        required=True,
+        type=Path,
     )
     return parser.parse_args()
 
@@ -152,6 +169,21 @@ def generate_table_for_app_conf(
     rst_doc.add_child(table)
 
 
+def get_cim_link(cim_name: str) -> str:
+    """Get the link to the CIM documentation.
+
+    Args:
+        cim_name (str): Name of the CIM.
+
+    Returns:
+        str: Link to the CIM documentation.
+    """
+    cim_id = CIM_TAGS_MAP.get(cim_name)
+    if not cim_id:
+        cim_id = cim_name
+    return f"https://docs.splunk.com/Documentation/CIM/{CIM_VERSION}/User/{cim_id}"
+
+
 def generate_table_for_props_conf(
     rst_doc: rst.Document,
     configurations: Confs,
@@ -164,9 +196,27 @@ def generate_table_for_props_conf(
         configurations (Confs): Map of configuration files.
         stanza_prefix (str): Prefix for stanzas.
     """
-    props_conf: Dict[str, Dict[str, str]] = configurations[SplunkConfs.PROPS]
-    # print(props_conf)
-    rst_doc.add_child(rst.Section("Sourcetypes", depth=2))
+    # Get all the configuration files
+    props_conf: Dict[str, Dict[str, str]] = configurations.get(SplunkConfs.PROPS)
+    eventtypes_conf: Dict[str, Dict[str, str]] = configurations.get(
+        SplunkConfs.EVENTTYPES, {}
+    )
+    tags_conf: Dict[str, Dict[str, str]] = configurations.get(SplunkConfs.TAGS)
+
+    # Props are required to generate the table.
+    if not props_conf:
+        return
+
+    # Map sourcetypes to eventtypes.
+    sourcetype_to_eventtype = {}
+    for eventtype_name, eventtype_conf in eventtypes_conf.items():
+        sourcetype_search = eventtype_conf.get("search")
+        if not sourcetype_search:
+            continue
+        match = re.match(r"\(sourcetype\=(?P<sourcetype>[a-z:]+)\)", sourcetype_search)
+        if not match:
+            continue
+        sourcetype_to_eventtype[match.group("sourcetype")] = eventtype_name
 
     for stanza, properties in props_conf.items():
         if stanza_prefix not in stanza:
@@ -174,59 +224,90 @@ def generate_table_for_props_conf(
 
         title = codify(stanza)
 
-        # Add KV Mode
-        # kv_mode = properties.get("KV_MODE")
-        # if kv_mode:
-        #     title += f" ({codify(kv_mode)} kv mode)"
-
-        rst_doc.add_child(rst.Section(title, depth=3))
+        rst_doc.add_child(rst.Paragraph())
+        rst_doc.add_child(rst.Section(title, depth=1))
 
         # Add API documentation link
+        api_title = stanza.replace(SOURCE_TYPE_PREFIX, "").capitalize()
         api_docs_url = SOURCE_TYPE_API_DOC_MAPS.get(stanza)
         if api_docs_url:
-            api_link_title = stanza.replace("censys:asm:", "").capitalize()
             rst_doc.add_child(
-                rst.Paragraph(link(f"{api_link_title} API docs", api_docs_url))
+                rst.Paragraph(link(f"{api_title} API docs", api_docs_url))
             )
 
-        # Render field aliases
+        # Add CIM tags and models table
+        if tags_conf:
+            eventtype_name = sourcetype_to_eventtype.get(stanza)
+            eventtype_key = f"eventtype={eventtype_name}"
+            if eventtype_name and eventtype_key in tags_conf:
+                models = {
+                    cim_tag: CIM_TAGS_MAP[cim_tag]
+                    for cim_tag in tags_conf[eventtype_key].keys()
+                    if cim_tag in CIM_TAGS_MAP
+                }
+                models_list = rst.Table("CIM Models", ["Tag", "CIM Model"])
+                for tag, model in sorted(models.items()):
+                    models_list.add_item(
+                        (codify(tag), link(model, get_cim_link(model)))
+                    )
+                rst_doc.add_child(models_list)
+
+        # Add field aliases table
         properties_with_field_alias = {
             key: value
             for key, value in properties.items()
-            if key.startswith("FIELDALIAS-")
+            if key.startswith(FIELDALIAS_PREFIX)
         }
         if properties_with_field_alias:
-            table_headers = ["Field", "CIM Alias"]
-            table = rst.Table("Field Aliases", table_headers)
+            alias_table = rst.Table("Field Aliases", ["Field", "CIM Alias"])
             for value in sorted(properties_with_field_alias.values()):
                 to_alias, from_alias = value.split(" AS ")
-                table.add_item((codify(to_alias), codify(from_alias)))
-            rst_doc.add_child(table)
+                if to_alias in FIELDS_TO_SKIP:
+                    continue
+                alias_table.add_item((codify(to_alias), codify(from_alias)))
+            rst_doc.add_child(alias_table)
 
 
-def write_docs(
-    title: str,
-    output_file: Path,
+def generate_cim_docs(
     configurations: Confs,
-    samples: Samples,
-):
-    rst_doc = rst.Document(title)
-    # if SplunkConfs.APP in configurations:
-    #     generate_table_for_app_conf(rst_doc, configurations)
-    if SplunkConfs.PROPS in configurations:
-        generate_table_for_props_conf(rst_doc, configurations)
+    title: str = CIM_TITLE,
+) -> rst.Document:
+    """Generate CIM documentation.
 
-    # Write to file
-    rst_doc.save(output_file)
+    Args:
+        configurations (Confs): Map of configuration files.
+        title (str): Title for the CIM documentation.
+
+    Returns:
+        rst.Document: RST document.
+    """
+    rst_doc = rst.Document(title)
+    generate_table_for_props_conf(rst_doc, configurations)
+    return rst_doc
+
+
+def write_docs(output_dir: Path, configurations: Confs, samples: Samples):
+    """Write documentation to the output directory.
+
+    Args:
+        configurations (Confs): Map of configuration files.
+        samples (Samples): Map of sample files.
+    """
+    docs = {
+        "cim": generate_cim_docs(configurations),
+    }
+    for file_name, rst_doc in docs.items():
+        output_file = output_dir / f"{file_name}.rst"
+        rst_doc.save(output_file)
 
 
 def main():
+    """Main function."""
     args = parse_args()
-    configurations = read_config_files(args.addon)
+    configurations = read_config_files(args.addon_dir)
     # print(configurations)
-    samples = read_sample_files(args.addon)
-    # print(samples)
-    write_docs(args.title, args.output, configurations, samples)
+    samples = read_sample_files(args.addon_dir)
+    write_docs(args.output_dir, configurations, samples)
 
 
 if __name__ == "__main__":

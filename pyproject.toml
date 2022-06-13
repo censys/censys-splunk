@@ -7,18 +7,22 @@ license = "Apache-2.0"
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
+# Docs
 furo = {version = "^2022.4.7", optional = true}
+rst = {version = "^0.1", optional = true}
 Sphinx = {version = "^4.5.0", optional = true}
+sphinx_design = {version = "^0.1.0", optional = true}
+sphinx-asciidoc = {version = "^1.0.2", optional = true}
 sphinx-copybutton = {version = "^0.5.0", optional = true}
 sphinx-prompt = {version = "^1.5.0", optional = true}
 sphinx-tabs = {version = "^3.3.1", optional = true}
-sphinx_design = {version = "^0.1.0", optional = true}
-sphinx-asciidoc = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
+addonfactory-splunk-conf-parser-lib = "^0.3.4"
 black = "21.5b1"
 importlib-metadata = { version = ">=4.4", python = "<3.10" }
 isort = "^5.10.1"
+parameterized = "^0.8.1"
 pre-commit = "^2.19.0"
 pytest = ">5.4.0,<6.3"
 pytest-mock = "^3.7.0"
@@ -28,9 +32,6 @@ pyupgrade = "^2.32.1"
 requests = "^2.27.1"
 splunk-appinspect = "^2.18.0"
 splunk-packaging-toolkit = { url = "https://download.splunk.com/misc/packaging-toolkit/splunk-packaging-toolkit-1.0.1.tar.gz" }
-parameterized = "^0.8.1"
-addonfactory-splunk-conf-parser-lib = "^0.3.4"
-rst = "^0.1"
 
 [tool.pytest.ini_options]
 minversion = "5.4.0"
@@ -38,7 +39,17 @@ testpaths = ["tests"]
 python_paths = ["./Splunk_TA_censys/bin/", "./Splunk_TA_censys/bin/splunk_ta_censys/aob_py3/"]
 
 [tool.poetry.extras]
-docs = ["Sphinx", "sphinx-copybutton", "sphinx-prompt", "sphinx-tabs", "furo", "sphinx_design"]
+# Install with poetry install -E docs
+docs = [
+    "furo",
+    "rst",
+    "sphinx_design",
+    "sphinx-asciidoc",
+    "sphinx-copybutton",
+    "sphinx-prompt",
+    "sphinx-tabs",
+    "Sphinx"
+]
 # https://github.com/readthedocs/readthedocs.org/issues/4912#issuecomment-1110189914
 
 [build-system]

@@ -13,12 +13,13 @@ Run the Docker Compose file
 docker-compose up
 ```
 
-Open your browser to https://localhost:8000/ and login with your Splunk credentials.
+Open your browser to <http://localhost:8000/> and login with your Splunk credentials.
 
 ## Helpful Commands
 
 ```sh
 poetry update  # Update dependencies
+poetry install -E docs  # Install dependencies for documentation
 ```
 
 ## Committing
