@@ -97,6 +97,8 @@ class CensysAsmRisksApi(CensysAsmApi):
         while not end_of_events:
             try:
                 res = self.get_risk_events(cursor)
+                if cursor == res.get("next"):
+                    end_of_events = True
             except requests.HTTPError as e:
                 self.helper.log_error(str(e))
                 break
@@ -108,7 +110,7 @@ class CensysAsmRisksApi(CensysAsmApi):
             for risk_event in risk_events:
                 risk_event["dataInputName"] = self.input_stanza
                 risk_event["riskName"] = self.get_risk_type(risk_event["riskType"]).get(
-                    "displayName"
+                    "name"
                 )
                 event = self.helper.new_event(
                     data=json.dumps(risk_event),
