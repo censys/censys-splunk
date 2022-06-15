@@ -22,7 +22,7 @@
                             "help": "Get your API Key from the ASM Integrations page: https://app.censys.io/integrations",
                             "required": true,
                             "defaultValue": "",
-                            "encrypted": false,
+                            "encrypted": true,
                             "validators": [
                                 {
                                     "type": "regex",
@@ -294,7 +294,7 @@
                             "help": "Setting this value overrides the credentials provided during Add-on setup for this data input. Get your API Key from the ASM Integrations page: https://app.censys.io/integrations",
                             "required": false,
                             "type": "text",
-                            "encrypted": false,
+                            "encrypted": true,
                             "validators": [
                                 {
                                     "type": "regex",
@@ -379,7 +379,7 @@
                             "help": "Setting this value overrides the credentials provided during Add-on setup for this data input. Get your API Key from the ASM Integrations page: https://app.censys.io/integrations",
                             "required": false,
                             "type": "text",
-                            "encrypted": false,
+                            "encrypted": true,
                             "validators": [
                                 {
                                     "type": "regex",

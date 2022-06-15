@@ -82,6 +82,13 @@ class CensysAsmRisksApi(CensysAsmApi):
             self.risk_types[risk_type] = response.json()
         return self.risk_types[risk_type]
 
+    def get_risk_type_name(self, risk_type: str) -> Optional[str]:
+        """Get the risk type name."""
+        risk_name = self.get_risk_type(risk_type).get("name")
+        if risk_name is None:
+            self.helper.log_error(f"Risk type {risk_type} not found.")
+        return risk_name
+
     def write_risk_events(self, event_writer: EventWriter):
         """Write the risk events."""
         cursor = self.get_risk_events_cursor_check_point()
@@ -109,9 +116,8 @@ class CensysAsmRisksApi(CensysAsmApi):
 
             for risk_event in risk_events:
                 risk_event["dataInputName"] = self.input_stanza
-                risk_event["riskName"] = self.get_risk_type(risk_event["riskType"]).get(
-                    "name"
-                )
+                risk_type = risk_event.get("riskType")
+                risk_event["riskName"] = self.get_risk_type_name(risk_type)
                 event = self.helper.new_event(
                     data=json.dumps(risk_event),
                     index=output_index,

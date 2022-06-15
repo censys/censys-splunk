@@ -41,17 +41,15 @@ export requirements txt:
 build docs:
   extends: .poetry
   stage: build
-  variables:
-    DOCS_DIR: "docs"
   script:
     - poetry install -E docs
-    - poetry run sphinx-build -M html $DOCS_DIR $DOCS_DIR/_build/ -W
+    - poetry run sphinx-build -M html docs/ docs/_build/ -W
   rules:
     - changes:
-        - $DOCS_DIR/*
+        - docs/*
   artifacts:
     paths:
-      - $DOCS_DIR/_build/html/
+      - docs/_build/html/
       - pyproject.toml
       - poetry.lock
 
@@ -74,33 +72,6 @@ package asm app:
   script:
     - poetry run slim package censys
 
-.appinspect:
-  extends: .poetry
-  stage: test
-  artifacts:
-    paths:
-      - "*-appinspect.json"
-
-appinspect add-on:
-  extends: .appinspect
-  script:
-    - poetry run splunk-appinspect inspect Splunk_TA_censys-*.tar.gz --output-file add-on-appinspect.json --included-tags cloud --included-tags future --included-tags python3_version
-  dependencies:
-    - package add-on
-
-appinspect asm app:
-  extends: .appinspect
-  script:
-    - poetry run splunk-appinspect inspect censys-*.tar.gz --output-file asm-appinspect.json --included-tags cloud --included-tags future --included-tags python3_version
-  dependencies:
-    - package asm app
-
-lint:
-  extends: .poetry
-  stage: test
-  script:
-    - poetry run isort . --check-only
-
 .test-template:
   extends: .poetry
   stage: test
@@ -108,6 +79,49 @@ lint:
 
 unit tests:
   extends: .test-template
+  script: pytest --junitxml pytest.xml
+  artifacts:
+    when: always
+    paths:
+      - pytest.xml
+    reports:
+      junit: pytest.xml
+
+.appinspect:
+  extends: .poetry
+  stage: test
+
+appinspect add-on:
+  extends: .appinspect
+  script:
+    - poetry run splunk-appinspect inspect Splunk_TA_censys-*.tar.gz --data-format junitxml --output-file add-on-appinspect.xml --included-tags cloud --included-tags future --included-tags python3_version
+  dependencies:
+    - package add-on
+  artifacts:
+    when: always
+    paths:
+      - add-on-appinspect.xml
+    reports:
+      junit: add-on-appinspect.xml
+
+appinspect asm app:
+  extends: .appinspect
+  script:
+    - poetry run splunk-appinspect inspect censys-*.tar.gz --data-format junitxml --output-file asm-appinspect.xml --included-tags cloud --included-tags future --included-tags python3_version
+  dependencies:
+    - package asm app
+  artifacts:
+    when: always
+    paths:
+      - asm-appinspect.xml
+    reports:
+      junit: asm-appinspect.xml
+
+lint:
+  extends: .poetry
+  stage: test
+  script:
+    - poetry run isort . --check-only
 
 release-add-on:
   extends: .poetry
