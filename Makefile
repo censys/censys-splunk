@@ -1,6 +1,7 @@
 POETRY          := $(shell command -v poetry 2> /dev/null)
-ADD_ON_VERSION  := $$(grep version ./Splunk_TA_censys/app.manifest | sed 's/[^0-9.]*//g')
-ASM_APP_VERSION := $$(grep version ./censys/app.manifest | sed 's/[^0-9.]*//g')
+ADD_ON_VERSION  := $$(grep version ./packages/Splunk_TA_censys/app.manifest | sed 's/[^0-9.]*//g')
+APP_VERSION     := $$(grep version ./packages/censys/src/main/resources/splunk/app.manifest | sed 's/[^0-9.]*//g')
+APPINSPECT_ARGS := --included-tags cloud --included-tags future --included-tags custom_workflow_actions --included-tags inputs_conf --included-tags splunk_9_0
 
 .PHONY: all
 all: help
@@ -8,57 +9,63 @@ all: help
 .PHONY: install
 install:  ## Install developer dependencies
 	poetry install
+	yarn install
 
 .PHONY: build-add-on
 build-add-on:  ## Build Splunk Add-on
-	poetry run slim package Splunk_TA_censys
+	poetry run slim package ./packages/Splunk_TA_censys
 
-.PHONY: build-asm-app
-build-asm-app:  ## Build Splunk ASM App
-	poetry run slim package censys
+.PHONY: build-app
+build-app:  ## Build Splunk App
+	yarn workspace @splunk/censys run build:prod
+	poetry run slim package ./packages/censys/censys
 
 .PHONY: build
-build: build-add-on build-asm-app  ## Build Splunk Add-on and ASM App
+build: build-add-on build-app  ## Build Splunk Add-on and App
+
+.PHONY: docs
+docs:  ## Generate documentation
+	cd docs && make html
 
 .PHONY: appinspect-add-on
 appinspect-add-on:  ## Run Splunk AppInspect on Splunk Add-on
-	poetry run splunk-appinspect inspect Splunk_TA_censys-$(ADD_ON_VERSION).tar.gz --included-tags cloud
+	poetry run splunk-appinspect inspect Splunk_TA_censys-$(ADD_ON_VERSION).tar.gz $(APPINSPECT_ARGS)
 
-.PHONY: appinspect-asm-app
-appinspect-asm-app:  ## Run Splunk AppInspect on Splunk ASM App
-	poetry run splunk-appinspect inspect censys-$(ASM_APP_VERSION).tar.gz --included-tags cloud
+.PHONY: appinspect-app
+appinspect-app:  ## Run Splunk AppInspect on Splunk App
+	poetry run splunk-appinspect inspect censys-$(APP_VERSION).tar.gz $(APPINSPECT_ARGS)
 
 .PHONY: appinspect
-appinspect: appinspect-add-on appinspect-asm-app  ## Run Splunk AppInspect
+appinspect: appinspect-add-on appinspect-app  ## Run Splunk AppInspect
 
 .PHONY: test-add-on
 test-add-on:  ## Run Splunk Add-on Pytest
-	poetry run pytest -v --tb=long --splunk-type=docker --splunk-app=Splunk_TA_censys/ --splunk-data-generator=Splunk_TA_censys/default/ --cim-report=CIM.md
+	poetry run pytest
 
-.PHONY: test-asm-app
-test-asm-app:
-	@echo "Coming soon..."
+.PHONY: test-app
+test-app:
+	yarn run test
 
 .PHONY: tests
-tests: test-add-on ## Run tests
+tests: test-add-on test-app  ## Run tests
 
 .PHONY: lint
 lint: ## Run linters
 	poetry run isort .
-	poetry run pyupgrade Splunk_TA_censys/bin/*.py --py37
+	poetry run pyupgrade packages/Splunk_TA_censys/bin/*.py --py37
 
-.PHONY: link-asm-app
-link-asm-app:  ## Link Splunk ASM App
+.PHONY: link-app
+link-app:  ## Link Splunk App
 	@if [ -z ${SPLUNK_HOME} ]; then echo "SPLUNK_HOME is not set. Please set it and re-run this command."; exit 1; fi
-	ln -s $$(pwd)/censys/ ${SPLUNK_HOME}/etc/apps/censys
+	yarn workspace @splunk/censys run link:app
 
 .PHONY: link-add-on
 link-add-on:  ## Link Splunk Add-on
 	@if [ -z ${SPLUNK_HOME} ]; then echo "SPLUNK_HOME is not set. Please set it and re-run this command."; exit 1; fi
-	ln -s $$(pwd)/Splunk_TA_censys/ ${SPLUNK_HOME}/etc/apps/Splunk_TA_censys
+	ln -s $$(pwd)/packages/Splunk_TA_censys/ ${SPLUNK_HOME}/etc/apps/Splunk_TA_censys
 
 .PHONY: link
-link: link-asm-app link-add-on  ## Link Splunk Add-on and Splunk ASM App
+link: link-app link-add-on  ## Link Splunk Add-on and Splunk App
 
 .PHONY: splunk-restart
 splunk-restart:  ## Restart local Splunk

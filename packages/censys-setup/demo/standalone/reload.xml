@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This is to override browser formatting; see server.conf[httpServer] to disable. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .-->
+<?xml-stylesheet type="text/xml" href="/static/atom.xsl"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:s="http://dev.splunk.com/ns/rest" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+    <title>localapps</title>
+    <id>https://localhost:8000/servicesNS/nobody/censys/apps/local</id>
+    <updated>2022-06-28T08:30:27-04:00</updated>
+    <generator build="a6fe1ee8894b" version="8.2.6" />
+    <author>
+        <name>Splunk</name>
+    </author>
+    <link href="/servicesNS/nobody/censys/apps/local/_new" rel="create" />
+    <link href="/servicesNS/nobody/censys/apps/local/_reload" rel="_reload" />
+    <opensearch:totalResults>0</opensearch:totalResults>
+    <opensearch:itemsPerPage>30</opensearch:itemsPerPage>
+    <opensearch:startIndex>0</opensearch:startIndex>
+    <s:messages />
+</feed>

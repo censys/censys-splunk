@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "info": {
+    "title": "Censys ASM App for Splunk",
+    "id": {
+      "group": null,
+      "name": "censys",
+      "version": "4.1.0"
+    },
+    "author": [
+      {
+        "name": "Censys, Inc.",
+        "email": "support@censys.io",
+        "company": "Censys, Inc."
+      }
+    ],
+    "releaseDate": null,
+    "description": "The Censys ASM App for Splunk brings an outside-in perspective of organizations' Internet-facing networks to security operations.",
+    "classification": {
+      "intendedAudience": "IT Professionals",
+      "categories": [
+        "IT Operations",
+        "Security, Fraud & Compliance"
+      ],
+      "developmentStatus": "Beta"
+    },
+    "commonInformationModels": null,
+    "license": {
+      "name": "Apache 2.0",
+      "text": "./LICENSE",
+      "uri": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "privacyPolicy": {
+      "name": "Privacy Policy",
+      "text": null,
+      "uri": "https://censys.io/privacy-policy/"
+    },
+    "releaseNotes": {
+      "name": "CHANGELOG",
+      "text": null,
+      "uri": "https://github.com/censys/censys-splunk/blob/main/packages/censys/CHANGELOG.md"
+    }
+  },
+  "dependencies": {
+  },
+  "tasks": [],
+  "inputGroups": {
+  },
+  "incompatibleApps": {
+  },
+  "platformRequirements": {
+    "splunk": {
+      "Enterprise": "*"
+    }
+  }
+}

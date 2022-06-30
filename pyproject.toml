@@ -8,10 +8,10 @@ license = "Apache-2.0"
 [tool.poetry.dependencies]
 python = "^3.7.0"
 # Docs
-furo = {version = "^2022.4.7", optional = true}
+furo = {version = "^2022.6.21", optional = true}
 rst = {version = "^0.1", optional = true}
 Sphinx = {version = "^4.5.0", optional = true}
-sphinx_design = {version = "^0.1.0", optional = true}
+sphinx_design = {version = "^0.2.0", optional = true}
 sphinx-asciidoc = {version = "^1.0.2", optional = true}
 sphinx-copybutton = {version = "^0.5.0", optional = true}
 sphinx-prompt = {version = "^1.5.0", optional = true}
@@ -19,24 +19,22 @@ sphinx-tabs = {version = "^3.3.1", optional = true}
 
 [tool.poetry.dev-dependencies]
 addonfactory-splunk-conf-parser-lib = "^0.3.4"
-black = "21.5b1"
+black = "21.5b1"  # Because of splunk-appinspect (click)
 importlib-metadata = { version = ">=4.4", python = "<3.10" }
 isort = "^5.10.1"
 parameterized = "^0.8.1"
 pre-commit = "^2.19.0"
-pytest = ">5.4.0,<6.3"
+pytest = "^7.1.2"
 pytest-mock = "^3.7.0"
-pytest-pythonpath = "^0.7.4"
-pytest-splunk-addon = {extras = ["docker"], version = "^3.0.6"}
-pyupgrade = "^2.32.1"
-requests = "^2.27.1"
-splunk-appinspect = "^2.18.0"
+pyupgrade = "^2.34.0"
+requests = "^2.28.0"
+splunk-appinspect = "^2.21.0"
 splunk-packaging-toolkit = { url = "https://download.splunk.com/misc/packaging-toolkit/splunk-packaging-toolkit-1.0.1.tar.gz" }
 
 [tool.pytest.ini_options]
 minversion = "5.4.0"
 testpaths = ["tests"]
-python_paths = ["./Splunk_TA_censys/bin/", "./Splunk_TA_censys/bin/splunk_ta_censys/aob_py3/"]
+pythonpath = ["./packages/Splunk_TA_censys/bin/", "./packages/Splunk_TA_censys/bin/splunk_ta_censys/aob_py3/"]
 
 [tool.poetry.extras]
 # Install with poetry install -E docs

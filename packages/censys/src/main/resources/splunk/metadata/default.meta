@@ -1,0 +1,23 @@
+[]
+access = read : [ * ], write : [ admin ]
+export = none
+
+[views]
+access = read : [ * ], write : [ admin ]
+export = none
+
+[transforms]
+export = system
+
+[lookups]
+export = system
+
+[workflow_actions]
+export = system
+
+[commands]
+access = read : [ * ], write : [ admin ]
+export = system
+
+[searchbnf]
+export = system

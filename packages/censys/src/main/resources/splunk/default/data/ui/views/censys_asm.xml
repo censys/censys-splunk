@@ -1,0 +1,328 @@
+<form theme="dark" version="1.1">
+  <label>Censys ASM Logbook</label>
+  <description>Events from Censys Attack Surface Management Logbook API.</description>
+  <fieldset submitButton="false">
+    <input type="time" token="time_range" searchWhenChanged="true">
+      <label>Time Range</label>
+      <default>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="dropdown" token="dataInputName" searchWhenChanged="true">
+      <label>Data Input Name</label>
+      <fieldForLabel>dataInputName</fieldForLabel>
+      <fieldForValue>dataInputName</fieldForValue>
+      <search>
+        <query>sourcetype="censys:asm:logbook" | stats count by dataInputName</query>
+        <earliest>0</earliest>
+        <latest></latest>
+      </search>
+      <choice value="*">All data inputs</choice>
+      <default>*</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Hosts Added</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST" operation="ASSOCIATE" dataInputName=$dataInputName$ | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trellis.enabled">0</option>
+        <option name="trellis.size">small</option>
+        <option name="trellis.splitBy">_aggregation</option>
+        <option name="trendDisplayMode">absolute</option>
+        <option name="trendInterval">-$time_range.earliest$</option>
+        <option name="unitPosition">before</option>
+        <option name="useColors">0</option>
+        <drilldown>
+          <link target="_blank">search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST%22%20operation%3D%22ASSOCIATE%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Hosts Removed</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST" operation="DISASSOCIATE" dataInputName=$dataInputName$ | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+        <drilldown>
+          <link target="_blank">search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST%22%20operation%3D%22DISASSOCIATE%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Software Added</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_SOFTWARE" operation="ADD" dataInputName=$dataInputName$ | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Software Removed</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_SOFTWARE" operation="REMOVE" dataInputName=$dataInputName$ | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Subdomain Names Added</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="DOMAIN_SUBDOMAIN" operation="ADD" dataInputName=$dataInputName$ | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Ports Added</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_PORT" operation="ADD" dataInputName=$dataInputName$ | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+        <drilldown>
+          <link target="_blank">search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST_PORT%22%20operation%3D%22ADD%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Protocols Added</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_PROTOCOL" operation="ADD" dataInputName=$dataInputName$ | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+        <drilldown>
+          <link target="_blank">search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST_PROTOCOL%22%20operation%3D%22ADD%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
+        </drilldown>
+      </single>
+    </panel>
+    <panel>
+      <title>Certificates Added</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="CERT" operation="ASSOCIATE" dataInputName=$dataInputName$ | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+    <panel>
+      <title>CVEs Added</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_VULNERABILITY" operation="ADD" dataInputName=$dataInputName$ | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="colorBy">value</option>
+        <option name="colorMode">none</option>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+        <option name="trendColorInterpretation">inverse</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>CDN Hosts Added</title>
+      <single>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_CDN" operation="ADD" dataInputName=$dataInputName$ NOT [search sourcetype="censys:asm:logbook" type="HOST_CDN" operation="REMOVE" dataInputName=$dataInputName$] | timechart count | accum count as count</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="drilldown">all</option>
+        <option name="height">135</option>
+        <option name="rangeColors">["0x53a051","0x0877a6","0xf8be34","0xf1813f","0xdc4e41"]</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="showSparkline">0</option>
+        <option name="showTrendIndicator">0</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Host Risks</title>
+      <table>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_RISK" operation="ADD" dataInputName=$dataInputName$
+| table entity.ipAddress data.severity data.transportProtocol data.port data.title
+| rename low as "potaot"
+| rename entity.ipAddress as "IP Address"
+| rename data.severity as "Severity"
+| rename data.transportProtocol as "Protocol"
+| rename data.port as "Port"
+| rename data.title as "Risk"
+| eval sort_field=case(Severity="critical",1, Severity="high",2, Severity="medium",3, Severity="low",4)
+| sort sort_field | fields - sort_field</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="count">12</option>
+        <option name="drilldown">cell</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>New Host Risks by Severity</title>
+      <chart>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_RISK" operation="ADD" dataInputName=$dataInputName$ | timechart span=24h count by data.severity</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="height">355</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>New CVE Risks by Severity Score</title>
+      <chart>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="HOST_VULNERABILITY" operation="ADD" dataInputName=$dataInputName$ | timechart span=24h count by data.cvss</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisY.scale">log</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="height">386</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>New Subdomains by Parent Domain</title>
+      <table>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="DOMAIN_SUBDOMAIN" operation="ADD" dataInputName=$dataInputName$
+| table entity.domain data.subdomain
+| rename entity.domain as "Domain"
+| rename data.subdomain as "Subdomain"</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="count">8</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+    <panel>
+      <title>New CDNs</title>
+      <chart>
+        <search>
+          <query>source="censys_asm_logbook" type="HOST_CDN" operation="ADD" dataInputName=$dataInputName$ | chart count by data.newCdn</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Expiring Domains</title>
+      <table>
+        <search>
+          <query>sourcetype="censys:asm:logbook" type="DOMAIN_RISK" operation="ADD" dataInputName=$dataInputName$ | eval epochtime=strptime(timestamp, "%Y-%m-%dT%H:%M:%S") | eval desired_time=strftime(epochtime, "%+")
+| table entity.domain desired_time data.title
+| rename entity.domain as "Domain"
+| rename desired_time as "Warning Date"
+| rename data.title as "Expiration Notes"
+| eval sort_field=case(Severity="critical",1, Severity="high",2, Severity="medium",3, Severity="low",4)
+| sort sort_field | fields - sort_field</query>
+          <earliest>$time_range.earliest$</earliest>
+          <latest>$time_range.latest$</latest>
+        </search>
+        <option name="count">8</option>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>

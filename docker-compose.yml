@@ -12,5 +12,5 @@ services:
       - SPLUNK_HOME=/opt/splunk
       - SPLUNK_PASSWORD=I<3bigDATA
     volumes:
-      - ./Splunk_TA_censys:/opt/splunk/etc/apps/Splunk_TA_censys
-      - ./censys:/opt/splunk/etc/apps/censys
+      - ./packages/Splunk_TA_censys:/opt/splunk/etc/apps/Splunk_TA_censys
+      - ./packages/censys/stage:/opt/splunk/etc/apps/censys

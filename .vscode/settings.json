@@ -1,10 +1,12 @@
 {
   "python.formatting.provider": "black",
   "python.analysis.extraPaths": [
-    "./Splunk_TA_censys/bin/",
-    "./Splunk_TA_censys/bin/splunk_ta_censys/aob_py3/"
+    "./packages/Splunk_TA_censys/bin/",
+    "./packages/Splunk_TA_censys/bin/splunk_ta_censys/aob_py3/",
+    "./packages/censys/src/main/resources/splunk/bin",
+    "./packages/censys/src/main/resources/splunk/lib"
   ],
-  "splunk.spec.FilePath": "./Splunk_TA_censys/README/",
+  "splunk.spec.FilePath": "./packages/Splunk_TA_censys/README/",
   "cSpell.words": [
     "addonfactory",
     "Confs",

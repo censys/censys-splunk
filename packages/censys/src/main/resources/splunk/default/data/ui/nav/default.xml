@@ -1,0 +1,14 @@
+<nav search_view="search" color="#f07a35">
+    <view name="start" default="true" />
+    <view name="setup" />
+    <view name="search" />
+    <collection label="Dashboards">
+        <view source="all" match="censys_" />
+    </collection>
+    <view name="reports" />
+    <view name="alerts" />
+    <collection label="Other Censys Apps">
+        <a href="https://splunkbase.splunk.com/app/6399/" target="_blank">Censys Add-on for Splunk</a>
+        <a href="https://splunkbase.splunk.com/app/5776/" target="_blank">Censys Search for Splunk SOAR</a>
+    </collection>
+</nav>

@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<view template="censys:/templates/start.html" type="html">
+	<label>Setup</label>
+</view>

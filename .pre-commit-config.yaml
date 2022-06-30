@@ -1,4 +1,4 @@
-exclude: ^.*\/(aob_py3|appserver)\/.*$
+exclude: ^.*\/(aob_py3|appserver|lib)\/.*$
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.2.0

@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "skorfulose.splunk",
-        "Splunk.splunk"
+        "splunk.splunk",
+        "EditorConfig.EditorConfig"
     ]
 }

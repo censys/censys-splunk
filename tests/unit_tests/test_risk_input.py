@@ -136,8 +136,14 @@ class TestRiskInput(CensysTestCase):
             "total": 2,
         }
         test_risk_types = {
-            "exposed-rsa-private-key": {"id": "exposed-rsa-private-key", "name": "Exposed RSA Private Key"},
-            "vulnerable-gitlab-cve-2021-22205": {"id": "vulnerable-gitlab-cve-2021-22205", "name": "Vulnerable GitLab CVE-2021-22205"},
+            "exposed-rsa-private-key": {
+                "id": "exposed-rsa-private-key",
+                "name": "Exposed RSA Private Key",
+            },
+            "vulnerable-gitlab-cve-2021-22205": {
+                "id": "vulnerable-gitlab-cve-2021-22205",
+                "name": "Vulnerable GitLab CVE-2021-22205",
+            },
         }
         expected_calls = []
         for event in test_risk_events["events"]:
@@ -183,8 +189,8 @@ class TestRiskInput(CensysTestCase):
         mock_write_event = mock_event_writer.write_event
         mock_update_check_point = self.mocker.patch.object(
             risk_api, "update_risk_events_cursor_check_point"
-        )            
-        
+        )
+
         # Actual call
         risk_api.write_risk_events(mock_event_writer)
 

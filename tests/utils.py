@@ -1,8 +1,7 @@
-import splunk_ta_censys_declare
-
 import unittest
-from typing import List, Optional
 from unittest.mock import MagicMock
+
+import splunk_ta_censys_declare
 
 import pytest
 from modinput_wrapper.base_modinput import BaseModInput

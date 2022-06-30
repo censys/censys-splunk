@@ -88,7 +88,7 @@ copybutton_prompt_text = "$"
 todo_include_todos = True
 
 # Generate CIM
-addon_dir = current_dir.parent / "Splunk_TA_censys"
+addon_dir = current_dir.parent / "packages" / "Splunk_TA_censys"
 addon_configurations = generate_addon_docs.read_config_files(addon_dir)
 addon_samples = generate_addon_docs.read_sample_files(addon_dir)
 output_dir = current_dir / "add-on"

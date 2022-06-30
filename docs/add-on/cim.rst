@@ -115,3 +115,14 @@ Common Information Model Mapping
       -  `Endpoint <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Endpoint>`_
     * -  ``vulnerability``
       -  `Vulnerabilities <https://docs.splunk.com/Documentation/CIM/5.0.1/User/Vulnerabilities>`_
+.. list-table:: Field Aliases
+    :header-rows: 1
+
+    * -  Field
+      -  CIM Alias
+    * -  ``riskName``
+      -  ``signature``
+    * -  ``riskType``
+      -  ``signature_id``
+    * -  ``ts``
+      -  ``creation_time``
