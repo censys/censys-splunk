@@ -3,7 +3,7 @@ Censys ASM App for Splunk
 
 The Censys ASM App for Splunk allows ASM users to visualized Logbook API data with a pre-built dashboard that can be customized with additional views.
 
-    Note: This app is dependent on `Censys Add-on for Splunk <https://splunkbase.splunk.com/app/6399/>`__.
+    **Note**: This app is dependent on `Censys Add-on for Splunk <https://splunkbase.splunk.com/app/6399/>`__.
 
 This guide will help you:
 
@@ -33,7 +33,7 @@ Install from Splunkbase (Recommended)
 
     .. image:: ../_static/find_more_apps.png
 
-2. Type "Censys" in the search bar.
+2. Type "**Censys**" in the search bar and press **Enter**.
 
 3. On the results page, find the "Censys ASM App for Splunk" app card and click the green **Install** button.
 
@@ -116,6 +116,73 @@ Easily check out the Censys ASM dashboard or your own custom dashboard by settin
     .. image:: ../_static/home_dashboard.png
 
 Now, when you open your Splunk Web main page, you'll easily see changes in your attack surface.
+
+Set Up Splunk Event Generator (Eventgen)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Splunk Event Generator is a useful tool for generating configurable events to simulate real-time data. 
+We have provided a sample ``eventgen.conf`` file along with sample events to get you started.
+
+**1. Install and enable the Splunk Eventgen app**
+
+From the Splunk Web main page, click the **+ Find More Apps** button in the sidebar.
+
+    .. image:: ../_static/find_more_apps.png
+
+Type "**Eventgen**" in the search bar and press **Enter**.
+
+On the results page, find the **Eventgen** app card and click the green **Install** button.
+
+    .. image:: ../_static/install_eventgen.png
+
+Go to **Settings > Data inputs** and click **SA-Eventgen**.
+
+    .. image:: ../_static/enable_eventgen.png
+
+Click **Enable** in the **modinput_eventgen** row.
+
+    .. image:: ../_static/enable_data_input.png
+
+**2. Create an Index**
+
+A new index for your sample events can be created through the Splunk Web UI or the Splunk Enterprise CLI. 
+Instructions for each option are detailed below.
+
+**Option #1:** Splunk Web UI
+
+Go to **Settings > Indexes**.
+
+    .. image:: ../_static/settings_index.png
+
+On the Indexes page, click **New Index**.
+
+Enter "**demo**" in the **Index Name** field and select **SA-Eventgen** in the **App** field.
+
+    .. image:: ../_static/add_index.png
+
+Click **Save**.
+
+**Option #2:** Splunk Enterprise CLI
+
+From the terminal (Mac or Linux), navigate to ``$SPLUNK_HOME/bin`` and enter the following command:
+    .. code:: bash
+    
+        ./splunk add index demo
+
+You will likely need to enter your Splunk username and password.
+
+    **Note:** If you would like to name your index something other than **demo**, you will need to edit the ``eventgen.conf`` file.
+
+**3. View your Sample Events**
+
+In the Censys ASM App, click the **Search** tab at the top of the page.
+
+Enter the search query ``index=demo`` to see all sample events.
+
+**Additional Resources**
+
+- `Splunk Eventgen Documentation <http://splunk.github.io/eventgen/>`__
+- `Splunk Dev Eventgen Setup Tutorial <https://dev.splunk.com/enterprise/tutorials/module_getstarted/useeventgen/>`__
 
 ----
 
