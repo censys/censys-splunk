@@ -133,6 +133,7 @@ class TestRiskInput(CensysTestCase):
                 },
             ],
             "next": test_next_cursor,
+            "endOfEvents": True,
             "total": 2,
         }
         test_risk_types = {

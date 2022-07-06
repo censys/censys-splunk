@@ -104,8 +104,7 @@ class CensysAsmRisksApi(CensysAsmApi):
         while not end_of_events:
             try:
                 res = self.get_risk_events(cursor)
-                if cursor == res.get("next"):
-                    end_of_events = True
+                end_of_events = res.get("endOfEvents", False)
             except requests.HTTPError as e:
                 self.helper.log_error(str(e))
                 break
