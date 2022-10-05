@@ -16,6 +16,8 @@ const CENSYS_APP_STATIC_PATH = path.join(
     'static'
 );
 
+const getStaticPath = (file) => path.join(CENSYS_APP_STATIC_PATH, file);
+
 module.exports = webpackMerge(baseConfig, {
     entry: path.join(__dirname, 'demo'),
     plugins: [
@@ -29,15 +31,17 @@ module.exports = webpackMerge(baseConfig, {
         before: (app) => {
             app.use('/static/fonts', (req, res) => {
                 const fileName = req.url.split('/').pop();
-                res.sendFile(path.join(CENSYS_APP_STATIC_PATH, fileName), {
+                res.sendFile(getStaticPath(fileName), {
                     'Content-Type': 'application/font-woff',
                 });
             });
             app.use('/static', (req, res) => {
                 const fileName = req.url.split('/').pop();
-                res.sendFile(path.join(CENSYS_APP_STATIC_PATH, fileName), {
-                    'Content-Type': 'text/css',
-                });
+                const options = {};
+                if (fileName.endsWith('.css')) {
+                    options['Content-Type'] = 'text/css';
+                }
+                res.sendFile(getStaticPath(fileName), options);
             });
         },
     },

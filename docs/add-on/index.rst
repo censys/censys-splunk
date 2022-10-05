@@ -67,32 +67,25 @@ If you will be using the same Censys workspace for all Splunk work, you can ente
 
 1. Click on the Configuration tab at the top of the page
 
-2. Under the Censys Settings tab, enter your API key (check out :ref:`add-on/index:add-on prerequisites` for help finding this)
+2. Under the Account tab, create a new account with your API key (check out :ref:`add-on/index:add-on prerequisites` for help finding this)
 
     .. image:: ../_static/configure_global_settings.png
 
-Logbook
-^^^^^^^
 
-From the Inputs page, select Create New Input. Fill out the following fields:
+Inputs
+^^^^^^
 
-- Name for your data input
-- Adjust the Interval field if desired. This determines how frequently data will be fetched from Censys ASM.
-- [**Optional**: This will override any :ref:`add-on/index:global settings`] Censys ASM API key from the Censys ASM `integrations page <https://app.censys.io/integrations/>`__
+From the Inputs page, select Create New Input. Select the API you would like to pull from.
+Fill out the following fields:
 
-.. image:: ../_static/logbook_config.png
+- Input Name (required): A name for the input
+- Interval (in seconds): How often the input should run (default is 3600 seconds, or 1 hour)
+- Index: The index where the data will be stored
+- Account: The Censys account to use (if you have multiple accounts)
 
 .. seealso::
 
     For more information on logbook events, visit our `Logbook Event Catalog <https://support.censys.io/hc/en-us/articles/4412836964244-Logbook-Event-Catalog-Reference->`_.
-
-
-Risks
-^^^^^
-
-.. todo::
-
-    Coming soon...
 
 Use the Add-on
 --------------

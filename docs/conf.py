@@ -88,8 +88,17 @@ copybutton_prompt_text = "$"
 todo_include_todos = True
 
 # Generate CIM
-addon_dir = current_dir.parent / "packages" / "Splunk_TA_censys"
-addon_configurations = generate_addon_docs.read_config_files(addon_dir)
-addon_samples = generate_addon_docs.read_sample_files(addon_dir)
-output_dir = current_dir / "add-on"
-generate_addon_docs.write_docs(output_dir, addon_configurations, addon_samples)
+# FIXME: Move to a Sphinx extension
+# addon_dir = (
+#     current_dir.parent
+#     / "packages"
+#     / "censys-ta"
+#     / "src"
+#     / "main"
+#     / "resources"
+#     / "splunk"
+# )
+# addon_configurations = generate_addon_docs.read_config_files(addon_dir)
+# addon_samples = generate_addon_docs.read_sample_files(addon_dir)
+# output_dir = current_dir / "add-on"
+# generate_addon_docs.write_docs(output_dir, addon_configurations, addon_samples)

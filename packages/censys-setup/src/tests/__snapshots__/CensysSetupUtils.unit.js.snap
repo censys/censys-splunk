@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`CensysSetupUtils error creating secret entry 1`] = `"404 Not Found: https://splunk.dev/service/storage/passwords/censys_setup:censys_app_secrets:"`;
-
-exports[`CensysSetupUtils error getting secret entries 1`] = `"500 Internal Server Error: https://splunk.dev/service/storage/passwords"`;
-
-exports[`CensysSetupUtils error getting secret entry 1`] = `"500 Internal Server Error: https://splunk.dev/service/storage/passwords"`;
-
-exports[`CensysSetupUtils error updating secret entry 1`] = `"404 Not Found: https://splunk.dev/service/storage/passwords/censys_setup:censys_app_secrets:"`;

@@ -11,7 +11,7 @@ from splunklib.searchcommands import GeneratingCommand
 
 DEFAULT_APP_NAME = "censys"
 DEFAULT_REALM = "censys_setup"
-DEFAULT_SECRET_NAME = "censys_app_secrets"
+DEFAULT_SECRET_NAME = "censys_secrets"
 
 
 class CensysSecretKeys(str, Enum):

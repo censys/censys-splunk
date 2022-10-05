@@ -10,6 +10,6 @@ module.exports = {
         fetchMock: true,
     },
     settings: {
-        polyfills: ['fetch', 'URLSearchParams'],
+        polyfills: ['URLSearchParams'],
     },
 };

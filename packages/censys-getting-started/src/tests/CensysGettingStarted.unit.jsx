@@ -12,17 +12,14 @@ import CensysGettingStarted from '../CensysGettingStarted';
 const adapter = new EnzymeAdapterReact16();
 Enzyme.configure({ adapter });
 
-describe('CensysGettingStarted', () => {
-    it('renders with default name', () => {
-        const wrapper = mount(<CensysGettingStarted />);
-        assert.include(wrapper.text(), 'Welcome to Censys for Splunk!');
-        wrapper.unmount();
-    });
+const defaultProps = {
+    appLabel: 'Censys',
+};
 
+describe('CensysGettingStarted', () => {
     it('renders with custom name', () => {
-        const appLabel = 'Censys';
-        const wrapper = mount(<CensysGettingStarted appLabel={appLabel} />);
-        assert.include(wrapper.text(), `Welcome to ${appLabel}!`);
+        const wrapper = mount(<CensysGettingStarted {...defaultProps} />);
+        assert.include(wrapper.text(), `Welcome to ${defaultProps.appLabel}!`);
         wrapper.unmount();
     });
 
@@ -31,7 +28,7 @@ describe('CensysGettingStarted', () => {
             type: 'warning',
             content: 'Your app needs an update',
         };
-        const wrapper = mount(<CensysGettingStarted message={message} />);
+        const wrapper = mount(<CensysGettingStarted {...defaultProps} message={message} />);
         assert.include(wrapper.text(), message.content);
         wrapper.unmount();
     });
@@ -45,7 +42,7 @@ describe('CensysGettingStarted', () => {
                 path: '/setup',
             },
         ];
-        const wrapper = mount(<CensysGettingStarted tasks={tasks} />);
+        const wrapper = mount(<CensysGettingStarted {...defaultProps} tasks={tasks} />);
         assert.include(wrapper.text(), tasks[0].title);
         assert.include(wrapper.text(), tasks[0].description);
         wrapper.unmount();

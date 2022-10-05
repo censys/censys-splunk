@@ -6,24 +6,32 @@
     "./packages/censys/src/main/resources/splunk/bin",
     "./packages/censys/src/main/resources/splunk/lib"
   ],
-  "splunk.spec.FilePath": "./packages/Splunk_TA_censys/README/",
   "cSpell.words": [
     "addonfactory",
+    "camelcase",
+    "CLASSNAME",
+    "cobertura",
+    "compat",
     "Confs",
     "copybutton",
     "eventtype",
     "eventtypes",
     "FIELDALIAS",
+    "loglevel",
     "markupsafe",
     "modinput",
     "modularinput",
+    "RESTURL",
+    "searchname",
     "seealso",
     "setuptools",
     "sourcetype",
     "sourcetypes",
     "Splunk",
+    "splunkapp",
     "Splunkbase",
     "splunklib",
+    "stylelint",
     "todos"
   ]
 }

@@ -1,0 +1,48 @@
+{
+  "links": {
+    "create": "/servicesNS/nobody/Splunk_TA_censys/Splunk_TA_censys_censys_asm_risks/_new"
+  },
+  "origin": "https://localhost:8000/servicesNS/nobody/Splunk_TA_censys/Splunk_TA_censys_censys_asm_risks",
+  "updated": "2022-08-22T11:34:05-04:00",
+  "generator": { "build": "a6fe1ee8894b", "version": "8.2.6" },
+  "entry": [
+    {
+      "name": "smoke_test_risks",
+      "id": "https://localhost:8000/servicesNS/nobody/Splunk_TA_censys/Splunk_TA_censys_censys_asm_risks/smoke_test_risks",
+      "updated": "1969-12-31T19:00:00-05:00",
+      "links": {
+        "alternate": "/servicesNS/nobody/Splunk_TA_censys/Splunk_TA_censys_censys_asm_risks/smoke_test_risks",
+        "list": "/servicesNS/nobody/Splunk_TA_censys/Splunk_TA_censys_censys_asm_risks/smoke_test_risks",
+        "edit": "/servicesNS/nobody/Splunk_TA_censys/Splunk_TA_censys_censys_asm_risks/smoke_test_risks",
+        "remove": "/servicesNS/nobody/Splunk_TA_censys/Splunk_TA_censys_censys_asm_risks/smoke_test_risks"
+      },
+      "author": "nobody",
+      "acl": {
+        "app": "Splunk_TA_censys",
+        "can_list": true,
+        "can_write": true,
+        "modifiable": false,
+        "owner": "nobody",
+        "perms": {
+          "read": ["admin", "power", "splunk-system-role", "user"],
+          "write": ["admin", "splunk-system-role"]
+        },
+        "removable": true,
+        "sharing": "app"
+      },
+      "content": {
+        "disabled": false,
+        "eai:acl": null,
+        "host": "$decideOnStartup",
+        "host_resolved": "localhost:8000",
+        "index": "main",
+        "interval": 1800,
+        "python.version": null,
+        "sourcetype": "censys:asm:risks",
+        "start_by_shell": "false"
+      }
+    }
+  ],
+  "paging": { "total": 1, "perPage": 30, "offset": 0 },
+  "messages": []
+}

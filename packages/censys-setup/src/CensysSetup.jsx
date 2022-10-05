@@ -7,21 +7,9 @@ import Heading from '@splunk/react-ui/Heading';
 import Link from '@splunk/react-ui/Link';
 import MessageBar from '@splunk/react-ui/MessageBar';
 import Text from '@splunk/react-ui/Text';
-import * as config from '@splunk/splunk-utils/config';
 import { variables } from '@splunk/themes';
 
-import {
-    ASM_API_KEY_REGEX,
-    DEFAULT_APP,
-    DEFAULT_SECRET_NAME,
-    SEARCH_API_ID_REGEX,
-    SEARCH_API_SECRET_REGEX,
-    createSecretEntry,
-    getSecretEntry,
-    reloadApp,
-    setIsConfigured,
-    updateSecretEntry,
-} from './CensysSetupUtils';
+import { api, defaultApp, secrets } from '@splunk/censys-utils';
 
 const inputStyle = {
     height: '32px',
@@ -38,7 +26,7 @@ const isEmpty = (str) => {
     return !str || str.length === 0;
 };
 
-const CensysSetup = ({ appId }) => {
+const CensysSetup = ({ appId, searchSetup, title }) => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [formErrors, setFormErrors] = useState({
@@ -90,15 +78,15 @@ const CensysSetup = ({ appId }) => {
         const errors = {};
 
         if (asmApiKey) {
-            const asmApiKeyValid = asmApiKey.match(ASM_API_KEY_REGEX);
+            const asmApiKeyValid = asmApiKey.match(secrets.ASM_API_KEY_REGEX);
             errors.asmApiKey = asmApiKeyValid ? '' : 'Invalid ASM API key.';
         } else {
             errors.asmApiKey = '';
         }
 
         if (searchAppId || searchAppSecret) {
-            const searchAppIdValid = searchAppId.match(SEARCH_API_ID_REGEX);
-            const searchAppSecretValid = searchAppSecret.match(SEARCH_API_SECRET_REGEX);
+            const searchAppIdValid = searchAppId.match(secrets.SEARCH_API_ID_REGEX);
+            const searchAppSecretValid = searchAppSecret.match(secrets.SEARCH_API_SECRET_REGEX);
             errors.searchAppId = searchAppIdValid ? '' : 'Invalid Search App ID.';
             errors.searchAppSecret = searchAppSecretValid ? '' : 'Invalid Search App Secret.';
         } else {
@@ -123,7 +111,7 @@ const CensysSetup = ({ appId }) => {
             return;
         }
         setLoading(true);
-        const secrets = {
+        const newSecrets = {
             censys_asm_api_key: asmApiKey,
             censys_search_app_id: searchAppId,
             censys_search_app_secret: searchAppSecret,
@@ -131,14 +119,14 @@ const CensysSetup = ({ appId }) => {
         try {
             // If the secret exists, update it otherwise create it
             if (secretExists) {
-                await updateSecretEntry(DEFAULT_SECRET_NAME, secrets);
+                await secrets.updateSecretEntry(secrets.DEFAULT_SECRET_NAME, newSecrets);
             } else {
-                await createSecretEntry(DEFAULT_SECRET_NAME, secrets);
+                await secrets.createSecretEntry(secrets.DEFAULT_SECRET_NAME, newSecrets);
             }
 
             // Set the app to configured
-            await setIsConfigured(true);
-            await reloadApp();
+            await api.setIsConfigured(true);
+            await api.reloadApp();
             setFormErrors({});
             setMessage({ type: 'success', content: successMessage });
         } catch (error) {
@@ -149,7 +137,8 @@ const CensysSetup = ({ appId }) => {
 
     useEffect(() => {
         let controller = new AbortController();
-        getSecretEntry(DEFAULT_SECRET_NAME, controller.signal)
+        secrets
+            .getSecretEntry(secrets.DEFAULT_SECRET_NAME, controller.signal)
             .then((secretEntry) => {
                 const clearSecrets = secretEntry.clearPassword;
                 if (clearSecrets) {
@@ -177,7 +166,7 @@ const CensysSetup = ({ appId }) => {
     return (
         <div className="section-padded section-header">
             <Heading level={1} className="section-title search-title-searchname">
-                Censys Setup
+                {title}
             </Heading>
 
             {message && <MessageBar type={message.type || 'info'}>{message.content}</MessageBar>}
@@ -199,40 +188,46 @@ const CensysSetup = ({ appId }) => {
                 />
             </ControlGroup>
 
-            <ControlGroup
-                label="Censys Search"
-                labelPosition="top"
-                help={searchHelp}
-                error={!isEmpty(formErrors.searchAppId || formErrors.searchAppSecret)}
-            >
-                <Text
-                    placeholder="Your Search API ID"
-                    maxLength={36}
-                    value={searchAppId}
-                    onChange={(e) => setSearchAppId(e.target.value)}
-                    style={{ ...inputStyle, marginRight: variables.spacingQuarter }}
-                    error={!isEmpty(formErrors.searchAppId)}
-                    {...inputProp}
-                />
-                <Text
-                    placeholder="Your Search API Secret"
-                    maxLength={32}
-                    value={searchAppSecret}
-                    onChange={(e) => setSearchAppSecret(e.target.value)}
-                    style={inputStyle}
-                    error={!isEmpty(formErrors.searchAppSecret)}
-                    {...inputProp}
-                />
-            </ControlGroup>
+            {searchSetup && (
+                <ControlGroup
+                    label="Censys Search"
+                    labelPosition="top"
+                    help={searchHelp}
+                    error={!isEmpty(formErrors.searchAppId || formErrors.searchAppSecret)}
+                >
+                    <Text
+                        placeholder="Your Search API ID"
+                        maxLength={36}
+                        value={searchAppId}
+                        onChange={(e) => setSearchAppId(e.target.value)}
+                        style={{ ...inputStyle, marginRight: variables.spacingQuarter }}
+                        error={!isEmpty(formErrors.searchAppId)}
+                        {...inputProp}
+                    />
+                    <Text
+                        placeholder="Your Search API Secret"
+                        maxLength={32}
+                        value={searchAppSecret}
+                        onChange={(e) => setSearchAppSecret(e.target.value)}
+                        style={inputStyle}
+                        error={!isEmpty(formErrors.searchAppSecret)}
+                        {...inputProp}
+                    />
+                </ControlGroup>
+            )}
             <Button label="Submit" appearance="primary" disabled={loading} onClick={handleSubmit} />
         </div>
     );
 };
 CensysSetup.propTypes = {
     appId: PropTypes.string,
+    title: PropTypes.string,
+    searchSetup: PropTypes.bool,
 };
 CensysSetup.defaultProps = {
-    appId: config.app || DEFAULT_APP,
+    appId: defaultApp,
+    title: 'Censys Setup',
+    searchSetup: true,
 };
 
 export default CensysSetup;

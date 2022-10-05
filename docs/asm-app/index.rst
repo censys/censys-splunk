@@ -120,7 +120,7 @@ Now, when you open your Splunk Web main page, you'll easily see changes in your 
 Set Up Splunk Event Generator (Eventgen)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Splunk Event Generator is a useful tool for generating configurable events to simulate real-time data. 
+Splunk Event Generator is a useful tool for generating configurable events to simulate real-time data.
 We have provided a sample ``eventgen.conf`` file along with sample events to get you started.
 
 **1. Install and enable the Splunk Eventgen app**
@@ -145,7 +145,7 @@ Click **Enable** in the **modinput_eventgen** row.
 
 **2. Create an Index**
 
-A new index for your sample events can be created through the Splunk Web UI or the Splunk Enterprise CLI. 
+A new index for your sample events can be created through the Splunk Web UI or the Splunk Enterprise CLI.
 Instructions for each option are detailed below.
 
 **Option #1:** Splunk Web UI
@@ -166,7 +166,7 @@ Click **Save**.
 
 From the terminal (Mac or Linux), navigate to ``$SPLUNK_HOME/bin`` and enter the following command:
     .. code:: bash
-    
+
         ./splunk add index demo
 
 You will likely need to enter your Splunk username and password.

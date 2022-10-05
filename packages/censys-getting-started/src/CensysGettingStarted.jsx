@@ -1,16 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 
-import BellIcon from '@splunk/react-icons/Bell';
-import GearIcon from '@splunk/react-icons/Gear';
-import ReportPivotIcon from '@splunk/react-icons/ReportPivot';
-import ReportSearchIcon from '@splunk/react-icons/ReportSearch';
-import SearchIcon from '@splunk/react-icons/Search';
 import Card from '@splunk/react-ui/Card';
 import CardLayout from '@splunk/react-ui/CardLayout';
 import Heading from '@splunk/react-ui/Heading';
 import Link from '@splunk/react-ui/Link';
 import MessageBar from '@splunk/react-ui/MessageBar';
+import Modal from '@splunk/react-ui/Modal';
 import * as config from '@splunk/splunk-utils/config';
 
 const COLOR_OPTIONS = ['#ff5200', '#3a87ad', '#65a637', '#f8be34'];
@@ -25,13 +21,21 @@ const ICON_STYLE = {
 const CARD_LAYOUT_STYLE = {
     padding: 0,
 };
-const CARD_STYLE = { minWidth: '300px', margin: '0 20px 20px 0' };
+const CARD_STYLE = { minWidth: '350px', maxWidth: '350px', margin: '0 20px 20px 0' };
 const LINK_STYLE = {
     margin: '0 20px 0 0',
 };
 
 const CensysGettingStarted = ({ appId, appLabel, message, tasks, links }) => {
     const appPath = `/app/${appId}`;
+
+    const [showModal, setShowModal] = useState(false);
+    const [modalPage, setModalPage] = useState(null);
+
+    const handleRequestClose = () => {
+        setShowModal(false);
+    };
+
     return (
         <div className="section-padded section-header">
             <Heading level={1} className="section-title search-title-searchname">
@@ -40,27 +44,46 @@ const CensysGettingStarted = ({ appId, appLabel, message, tasks, links }) => {
             {message && <MessageBar type={message.type}>{message.content}</MessageBar>}
             {tasks && (
                 <CardLayout style={CARD_LAYOUT_STYLE}>
-                    {tasks.map(({ title, description, icon, path }, index) => {
-                        const colorIndex = index % COLOR_OPTIONS.length;
-                        const cardBodyStyle = {
-                            textAlign: 'center',
-                            color: COLOR_OPTIONS[colorIndex],
-                            background: BACKGROUND_COLOR_OPTIONS[colorIndex],
-                        };
-                        const Icon = icon;
-                        return (
-                            <Card
-                                style={CARD_STYLE}
-                                to={appPath + path}
-                                key={title.toLowerCase().replace(' ', '-')}
-                            >
-                                <Card.Header title={title} subtitle={description} />
-                                <Card.Body style={cardBodyStyle}>
-                                    <Icon style={ICON_STYLE} />
-                                </Card.Body>
-                            </Card>
-                        );
-                    })}
+                    {tasks
+                        .filter((task) => task.show === undefined || task.show)
+                        .map(({ title, description, icon, path, modal }, index) => {
+                            const colorIndex = index % COLOR_OPTIONS.length;
+                            const cardBodyStyle = {
+                                textAlign: 'center',
+                                color: COLOR_OPTIONS[colorIndex],
+                                background: BACKGROUND_COLOR_OPTIONS[colorIndex],
+                            };
+                            const Icon = icon;
+                            const cardProps = {
+                                style: CARD_STYLE,
+                                key: title.toLowerCase().replace(' ', '-'),
+                            };
+                            if (path) {
+                                if (
+                                    path.startsWith('/') &&
+                                    !path.startsWith('/app/') &&
+                                    !path.startsWith('/manager/')
+                                ) {
+                                    cardProps.to = `${appPath}${path}`;
+                                } else {
+                                    cardProps.to = path;
+                                }
+                            }
+                            if (modal) {
+                                cardProps.onClick = () => {
+                                    setModalPage(modal);
+                                    setShowModal(true);
+                                };
+                            }
+                            return (
+                                <Card {...cardProps}>
+                                    <Card.Header title={title} subtitle={description} />
+                                    <Card.Body style={cardBodyStyle}>
+                                        <Icon style={ICON_STYLE} />
+                                    </Card.Body>
+                                </Card>
+                            );
+                        })}
                 </CardLayout>
             )}
             {links &&
@@ -74,12 +97,31 @@ const CensysGettingStarted = ({ appId, appLabel, message, tasks, links }) => {
                         {title}
                     </Link>
                 ))}
+            {modalPage && (
+                <Modal
+                    style={{ width: '600px' }}
+                    open={showModal}
+                    onRequestClose={handleRequestClose}
+                >
+                    <Modal.Header title={modalPage.header} onRequestClose={handleRequestClose} />
+                    <Modal.Body>
+                        {modalPage.content}
+                        {modalPage.image && (
+                            <img
+                                src={`/static${appPath}/${modalPage.image}`}
+                                style={{ width: '100%' }}
+                                alt={modalPage.header}
+                            />
+                        )}
+                    </Modal.Body>
+                </Modal>
+            )}
         </div>
     );
 };
 CensysGettingStarted.propTypes = {
     appId: PropTypes.string,
-    appLabel: PropTypes.string,
+    appLabel: PropTypes.string.isRequired,
     message: PropTypes.shape({
         content: PropTypes.string,
         type: PropTypes.string,
@@ -90,8 +132,13 @@ CensysGettingStarted.propTypes = {
             description: PropTypes.string,
             icon: PropTypes.func,
             path: PropTypes.string,
-            func: PropTypes.func,
-        })
+            modal: PropTypes.shape({
+                header: PropTypes.string,
+                content: PropTypes.element,
+                image: PropTypes.string,
+            }),
+            show: PropTypes.bool,
+        }).isRequired
     ),
     links: PropTypes.arrayOf(
         PropTypes.shape({
@@ -102,51 +149,6 @@ CensysGettingStarted.propTypes = {
 };
 CensysGettingStarted.defaultProps = {
     appId: config.app || 'censys',
-    appLabel: 'Censys for Splunk',
-    tasks: [
-        // Keep descriptions less than 50 characters
-        {
-            // TODO: Only show setup task if the user is not logged in
-            title: 'Setup your Censys credentials',
-            description: 'Configure your credentials to unlock all the features.',
-            icon: GearIcon,
-            path: '/setup',
-        },
-        {
-            title: 'Write your first search',
-            description: 'Get started with an example search.',
-            icon: SearchIcon,
-            path: '/search?q=search%20sourcetype%3D%22censys%3Aasm%3A*%22&earliest=-30d%40d&latest=now',
-        },
-        {
-            title: 'Create a report',
-            description: 'View pre-built reports and create your own.',
-            icon: ReportSearchIcon,
-            path: '/reports',
-        },
-        {
-            title: 'Create alerts',
-            description: 'Setup alerts when your search results change.',
-            icon: BellIcon,
-            path: '/alerts',
-        },
-        {
-            title: 'Use Workflow Actions',
-            description: 'Level up your investigation with the Workflow Actions.',
-            icon: ReportPivotIcon,
-            path: '/search',
-        },
-    ],
-    links: [
-        {
-            title: 'Documentation',
-            href: '',
-        },
-        {
-            title: 'Support',
-            href: '',
-        },
-    ],
     // message: {
     //     content: 'Your app needs an update',
     //     type: 'warning',

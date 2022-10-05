@@ -16,6 +16,8 @@ const CENSYS_APP_STATIC_PATH = path.join(
     'static'
 );
 const STANDALONE_PATH = path.join(__dirname, 'standalone');
+const PASSWORDS_PATH = path.join(STANDALONE_PATH, 'passwords.json');
+const PASSWORD_PATH = path.join(STANDALONE_PATH, 'password.json');
 
 module.exports = webpackMerge(baseConfig, {
     entry: path.join(__dirname, 'demo'),
@@ -41,16 +43,13 @@ module.exports = webpackMerge(baseConfig, {
                 });
             });
             app.use('/servicesNS/nobody/censys/storage/passwords', (req, res) => {
-                if (req.method === 'GET') {
-                    res.sendFile(path.join(STANDALONE_PATH, 'passwords.xml'), {
-                        'Content-Type': 'application/xml',
-                    });
-                } else if (req.method === 'POST') {
-                    res.setHeader('Content-Type', 'application/xml');
-                    res.sendFile(path.join(STANDALONE_PATH, 'password.xml'), {
-                        'Content-Type': 'application/xml',
-                    });
+                let filePath = PASSWORDS_PATH;
+                if (req.method === 'POST') {
+                    filePath = PASSWORD_PATH;
                 }
+                res.sendFile(filePath, {
+                    'Content-Type': 'application/json',
+                });
             });
             app.use('/servicesNS/nobody/censys/configs/conf-app/install', (req, res) => {
                 if (req.method === 'POST') {

@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "type": "pwa-chrome",
+      "name": "Debug Demo App",
+      "request": "launch",
+      "url": "http://localhost:8080/"
+    },
+    {
+      "type": "pwa-chrome",
+      "name": "Debug Local Splunk",
+      "request": "launch",
+      "url": "http://localhost:8000/"
+    },
+    {
+      "type": "pwa-chrome",
+      "name": "Debug Local Splunk Add-on",
+      "request": "launch",
+      "url": "http://localhost:8000/en-US/app/Splunk_TA_censys"
+    },
+    {
+      "type": "pwa-chrome",
+      "name": "Debug Local Splunk App",
+      "request": "launch",
+      "url": "http://localhost:8000/en-US/app/censys"
+    }
+  ]
+}
