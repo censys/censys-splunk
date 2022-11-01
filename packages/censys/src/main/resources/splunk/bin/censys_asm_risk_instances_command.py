@@ -25,7 +25,17 @@ class CensysAsmRiskInstancesCommand(CensysGeneratingCommand):
     def generate(self):
         asm_api_key = self.get_censys_asm_api_key()
         risks_client = Risksv2(asm_api_key)
-        res = risks_client.get_risk_instances(include_events=False)
+        query = {
+            "and": [
+                [
+                    "type.enabled",
+                    "=",
+                    "true"
+                ]
+            ]
+        }
+        res = risks_client.search_risk_instances(query)
+        # res = risks_client.get_risk_instances(include_events=False)
         for risk_instance in res.get("risks", []):
             yield {
                 "_raw": json.dumps(risk_instance),

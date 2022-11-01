@@ -52,7 +52,6 @@ tests: test-add-on test-app  ## Run tests
 .PHONY: lint
 lint: ## Run linters
 	poetry run isort .
-	poetry run pyupgrade packages/Splunk_TA_censys/bin/*.py --py37
 
 .PHONY: link-app
 link-app:  ## Link Splunk App

@@ -1,0 +1,175 @@
+<dashboard version="1.1" theme="light">
+  <label>Censys ASM Risks</label>
+  <row depends="$hideCSS$">
+    <panel>
+      <html>
+        <style>
+            #remediations td {
+              color: #1E68E0 !important;
+              column-fill: auto !important;
+              font-size: 14px !important;
+              font-family: Helvetica; Helvetica neue; Arial; Roboto; san-serif; !important;
+            }
+            #remediations th {
+              color: #252B36 !important;
+              text-align: justify !important;
+              vertical-align: text-top !important;
+              font-size: 100% !important;
+              font-family: Helvetica; Helvetica neue; Arial; Roboto; san-serif; !important;
+            }
+            #remediations a [class*=" icon-"], a [class^=icon-] {
+              /* display: inline-block; */
+              float: right;
+              text-decoration: none;
+              line-height: inherit;
+            }
+            #risktypes td {
+              color: #1E68E0 !important;
+              font-size: 14px !important;
+              font-family: Helvetica; Helvetica neue; Arial; Roboto; san-serif; !important;
+            }
+            #risktypes th {
+              color: #252B36 !important;
+              text-align: justify !important;
+              vertical-align: text-top !important;
+              font-size: 100% !important;
+              font-family: Helvetica; Helvetica neue; Arial; Roboto; san-serif; !important;
+            }
+            #legend g.highcharts-legend-item:nth-child(5)
+            {
+              visibility: hidden !important;
+            }
+        </style>
+      </html>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Risks by Severity</title>
+      <chart>
+        <search>
+          <query>| inputlookup asm_risk_instances_lookup where status=open | stats count by severity | eval filters=json_array(json_object("type", "riskActiveFilter", "value", "active", "display", false), json_object("type", "riskSeverityFilter", "value", severity, "display", severity)) | base64 field=filters | eval base_url="http://app.censys.io/risks?filters" | strcat base_url "=" filters url_encoded | eval severity=case(severity=="low","Low",severity=="medium","Medium",severity=="high","High",severity=="critical","Critical") | table severity count url_encoded</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.chart">pie</option>
+        <option name="charting.chart.showLabels">1</option>
+        <option name="charting.chart.showPercent">1</option>
+        <option name="charting.data.fieldShowList">["Low", "Medium", "High", "Critical"]</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.fieldColors">{"Low": 0x1C7B44, "Medium": 0xFFC000, "High":0xD51D18, "Critical":0x760804}</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="trellis.enabled">0</option>
+        <drilldown>
+          <condition match="'click.value'==&quot;Low&quot;">
+            <link target="_blank">http://app.censys.io/risks?filters=W3sidHlwZSI6InJpc2tBY3RpdmVGaWx0ZXIiLCJ2YWx1ZSI6ImFjdGl2ZSIsImRpc3BsYXkiOm51bGx9LHsidHlwZSI6InJpc2tTZXZlcml0eUZpbHRlciIsInZhbHVlIjoibG93IiwiZGlzcGxheSI6ImxvdyJ9XQ==</link>
+          </condition>
+          <condition match="'click.value'==&quot;Medium&quot;">
+            <link target="_blank">http://app.censys.io/risks?filters=W3sidHlwZSI6InJpc2tBY3RpdmVGaWx0ZXIiLCJ2YWx1ZSI6ImFjdGl2ZSIsImRpc3BsYXkiOm51bGx9LHsidHlwZSI6InJpc2tTZXZlcml0eUZpbHRlciIsInZhbHVlIjoibWVkaXVtIiwiZGlzcGxheSI6Im1lZGl1bSJ9XQ==</link>
+          </condition>
+          <condition match="'click.value'==&quot;High&quot;">
+            <link target="_blank">http://app.censys.io/risks?filters=W3sidHlwZSI6InJpc2tBY3RpdmVGaWx0ZXIiLCJ2YWx1ZSI6ImFjdGl2ZSIsImRpc3BsYXkiOm51bGx9LHsidHlwZSI6InJpc2tTZXZlcml0eUZpbHRlciIsInZhbHVlIjoiaGlnaCIsImRpc3BsYXkiOiJoaWdoIn1d</link>
+          </condition>
+          <condition match="'click.value'==&quot;Critical&quot;">
+            <link target="_blank">http://app.censys.io/risks?filters=W3sidHlwZSI6InJpc2tBY3RpdmVGaWx0ZXIiLCJ2YWx1ZSI6ImFjdGl2ZSIsImRpc3BsYXkiOm51bGx9LHsidHlwZSI6InJpc2tTZXZlcml0eUZpbHRlciIsInZhbHVlIjoiY3JpdGljYWwiLCJkaXNwbGF5IjoiY3JpdGljYWwifV0=</link>
+          </condition>
+        </drilldown>
+      </chart>
+    </panel>
+    <panel>
+      <title>Risks by Category</title>
+      <chart>
+        <search>
+          <query>| inputlookup asm_risk_instances_lookup where status=open | stats count by categories</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">all</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Critical and High Risk Types</title>
+      <table id="remediations">
+        <search>
+          <query>| inputlookup asm_risk_instances_lookup where status="open" AND (severity="critical" OR severity="high") | dedup displayName ip name | stats count by displayName, typeID | lookup asm_risk_types_lookup id as typeID OUTPUT remediations | eval riskType=displayName | eval assetsAffected=count | sort - assetsAffected | head 20 | eval filters=json_array(json_object("type", "riskActiveFilter", "value", "active", "display", false), json_object("type", "riskTypeFilter", "value", typeID, "display", riskType)) | base64 field=filters | eval base_url="http://app.censys.io/risks?filters" | strcat base_url "=" filters url_encoded | table riskType assetsAffected remediations url_encoded | rename riskType as "Risk Type" | rename assetsAffected as "Assets Affected" | rename remediations as "Remediations"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">row</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <format type="color" field="riskType">
+          <colorPalette type="minMidMax" maxColor="#118832" minColor="#FFFFFF"></colorPalette>
+          <scale type="minMidMax"></scale>
+        </format>
+        <fields>["Risk Type","Assets Affected","Remediations"]</fields>
+        <drilldown>
+          <link target="_blank">$row.url_encoded|n$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Top Risk Types with Severity</title>
+      <chart id="legend">
+        <search>
+          <query>| inputlookup asm_risk_instances_lookup where status=open | stats count as count, values(typeID) as typeID by displayName, severity | sort - count | head 30 | eval filters=json_array(json_object("type", "riskActiveFilter", "value", "active", "display", false), json_object("type", "riskTypeFilter", "value", typeID, "display", displayName)) | base64 field=filters | eval base_url="http://app.censys.io/risks?filters" | strcat base_url "=" filters url_encoded | eval risktype_url=mvappend(displayName, url_encoded) | eval risktype_joined=mvjoin(risktype_url, ",") | chart sum(count) by risktype_joined severity | eval risktype_joined=split(risktype_joined, ",") | eval sort_field=case(critical!=0,1, high!=0,2, medium!=0,3, low!=0,4)| sort sort_field, -critical, -high, -medium, -low | eval riskType=mvindex(risktype_joined,0) | eval url=mvindex(risktype_joined,1) | fields riskType url critical high medium low | rename low as "Low" | rename medium as "Medium" | rename high as "High" | rename critical as "Critical"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">-45</option>
+        <option name="charting.axisLabelsX.majorLabelVisibility">show</option>
+        <option name="charting.axisTitleX.text">Risk Type</option>
+        <option name="charting.axisTitleY.text">Count</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisY.abbreviation">none</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">0</option>
+        <option name="charting.chart">bar</option>
+        <option name="charting.chart.showDataLabels">none</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.fieldColors">{"Low": 0x1C7B44, "Medium": 0xFFC000, "High": 0xD51D18, "Critical": 0x760804}</option>
+        <option name="charting.fontColor">#000000</option>
+        <option name="charting.gridLinesY.showMajorLines">1</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.legend.labels">["Low", "Medium", "High", "Critical"]</option>
+        <option name="height">800</option>
+        <option name="refresh.display">progressbar</option>
+        <drilldown>
+          <link target="_blank">$row.url|n$</link>
+        </drilldown>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Hosts with Most Risks</title>
+      <table id="risktypes">
+        <search>
+          <query>| inputlookup asm_risks_on_hosts_severity_lookup | lookup asm_risks_on_hosts_types_lookup ip as ip | table count ip highestSeverity riskTypes | rename count as "Count" | rename ip as "IP Address" | rename highestSeverity as "Highest Severity" | rename riskTypes as "Risk Types" | head 20</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">row</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <drilldown>
+          <link target="_blank">https://app.censys.io/hosts/$row.IP Address$/risks</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</dashboard>
