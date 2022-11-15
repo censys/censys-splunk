@@ -4,7 +4,7 @@
     "./packages/censys/src/main/resources/splunk/bin",
     "./packages/censys/src/main/resources/splunk/lib",
     "./packages/Splunk_TA_censys/bin",
-    "./packages/Splunk_TA_censys/bin/splunk_ta_censys/aob_py3",
+    "./packages/Splunk_TA_censys/bin/splunk_ta_censys/aob_py3"
   ],
   "splunk.spec.FilePath": "./packages/Splunk_TA_censys/README/",
   "cSpell.words": [

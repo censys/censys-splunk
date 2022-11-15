@@ -21,9 +21,9 @@ Features
 - Dashboards for Censys ASM Logbook and Risk Events APIs
 - Custom query-based alerts and reports
 
-.. **Censys Search App for Splunk**
+**Censys Search App for Splunk**
 
-.. -
+- Enrich logs with the most up-to-date information on public hosts and certificates
 
 .. toctree::
    :maxdepth: 2
