@@ -16,7 +16,7 @@ Search App Prerequisites
 
 1. Your Censys Search API key and secret.
 
-    .. image:: ../_static/search_api_key.png
+.. image:: ../_static/search_api_key.png
 
 2. A Splunk account and installation.
 
@@ -27,15 +27,15 @@ Install the Censys Search App for Splunk
 
 1. From the Splunk main page, click the **+ Find More Apps** button in the sidebar.
 
-    .. image:: ../_static/find_more_apps.png
+.. image:: ../_static/find_more_apps.png
 
 2. Type "Censys" in the search bar.
 
-    .. image:: ../_static/browse_more_apps.png
+.. image:: ../_static/browse_more_apps.png
 
 3. On the results page, find the "Censys Search for Splunk" app card and click the green **Install** button.
 
-    .. image:: ../_static/install_search_app.png
+.. image:: ../_static/install_search_app.png
 
 4. Enter your Splunkbase credentials and click the **Login and Install** button.
 
@@ -44,17 +44,17 @@ Configure the Censys Search App
 
 1. From the Splunk main page, click the **Manage Apps** gear in the top left corner of the page.
 
-    .. image:: ../_static/manage_apps.png
+.. image:: ../_static/manage_apps.png
 
 2. Find "Censys Search" in the list of installed apps.
 
 3. Click the **Set up** button to open the Censys Search app.
 
-    .. image:: ../_static/setup_search_app.png
+.. image:: ../_static/setup_search_app.png
 
 4. Enter your Censys Search API key and secret in the fields provided.
 
-    .. image:: ../_static/setup_search_app_fields.png
+.. image:: ../_static/setup_search_app_fields.png
 
 Use the Censys Search command
 -----------------------------

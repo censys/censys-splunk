@@ -14,10 +14,12 @@ Features
 **Censys Add-on for Splunk**
 
 - Import data from the Censys ASM Logbook API into Splunk
+- Import data from the Censys ASM Risk Events API into Splunk
 
 **Censys ASM App for Splunk**
 
-- Dashboards for Censys ASM Logbook API
+- Dashboards for Censys ASM Logbook and Risk Events APIs
+- Custom query-based alerts and reports
 
 .. **Censys Search App for Splunk**
 

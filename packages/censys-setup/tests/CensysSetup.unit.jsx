@@ -15,8 +15,6 @@ describe('CensysSetup', () => {
     //     secrets.getSecretEntry.mockResolvedValue({
     //         clearPassword: {
     //             censys_asm_api_key: 'censys_asm_api_key',
-    //             censys_search_app_id: 'censys_search_app_id',
-    //             censys_search_app_secret: 'censys_search_app_secret',
     //         },
     //     });
     // });

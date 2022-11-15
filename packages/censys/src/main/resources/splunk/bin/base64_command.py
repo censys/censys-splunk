@@ -1,7 +1,7 @@
-import math
-import os
 import sys
 from base64 import b64decode, b64encode
+
+import censys_declare
 
 from splunklib.searchcommands import (
     Configuration,

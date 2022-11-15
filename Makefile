@@ -8,7 +8,7 @@ all: help
 
 .PHONY: install
 install:  ## Install developer dependencies
-	poetry install
+	poetry install --with dev
 	yarn install
 
 .PHONY: build-add-on
@@ -70,6 +70,16 @@ link: link-app link-add-on  ## Link Splunk Add-on and Splunk App
 splunk-restart:  ## Restart local Splunk
 	@if [ -z ${SPLUNK_HOME} ]; then echo "SPLUNK_HOME is not set. Please set it and re-run this command."; exit 1; fi
 	${SPLUNK_HOME}/bin/splunk restart
+
+.PHONY: splunk-start
+splunk-start:  ## Restart local Splunk
+	@if [ -z ${SPLUNK_HOME} ]; then echo "SPLUNK_HOME is not set. Please set it and re-run this command."; exit 1; fi
+	${SPLUNK_HOME}/bin/splunk start
+
+.PHONY: splunk-stop
+splunk-stop:  ## Stop local Splunk
+	@if [ -z ${SPLUNK_HOME} ]; then echo "SPLUNK_HOME is not set. Please set it and re-run this command."; exit 1; fi
+	${SPLUNK_HOME}/bin/splunk stop
 
 # via https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 .PHONY: help

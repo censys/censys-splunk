@@ -26,27 +26,19 @@ const isEmpty = (str) => {
     return !str || str.length === 0;
 };
 
-const CensysSetup = ({ appId, searchSetup, title }) => {
+const CensysSetup = ({ appId, title }) => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [formErrors, setFormErrors] = useState({
-        asmApiKey: '',
-        searchAppId: '',
-        searchAppSecret: '',
+        asmApiKey: ''
     });
     const [secretExists, setSecretExists] = useState(true);
     const [asmApiKey, setAsmApiKey] = useState('');
-    const [searchAppId, setSearchAppId] = useState('');
-    const [searchAppSecret, setSearchAppSecret] = useState('');
 
     const appPath = `/app/${appId}`;
     const startPath = `${appPath}/start`;
 
     const asmError = formErrors.asmApiKey;
-    const searchError = formErrors.searchAppId || formErrors.searchAppSecret;
-    const searchErrors = [formErrors.searchAppId, formErrors.searchAppSecret].filter(
-        (error) => error !== ''
-    );
 
     const asmHelp = (
         <span>
@@ -55,16 +47,6 @@ const CensysSetup = ({ appId, searchSetup, title }) => {
                 ASM integrations page
             </Link>
             {asmError && <p>{asmError}</p>}
-        </span>
-    );
-
-    const searchHelp = (
-        <span>
-            Get your API key from the{' '}
-            <Link to="https://search.censys.io/account/api" openInNewContext>
-                Search account page
-            </Link>
-            {searchError && <p>{searchErrors.join(' ')}</p>}
         </span>
     );
 
@@ -84,20 +66,8 @@ const CensysSetup = ({ appId, searchSetup, title }) => {
             errors.asmApiKey = '';
         }
 
-        if (searchAppId || searchAppSecret) {
-            const searchAppIdValid = searchAppId.match(secrets.SEARCH_API_ID_REGEX);
-            const searchAppSecretValid = searchAppSecret.match(secrets.SEARCH_API_SECRET_REGEX);
-            errors.searchAppId = searchAppIdValid ? '' : 'Invalid Search App ID.';
-            errors.searchAppSecret = searchAppSecretValid ? '' : 'Invalid Search App Secret.';
-        } else {
-            errors.searchAppId = '';
-            errors.searchAppSecret = '';
-        }
-
-        if (!asmApiKey && !searchAppId && !searchAppSecret) {
+        if (!asmApiKey) {
             errors.asmApiKey = 'Invalid ASM API key.';
-            errors.searchAppId = 'Invalid Search App ID.';
-            errors.searchAppSecret = 'Invalid Search App Secret.';
         }
 
         return errors;
@@ -113,8 +83,6 @@ const CensysSetup = ({ appId, searchSetup, title }) => {
         setLoading(true);
         const newSecrets = {
             censys_asm_api_key: asmApiKey,
-            censys_search_app_id: searchAppId,
-            censys_search_app_secret: searchAppSecret,
         };
         try {
             // If the secret exists, update it otherwise create it
@@ -143,16 +111,8 @@ const CensysSetup = ({ appId, searchSetup, title }) => {
                 const clearSecrets = secretEntry.clearPassword;
                 if (clearSecrets) {
                     const censysAsmApiKey = clearSecrets.censys_asm_api_key;
-                    const censysSearchAppId = clearSecrets.censys_search_app_id;
-                    const censysSearchAppSecret = clearSecrets.censys_search_app_secret;
                     if (censysAsmApiKey) {
                         setAsmApiKey(censysAsmApiKey);
-                    }
-                    if (censysSearchAppId) {
-                        setSearchAppId(censysSearchAppId);
-                    }
-                    if (censysSearchAppSecret) {
-                        setSearchAppSecret(censysSearchAppSecret);
                     }
                 }
                 controller = null;
@@ -188,33 +148,6 @@ const CensysSetup = ({ appId, searchSetup, title }) => {
                 />
             </ControlGroup>
 
-            {searchSetup && (
-                <ControlGroup
-                    label="Censys Search"
-                    labelPosition="top"
-                    help={searchHelp}
-                    error={!isEmpty(formErrors.searchAppId || formErrors.searchAppSecret)}
-                >
-                    <Text
-                        placeholder="Your Search API ID"
-                        maxLength={36}
-                        value={searchAppId}
-                        onChange={(e) => setSearchAppId(e.target.value)}
-                        style={{ ...inputStyle, marginRight: variables.spacingQuarter }}
-                        error={!isEmpty(formErrors.searchAppId)}
-                        {...inputProp}
-                    />
-                    <Text
-                        placeholder="Your Search API Secret"
-                        maxLength={32}
-                        value={searchAppSecret}
-                        onChange={(e) => setSearchAppSecret(e.target.value)}
-                        style={inputStyle}
-                        error={!isEmpty(formErrors.searchAppSecret)}
-                        {...inputProp}
-                    />
-                </ControlGroup>
-            )}
             <Button label="Submit" appearance="primary" disabled={loading} onClick={handleSubmit} />
         </div>
     );
@@ -222,12 +155,10 @@ const CensysSetup = ({ appId, searchSetup, title }) => {
 CensysSetup.propTypes = {
     appId: PropTypes.string,
     title: PropTypes.string,
-    searchSetup: PropTypes.bool,
 };
 CensysSetup.defaultProps = {
     appId: defaultApp,
     title: 'Censys Setup',
-    searchSetup: true,
 };
 
 export default CensysSetup;
