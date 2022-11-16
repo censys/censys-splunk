@@ -1,3 +1,4 @@
+import datetime
 import json
 from typing import Optional
 
@@ -72,6 +73,7 @@ class TestRiskInput(CensysTestCase):
     ):
         # Test data
         test_risk_events = [{"id": 1}, {"id": 2}, {"id": 3}, {"id": 4}, {"id": 5}]
+        start = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # Mock
         mock_helper = self.mock_helper()
@@ -80,13 +82,14 @@ class TestRiskInput(CensysTestCase):
         mock_make_call.return_value.json.return_value = test_risk_events
 
         # Actual call
-        risk_events = risk_api.get_risk_events(cursor, after_id, limit)
+        risk_events = risk_api.get_risk_events(start, cursor, after_id, limit)
 
         # Assertions
         mock_make_call.assert_called_once_with(
             "/v2/risk-events",
             "GET",
             parameters={
+                "start": start,
                 "cursor": cursor,
                 "afterId": after_id,
                 "limit": limit,
@@ -116,6 +119,7 @@ class TestRiskInput(CensysTestCase):
 
     def test_write_risk_events(self):
         # Test data
+        start = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
         test_next_cursor = "test_next_cursor"
         test_index = "test"
         test_input_type = "type"
@@ -197,7 +201,6 @@ class TestRiskInput(CensysTestCase):
 
         # Assertions
         mock_cursor.assert_called_once()
-        mock_get_risk_events.assert_any_call(test_next_cursor)
         mock_output_index.assert_called()
         mock_input_type.assert_called()
         mock_sourcetype.assert_called()

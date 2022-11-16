@@ -44,6 +44,12 @@ sphinx-prompt = "^1.5.0"
 sphinx-tabs = "^3.3.1"
 Sphinx = "^4.5.0"
 
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+pytest-freezegun = "^0.4.2"
+
 [tool.poetry.group.slim]
 optional = true
 

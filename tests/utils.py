@@ -1,4 +1,5 @@
 import unittest
+from typing import Any
 from unittest.mock import MagicMock
 
 import splunk_ta_censys_declare
@@ -15,9 +16,10 @@ BASE_URL = "https://app.censys.io/api"
 
 class CensysTestCase(unittest.TestCase):
     mocker: MockerFixture
+    freezer: Any
 
     @pytest.fixture(autouse=True)
-    def __inject_fixtures(self, mocker: MockerFixture):
+    def __inject_fixtures(self, mocker: MockerFixture, freezer):
         """Injects fixtures into the test case.
 
         Args:
@@ -25,6 +27,9 @@ class CensysTestCase(unittest.TestCase):
         """
         # Inject mocker fixture
         self.mocker = mocker
+        # Inject freezer fixture
+        self.freezer = freezer
+        self.freezer.move_to("2022-01-01 00:00:00")
 
     def mock_helper(self) -> MagicMock:
         """Mocks the helper."""

@@ -1,5 +1,6 @@
 # encoding = utf-8
 
+import datetime
 import json
 from typing import Dict, Optional
 
@@ -62,6 +63,7 @@ class CensysAsmRisksApi(CensysAsmApi):
 
     def get_risk_events(
         self,
+        start: Optional[str] = None,
         cursor: Optional[str] = None,
         after_id: Optional[int] = None,
         limit: Optional[int] = None,
@@ -70,7 +72,12 @@ class CensysAsmRisksApi(CensysAsmApi):
         response = self._make_call(
             "/v2/risk-events",
             "GET",
-            parameters={"cursor": cursor, "afterId": after_id, "limit": limit},
+            parameters={
+                "start": start,
+                "cursor": cursor,
+                "afterId": after_id,
+                "limit": limit,
+            },
         )
         return response.json()
 
@@ -102,7 +109,14 @@ class CensysAsmRisksApi(CensysAsmApi):
         end_of_events = False
         while not end_of_events:
             try:
-                res = self.get_risk_events(cursor)
+                if cursor is not None:
+                    res = self.get_risk_events(cursor=cursor)
+                else:
+                    # Get todays date and format it as 2022-04-04T00:00:00Z
+                    today = datetime.datetime.now()
+                    today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+                    todays_date = today.strftime("%Y-%m-%dT%H:%M:%SZ")
+                    res = self.get_risk_events(start=todays_date)
                 end_of_events = res.get("endOfEvents", False)
             except requests.HTTPError as e:
                 self.helper.log_error(str(e))

@@ -1,5 +1,6 @@
 # encoding = utf-8
 
+import datetime
 import json
 from typing import Optional
 
@@ -37,7 +38,12 @@ class CensysAsmLogbookApi(CensysAsmApi):
 
     def get_logbook_cursor(self) -> Optional[str]:
         """Get the logbook cursor."""
-        response = self._make_call("/v1/logbook-cursor", "POST")
+        today = datetime.datetime.now()
+        today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+        todays_date = today.strftime("%Y-%m-%dT%H:%M:%SZ")
+        response = self._make_call(
+            "/v1/logbook-cursor", "POST", parameters={"dateFrom": todays_date}
+        )
         logbook_cursor = response.json().get("cursor")
         if logbook_cursor is None:
             self.helper.log_error("Failed to get logbook cursor.")

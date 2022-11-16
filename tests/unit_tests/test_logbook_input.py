@@ -1,3 +1,4 @@
+import datetime
 import json
 from typing import Optional
 
@@ -44,7 +45,13 @@ class TestLogbookInput(CensysTestCase):
         cursor = logbook_api.get_logbook_cursor()
 
         # Assertions
-        mock_make_call.assert_called_once_with("/v1/logbook-cursor", "POST")
+        mock_make_call.assert_called_once_with(
+            "/v1/logbook-cursor",
+            "POST",
+            parameters={
+                "dateFrom": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+            },
+        )
         assert cursor == test_cursor
 
     def test_update_logbook_cursor_check_point(self):
