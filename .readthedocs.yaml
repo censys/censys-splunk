@@ -15,7 +15,7 @@ build:
       - asdf install poetry 1.2.2
       - asdf global poetry 1.2.2
       - poetry config virtualenvs.create false
-      - poetry export --with dev,docs --format=requirements.txt --output=docs-requirements.txt
+      - poetry export --with dev,docs --format=requirements.txt --output=docs-requirements.txt --without-hashes
 
 python:
   install:
