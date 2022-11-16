@@ -7,7 +7,6 @@ import Heading from '@splunk/react-ui/Heading';
 import Link from '@splunk/react-ui/Link';
 import MessageBar from '@splunk/react-ui/MessageBar';
 import Text from '@splunk/react-ui/Text';
-import { variables } from '@splunk/themes';
 
 import { api, defaultApp, secrets } from '@splunk/censys-utils';
 

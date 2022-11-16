@@ -118,10 +118,10 @@ pytest:
     reports:
       junit: packages/*/test-reports/unit-results.xml
 
-jest censys-setup:
-  extends: .jest
-  script:
-    - yarn workspace @splunk/censys-setup run test:ci
+# jest censys-setup:
+#   extends: .jest
+#   script:
+#     - yarn workspace @splunk/censys-setup run test:ci
 
 jest censys-getting-started:
   extends: .jest

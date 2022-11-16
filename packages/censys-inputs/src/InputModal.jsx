@@ -41,7 +41,7 @@ const InputModal = ({ isOpen, onClose, mode, inputType, existingInput }) => {
     }, []);
 
     useEffect(() => {
-        console.log('mode', mode);
+        // console.log('mode', mode);
         const titlePrefix = mode.charAt(0).toUpperCase() + mode.slice(1);
         if (inputType) {
             const inputTypeName = inputs.inputTypeNames[inputType];
