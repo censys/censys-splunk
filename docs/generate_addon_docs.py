@@ -3,7 +3,7 @@ import re
 from argparse import ArgumentParser, Namespace
 from enum import Enum
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict
 
 from addonfactory_splunk_conf_parser_lib import TABConfigParser
 from rst import rst
