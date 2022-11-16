@@ -173,7 +173,7 @@ release add-on:
   extends: .poetry
   stage: deploy
   script:
-    - poetry run python ./scripts/release.py -a 6399 -f Splunk_TA_censys-*.tar.gz
+    - poetry run python ./censys_splunk/release.py -a 6399 -f Splunk_TA_censys-*.tar.gz
   rules:
     - if: $CI_COMMIT_TAG =~ /^add-on-v[0-9]+\.[0-9]+\.[0-9]+$/
       when: manual
@@ -184,7 +184,7 @@ release app:
   extends: .poetry
   stage: deploy
   script:
-    - poetry run python ./scripts/release.py -a 4830 -f censys-*.tar.gz
+    - poetry run python ./censys_splunk/release.py -a 4830 -f censys-*.tar.gz
   rules:
     - if: $CI_COMMIT_TAG =~ /^app-v[0-9]+\.[0-9]+\.[0-9]+$/
       when: manual

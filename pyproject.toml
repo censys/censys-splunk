@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "censys-splunk"
+name = "censys_splunk"
 version = "0.1.0"
 description = "Censys Splunk Add-on and Apps"
 authors = ["Censys, Inc. <support@censys.io>"]
