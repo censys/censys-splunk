@@ -19,13 +19,9 @@ Yes. The add-on is compliant with the `Common Information Model (CIM) <http://do
 Does the add-on work with the Splunk Enterprise Security app?
 -------------------------------------------------------------
 
-.. todo::
-
-    Coming soon...
+Yes. If installed on a search head with Splunk Enterprise Security, the alerts and reports can be configured to generate notable events to enable a seamless workflow.
 
 My question wasn't answered here
 --------------------------------
 
-.. todo::
-
-    Coming soon...
+Ask a question on `GitHub Discussions <https://github.com/censys/censys-splunk/discussions>`_ for direct communication with the developers and contributors.

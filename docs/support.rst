@@ -15,7 +15,7 @@ Troubleshooting an issue?
 Need more help?
 ---------------
 
-    `GitHub Discussions <https://github.com/censys/censys-splunk/discussions>`_: Ask a question on GitHub Discussions for direct communication to the developers and contributors.
+    `GitHub Discussions <https://github.com/censys/censys-splunk/discussions>`_: Ask a question on GitHub Discussions for direct communication with the developers and contributors.
 
 Found a bug?
 ------------
