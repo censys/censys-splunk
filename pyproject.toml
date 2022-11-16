@@ -43,6 +43,7 @@ sphinx-copybutton = "^0.5.0"
 sphinx-prompt = "^1.5.0"
 sphinx-tabs = "^3.3.1"
 Sphinx = "^4.5.0"
+addonfactory-splunk-conf-parser-lib = "^0.3.4"
 
 [tool.poetry.group.test]
 optional = true
