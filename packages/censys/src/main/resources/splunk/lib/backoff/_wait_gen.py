@@ -5,10 +5,10 @@ from typing import Any, Callable, Generator, Iterable, Optional, Union
 
 
 def expo(
-    base: int = 2,
-    factor: int = 1,
-    max_value: Optional[int] = None
-) -> Generator[int, Any, None]:
+    base: float = 2,
+    factor: float = 1,
+    max_value: Optional[float] = None
+) -> Generator[float, Any, None]:
 
     """Generator for exponential decay.
 
@@ -53,8 +53,8 @@ def fibo(max_value: Optional[int] = None) -> Generator[int, None, None]:
 
 
 def constant(
-    interval: Union[int, Iterable[int]] = 1
-) -> Generator[int, None, None]:
+    interval: Union[int, Iterable[float]] = 1
+) -> Generator[float, None, None]:
     """Generator for constant intervals.
 
     Args:
@@ -72,7 +72,10 @@ def constant(
         yield val
 
 
-def runtime(*, value: Callable[[Any], int]) -> Generator[int, None, None]:
+def runtime(
+    *,
+    value: Callable[[Any], float]
+) -> Generator[float, None, None]:
     """Generator that is based on parsing the return value or thrown
         exception of the decorated method
 
