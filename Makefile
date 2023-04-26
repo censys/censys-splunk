@@ -1,7 +1,7 @@
 POETRY          := $(shell command -v poetry 2> /dev/null)
 ADD_ON_VERSION  := $$(grep version ./packages/Splunk_TA_censys/app.manifest | sed 's/[^0-9.]*//g')
 APP_VERSION     := $$(grep version ./packages/censys/src/main/resources/splunk/app.manifest | sed 's/[^0-9.]*//g')
-APPINSPECT_ARGS := --included-tags cloud --included-tags future --included-tags custom_workflow_actions --included-tags inputs_conf --included-tags splunk_9_0
+APPINSPECT_ARGS := --included-tags appapproval --included-tags cloud --included-tags self-service --included-tags future --included-tags custom_workflow_actions --included-tags inputs_conf --included-tags splunk_9_0
 
 .PHONY: all
 all: help
