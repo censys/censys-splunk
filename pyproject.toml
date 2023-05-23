@@ -21,7 +21,7 @@ pre-commit = "^2.19.0"
 pytest = "^7.1.2"
 pytest-mock = "^3.7.0"
 pyupgrade = "^2.34.0"
-requests = "^2.28.0"
+requests = "^2.31.0"
 splunk-appinspect = "^2.23.0"
 splunk-packaging-toolkit = { url = "https://download.splunk.com/misc/packaging-toolkit/splunk-packaging-toolkit-1.0.1.tar.gz", optional = true }
 
