@@ -36,13 +36,12 @@ const isAppConfigured = (app) => app.content.configured;
 const footerLinks = [
     {
         title: 'Documentation',
-        // TODO: Add link to documentation
-        href: '',
+        path: 'https://censys-splunk.readthedocs.io/en/latest/asm-app/',
     },
     {
         title: 'Support',
         // TODO: Update link to support
-        href: 'https://support.censys.io/hc/en-us/articles/360059326151-Censys-ASM-for-Splunk',
+        path: 'https://support.censys.io/hc/en-us/articles/360059326151-Censys-ASM-for-Splunk',
     },
 ];
 
@@ -91,7 +90,7 @@ const CensysAppGettingStarted = () => {
             title: 'Setup the Censys Add-on',
             description: 'Configure your credentials.',
             icon: DataInputIcon,
-            path: '/app/Splunk_TA_censys/setup',
+            path: '/app/Splunk_TA_censys/configuration',
             show: !addOnConfigured,
         },
         {

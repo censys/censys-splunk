@@ -6,7 +6,6 @@
     "./packages/Splunk_TA_censys/bin",
     "./packages/Splunk_TA_censys/bin/splunk_ta_censys/aob_py3"
   ],
-  "splunk.spec.FilePath": "./packages/Splunk_TA_censys/README/",
   "cSpell.words": [
     "addonfactory",
     "camelcase",
