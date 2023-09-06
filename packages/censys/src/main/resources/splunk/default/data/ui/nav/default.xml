@@ -1,5 +1,6 @@
 <nav search_view="search" color="#f07a35">
-    <view name="start" default="true" />
+    <view name="censys_reports_v3" default="true" />
+    <view name="start" />
     <view name="setup" />
     <view name="search" />
     <view name="dashboards" />
