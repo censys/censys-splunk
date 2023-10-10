@@ -92,7 +92,7 @@ const CensysGettingStarted = ({ appId, appLabel, message, tasks, links }) => {
                         style={LINK_STYLE}
                         to={path}
                         key={title.toLowerCase().replace(' ', '-')}
-                        openInNewContext={true}
+                        openInNewContext
                     >
                         {title}
                     </Link>
