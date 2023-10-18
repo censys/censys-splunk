@@ -1,0 +1,714 @@
+reports:
+- app_name: Censys Add-on for Splunk
+  app_version: 1.1.4
+  app_hash: 98ca9a8f04f1268c3ad22cfb224203f6
+  app_author: Censys, Inc.
+  app_description: The Censys Add-on for Splunk brings an outside-in perspective of organizations Internet-facing networks
+    to security operations.
+  metrics:
+    start_time: 2023-10-12 18:09:21.533524
+    end_time: 2023-10-12 18:10:46.738999
+    execution_time: 85.205475
+  groups:
+  - name: check_cloud_simple_app
+    description: 'Cloud operations simple application check
+
+      This group serves to help validate simple applications in an effort to try and automate the validation process for cloud
+      operations.'
+    checks:
+    - name: check_for_binary_files_without_source_code
+      messages:
+      - filename: check_cloud_simple_app.py
+        line: 1854
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/pvectorc.cpython-37m-x86_64-linux-gnu.so
+        message_line: null
+        message: 'Please ensure the binary files are safe. Related info might be included in App README. Binary   Format:
+          ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, BuildID[sha1]=0c9a05422a602370acb0effd0229c44803bbecfc,
+          with debug_info, not stripped  README: README.txt File: bin/splunk_ta_censys/aob_py3/pvectorc.cpython-37m-x86_64-linux-gnu.so'
+        result: manual_check
+        response: ' '
+      - filename: check_cloud_simple_app.py
+        line: 1845
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/markupsafe/_speedups.cpython-37m-x86_64-linux-gnu.so
+        message_line: null
+        message: 'Please ensure the binary files are safe. Source  file: bin/splunk_ta_censys/aob_py3/markupsafe/_speedups.cpython-37m-x86_64-linux-gnu.so
+          Format: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, BuildID[sha1]=508b6c606f4e6d226a5db891bb448d73126adeb4,
+          with debug_info, not stripped Source file: bin/splunk_ta_censys/aob_py3/markupsafe/_speedups.c File: bin/splunk_ta_censys/aob_py3/markupsafe/_speedups.cpython-37m-x86_64-linux-gnu.so'
+        result: manual_check
+        response: ' '
+      - filename: check_cloud_simple_app.py
+        line: 1854
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/setuptools/cli-arm64.exe
+        message_line: null
+        message: 'Please ensure the binary files are safe. Related info might be included in App README. Binary   Format:
+          PE32+ executable (console) Aarch64, for MS Windows  README: README.txt File: bin/splunk_ta_censys/aob_py3/setuptools/cli-arm64.exe'
+        result: manual_check
+        response: ' '
+      - filename: check_cloud_simple_app.py
+        line: 1854
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/setuptools/cli-64.exe
+        message_line: null
+        message: 'Please ensure the binary files are safe. Related info might be included in App README. Binary   Format:
+          PE32+ executable (console) x86-64, for MS Windows  README: README.txt File: bin/splunk_ta_censys/aob_py3/setuptools/cli-64.exe'
+        result: manual_check
+        response: ' '
+      - filename: check_cloud_simple_app.py
+        line: 1854
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/setuptools/gui-64.exe
+        message_line: null
+        message: 'Please ensure the binary files are safe. Related info might be included in App README. Binary   Format:
+          PE32+ executable (GUI) x86-64, for MS Windows  README: README.txt File: bin/splunk_ta_censys/aob_py3/setuptools/gui-64.exe'
+        result: manual_check
+        response: ' '
+      - filename: check_cloud_simple_app.py
+        line: 1854
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/setuptools/cli.exe
+        message_line: null
+        message: 'Please ensure the binary files are safe. Related info might be included in App README. Binary   Format:
+          PE32 executable (console) Intel 80386, for MS Windows  README: README.txt File: bin/splunk_ta_censys/aob_py3/setuptools/cli.exe'
+        result: manual_check
+        response: ' '
+      - filename: check_cloud_simple_app.py
+        line: 1854
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/setuptools/cli-32.exe
+        message_line: null
+        message: 'Please ensure the binary files are safe. Related info might be included in App README. Binary   Format:
+          PE32 executable (console) Intel 80386, for MS Windows  README: README.txt File: bin/splunk_ta_censys/aob_py3/setuptools/cli-32.exe'
+        result: manual_check
+        response: ' '
+      - filename: check_cloud_simple_app.py
+        line: 1854
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/setuptools/gui-32.exe
+        message_line: null
+        message: 'Please ensure the binary files are safe. Related info might be included in App README. Binary   Format:
+          PE32 executable (GUI) Intel 80386, for MS Windows  README: README.txt File: bin/splunk_ta_censys/aob_py3/setuptools/gui-32.exe'
+        result: manual_check
+        response: ' '
+      - filename: check_cloud_simple_app.py
+        line: 1854
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/setuptools/gui.exe
+        message_line: null
+        message: 'Please ensure the binary files are safe. Related info might be included in App README. Binary   Format:
+          PE32 executable (GUI) Intel 80386, for MS Windows  README: README.txt File: bin/splunk_ta_censys/aob_py3/setuptools/gui.exe'
+        result: manual_check
+        response: ' '
+      - filename: check_cloud_simple_app.py
+        line: 1854
+        code: reporter.manual_check(reporter_output, current_file_relative_path)
+        message_filename: bin/splunk_ta_censys/aob_py3/setuptools/gui-arm64.exe
+        message_line: null
+        message: 'Please ensure the binary files are safe. Related info might be included in App README. Binary   Format:
+          PE32+ executable (GUI) Aarch64, for MS Windows  README: README.txt File: bin/splunk_ta_censys/aob_py3/setuptools/gui-arm64.exe'
+        result: manual_check
+        response: ' '
+  - name: check_javascript_files
+    description: JavaScript file standards
+    checks:
+    - name: check_for_remote_code_execution_in_javascript
+      messages:
+      - filename: check_javascript_files.py
+        line: 126
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: appserver/static/js/build/entry_page.js
+        message_line: 6
+        message: 'The following line will be inspected during code review. Match: eval("(".concat(rawStr," File: appserver/static/js/build/entry_page.js
+          Line Number: 6'
+        result: manual_check
+        response: ' '
+  - name: check_external_data_sources
+    description: Calls to external data sources
+    checks:
+    - name: check_external_data_sources
+      messages:
+      - filename: check_external_data_sources.py
+        line: 21
+        code: reporter.manual_check("Documentation will be read during code review.")
+        message_filename: null
+        message_line: null
+        message: Documentation will be read during code review.
+        result: manual_check
+        response: ' '
+  - name: check_intellectual_property
+    description: Intellectual property standards
+    checks:
+    - name: check_splunk_logo
+      messages:
+      - filename: check_intellectual_property.py
+        line: 25
+        code: reporter.manual_check("Branding will be inspected during code review.")
+        message_filename: null
+        message_line: null
+        message: Branding will be inspected during code review.
+        result: manual_check
+        response: ' '
+  - name: check_python_files
+    description: Python file standards
+    checks:
+    - name: check_all_python_files_are_well_formed
+      messages:
+      - filename: check_python_files.py
+        line: 301
+        code: reporter.manual_check(
+        message_filename: bin/splunk_ta_censys/aob_py3/lib2to3/tests/data/py2_test_grammar.py
+        message_line: null
+        message: 'Python script is not well formed, syntax error found in python script when parser try to parse. Runtime
+          errors and possible style issues could exist when it is executed. Please manual check if the whole app is broken,
+          if yes, fail this app. If syntax error only block part of app''s functionality, warn developer to fix it. File:
+          bin/splunk_ta_censys/aob_py3/lib2to3/tests/data/py2_test_grammar.py'
+        result: manual_check
+        response: ' '
+    - name: check_for_builtin_functions
+      messages:
+      - filename: reporter.py
+        line: 278
+        code: report_function(
+        message_filename: bin/censys_asm_logbook.py
+        message_line: 83
+        message: 'The following line will be inspected during code review. The `__builtin__.open` module/method can be used
+          to manipulate files outside of the app dir. File: bin/censys_asm_logbook.py Line Number: 83'
+        result: manual_check
+        response: ' '
+      - filename: reporter.py
+        line: 278
+        code: report_function(
+        message_filename: bin/censys_asm_risks.py
+        message_line: 83
+        message: 'The following line will be inspected during code review. The `__builtin__.open` module/method can be used
+          to manipulate files outside of the app dir. File: bin/censys_asm_risks.py Line Number: 83'
+        result: manual_check
+        response: ' '
+    - name: check_for_plain_text_credentials_in_python
+      messages:
+      - filename: check_python_files.py
+        line: 491
+        code: reporter.manual_check(
+        message_filename: bin/input_module_censys_asm_logbook.py
+        message_line: 68
+        message: 'The following lines should be inspected during code review, Possible plain text credentials disclosure here,
+          `checkpoint_key_prefix = asm_logbook_cursor_` File: bin/input_module_censys_asm_logbook.py Line Number: 68'
+        result: manual_check
+        response: ' '
+      - filename: check_python_files.py
+        line: 491
+        code: reporter.manual_check(
+        message_filename: bin/input_module_censys_asm_logbook.py
+        message_line: 26
+        message: 'The following lines should be inspected during code review, Possible plain text credentials disclosure here,
+          `CHECKPOINT_KEY_PREFIX = asm_logbook_cursor_` File: bin/input_module_censys_asm_logbook.py Line Number: 26'
+        result: manual_check
+        response: ' '
+      - filename: check_python_files.py
+        line: 491
+        code: reporter.manual_check(
+        message_filename: bin/input_module_censys_asm_logbook.py
+        message_line: 57
+        message: 'The following lines should be inspected during code review, Possible plain text credentials disclosure here,
+          `checkpoint_key_prefix = asm_logbook_cursor_` File: bin/input_module_censys_asm_logbook.py Line Number: 57'
+        result: manual_check
+        response: ' '
+      - filename: check_python_files.py
+        line: 491
+        code: reporter.manual_check(
+        message_filename: bin/input_module_censys_asm_risks.py
+        message_line: 26
+        message: 'The following lines should be inspected during code review, Possible plain text credentials disclosure here,
+          `CHECKPOINT_KEY_PREFIX = asm_risks_cursor_` File: bin/input_module_censys_asm_risks.py Line Number: 26'
+        result: manual_check
+        response: ' '
+      - filename: check_python_files.py
+        line: 491
+        code: reporter.manual_check(
+        message_filename: bin/input_module_censys_asm_risks.py
+        message_line: 45
+        message: 'The following lines should be inspected during code review, Possible plain text credentials disclosure here,
+          `checkpoint_key_prefix = asm_risks_cursor_` File: bin/input_module_censys_asm_risks.py Line Number: 45'
+        result: manual_check
+        response: ' '
+      - filename: check_python_files.py
+        line: 491
+        code: reporter.manual_check(
+        message_filename: bin/input_module_censys_asm_risks.py
+        message_line: 56
+        message: 'The following lines should be inspected during code review, Possible plain text credentials disclosure here,
+          `checkpoint_key_prefix = asm_risks_cursor_` File: bin/input_module_censys_asm_risks.py Line Number: 56'
+        result: manual_check
+        response: ' '
+  - name: check_potentially_harmful_operations
+    description: Operating system standards
+    checks:
+    - name: check_hard_coded_paths
+      messages:
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: Splunk_TA_censys.aob_meta
+        message_line: '9'
+        message: 'Found possible hard-coded path ''/57738ouAooB0FQlYdYtWV0HQdVdFbUFaVwgQqwhJBG1xrWirW4W25mNrbau1WveDlU8JSRC1ARIioitri7+qdv1V1K6oBfkhIiIEgQckee+e/c7cd+fO+5XkJQ+3fzCfz809c+bMmZkzZ86cOXdeiA6nwxI4LIHDEjgsgb9bCfAX2TNZUxOmHR/3ofCBQhIJUbjIpTbpoIHx/TS2rg2dkS+yP91p65AJSF67NkLrosVUEhlDDpVTnC4gppPwOBk7JvQpxPMSEa8CbQtFZS9VQWj8/yu0vApIBMNvqhpDLLdhoCMhiqMxvKKMAukcGUfxbtTdiPd8Or5gMY9a0NF5lUNTmhcBSWPVYArRdeTIFHTzHyGcvPA1QxbaCdE/TeTez5Ma/sfgvwCgVwORpumDSCLXEbtzMIAjM/RX2ZRdKPuAXK0Nm/DeBmHugrlpgxzDyPcjVwaBZgg0rgzCPQHPEJSH0/lBR11uIuG7ecqiP6eX5x/TIwHJk98tpAP7LsWgHsZyKkzqFoaA/DY8z8IQP0jl9S/lakdk+bTjiAqqwP9K8B8KXiVJbUCVIMTfUYdzG1cshLAPXcpZQPL09D60L7Qas30OupVcX+h1isWm0fCSDfmwGdI4FTtdMTQzNA8apbQ02cAL7YesxnF5w4uHSkTJA+yiFVk+42JipwEd/ZJFKlD5lZjp22lt2VtcU6M0KO9J27kIV0Mrf4j2bY1qxxJ9AJp6S66a2p1OdktAeiYjpbPB8NdJtkFoPZTo+/TW0JWHSjCpg5DGq0+msPszCKk8qUzgGhT1vZwnPNCWhO9lpksBaeEU9PkBttw7g7YkBmPZSPHoDK5YqrbknJNyCXo649qdaK6ahUZ/BUH1NY0L/RVL7nwsuZ0G10ugawG1VN0Bk/ijoB2OoRP/zpPqFwS47JD2njdsLqaj4qMh5PFYjqOxHIfjXYLBtUNM28h11wJ+hmL8Byrt20qXPNDeHeHJI1cMoKLCv6DusaYHSqtDzhl8We1eg+sF0KmApKXqe/Bqf44ORHQbaocKuRfTvzU829UAZPnMoeTE5mIJXgLBDIR5xfECnDpPyhlshZ35K2hrYFde6LKdxuqBFJZV4HyWYS303xSLXtJT7TZ8AGTtsKyoHgPjtwYUxYkKe4lj43niwzgOZE5wephWXn0uxdzbMMix0A6/buYKXWOhWfwg/eXDhVzzLDTXS9J4UzGFd38d9nA8BD8CwoRzSoP8cv0W2oHebMWUrgfNC+SGVvDkhZuSaLqRySggWT4LfkhsHRj38RqTfeTwlTyxbmU2nrJyxrHUzj/GgGahY6nbsar2OfB/w9JCp6UVFAcxMOUM9gP+GLzhIGJ3TK0LJOT+GpbhjXBIP8eWPw001UCqOt1PQko7V2vfbGjh6u66IWkCkjUXhKl1WCPsxKRE6y4GcguX192brTeyvPJcCOZxdPyoFJrdWKJvQxg/o/5lz/DYGqMFKXQ6K41XYYcK3wj6S9HmPwCZ1r9M9QxO0BrrOskTZAh8gN+leGwGvXPCG13tvmkdkKbqSginzmeFdy1NrJuVzRZIU+UN6NKvMBalDYmEfUacGop8dg9fuhLOXG5JRwK2to2mOI4VnLJ0bFYuBEKYGIeWYrm9TJHiz6mtbSRxfDUmLG1sdlXUw04s9Ty5Tu2GWVMSE1lTVYQz9LugLtM1BGemUNsIvuzR7akc9FbbVHU7BjAXj2fE0UvQNVNH/GauWPxhap1c8xD+/RjoDen1eBcG9w2Kxt/mGYujqeWyvPohHJyvNXiR67G0Vd9+BGEONngVShF6jaIdF/NVS/YYvAUkq2Irdg5fOOq848LuZBCOrr+i8hoIRgnIF04U83kzvOmpvRWO0iBpqroPs3y91VcLlKNgE2tow5bMTiHH50KAm4MK/F34bIuouONkCORW4D1hCHpP2P36RNbK8quHB/QBZASk/RWm6abIlXdpZ+SPJm8BWIYXYkbma/YeHg3K1Tyl7t6u1rTFJiMoNbCBW9qVVqql6/dvLwY8F4ODI+gnGUenDb1LO7I+KvHWjqI4PzZoJti20gqesGQPbOkvyHXOAK83TDmpFRN/Whqx0aQkvwPYYzZ/G2XKMKqFEqeCwgn87fQglT7Jk1uPzoc0rdY0mQ7HsTGR793r1GHfAoMaPN7yF94HXb6IJ9ffRUXbRwK/Ho+XmG8mLrnAzya9S0ofQ71PDI7JLDmeXLsBftJolD9tyh3+MoWdBpGaQCYo1BnMQjFJvMYQE73Kly7YbOUDsG1vLewC3ACdsK5lNpVn3/6Dil1D+pzlyHxDqbZmhy6GIX1V4XjCU22Yum9iAgPDH+IlsuTK/qZOAtBnModmQ8zK9iDJ2dI8c7QHg5c6IhUUlCO/2seBdiw1bfqlyQPwpOX0GYoqQSPMv7GJfFh7x0QT/Tx8ij/Rln712DASnTAlPQPC7n3opH+2Ak+eyhOTA2NYxuuAv840oHyoosj3TN4G9rc/B/EcTKAcktiNdjGUQAn6cpiLjxJ4LGq5xl5qCQHxVSDwlozA+/w0ssxmpGC91tl9GKAfamgFdiLfkJ/TsyyrHgfhfM20K7xARQlM3gZ2RB7B8viTQTF9R5qrEDdKSdMeUXHtJwyW+WwDJwCeVLebYs5YZP2zWz+c5X6v/UEgHW0UxVX2J5H4qUy2h6j4WPhHY3wqNLwsX6dmT/iCXcvYtW1UVDonm8HX/RPtTcMPQmIeAIElaYdGYwZhIn+Iv16MSuh4HSbWlYI/iEr+DZvA7w3G4TG0s2yYyjt0atmXsWUOMIWC81emVBCaDLS3pQtO4SWhWzOR9QinooasjxpedZF7u4zruNENGPZG0x6z6l9awiS+DwF+rAvUxuI416QRKUQpjjLqOKQT4uEO4lxIDrTiJA/plUCn/mzlPaT64BcXa4ZkFY/PYyyYncCfEoH29HsgtQ+peW1kGUZYawn+Mp0oT07rl0qn8yKbDN6lb2kn1yA8gMfB4YyTMiGJJDPkidn9YYMcdRL2kvp4t3ZTwMzHt24YDlEe72ehsqsM3EtAFsF7F5pp2Aiv6VJ7fOLyumcA7vCy+HhwsDDw43wa9XblTZNlHkZPXFts8jYQcZabrIpitB88w4HGjLCQr9thBYMXDoSokPHQi6ast8CRAttmDD80wQl8ky54s9IeoQ0BWXxGAFuQQ69YuTB1HCi18gHYtvcVLNvEMgNaXAiIuAyglwQn70yJHRWK8JJLUa6ofc/P9vrtWmcjNeA29/nceMLj95M4J8PgF/hZ846x5YFziKQgowZh2R7AZAWT7/CZEJAMNoyY05eXKhQZZmiI1lpw70HmIK4jsptC0S05MWUO+uOoTaR/+uAjljFHmAERyKKsbQhpp1SXC53oQKWOCIjd3QFsQfYuF+LcBmCxyQi6rne80YXOJ7mHSeWjgC9ujFBHugZ1RPdDN1XATCWmjpjvy3mY5L+2kgzCLmbHcbB9Z0wSzIprufkZaXNEhkJWZ+VAjrWxx7Ad7mAqDGFVpKSBO1yIxRqbEmS25Fp9kGK1xDwnStGzE85YjaktwLvpMxQU5g65bHWcc+fNXGg1KhSJB+PxC/qepE5kng+ncBxOp/FpnZBFx23QIONiIwwtmf0IF18agmQtiQDZY4jdT4K6MkhEsDnlkOL2EoXBaG1LD+tujRVhnL7wEQUKWVqS0pZgV/UTbpXgACef+nkKyfEGTgY2Blk+NYDzAEnoY8OFcZ9oaXVgtE1BJ4Br9UfZmfaC9MF3xINxMWO5xdJp/CaYz/RBvDdgidk7F3/FKgxAYSsGQwPwSWhIUNhLSOLBBKmzWMg9JyeOTKcYepHNXF3nn94NGnZqhMkITIoTziggeQi34lw5z9AyvwkNonUGITRSamrSjVw4/r6hUbuA5DgIq3Ia6JZ8hIXh7zAoDo1Po+kMwXKCKWbnMQPbgPAoKxujfgW2YQ+Kjj5wOk4MgdvjuhAQ0/8aCnUX54zNAYFfEDniPQhyj59F/GScgXsJcMX8fdhJmw0bx70w01nJlFuANM1Uy923GXGK0QKrOABZTKAMk/EpPTdIxYHSE4cvM0jBUmwPQUARx9IOfCqJxcYYogSQOBs9GOBlkj5DBYjeQS6utOAA4zHhE2hF5dSuGGohSvy3UGjPqOPIwRWLEueylNpMZQaDW5SZwig67ONIZUAnK/mK2o8dOrD3fay7fUGBc76BbSDkLELWGwQj+thPfx2wKXoO7yzYCA31HVDGLN+p7UFnHB+rPg7L4SxDIvRfBraARHTQ1zIXwbHMWvbVsttQzbOtKn4Uj/9UsXG88wc/avGckNEOHRvegEGsN3QhmqW/oxlEzwEvACZ3gYNoLg60aGDb7Gwcdf+KcEcI9/Q0jShXpeOXGekjzlzgfd/mE5paa60Yr4Y0zsRnJLre1FfjLDlSn0s9gxwKYflAaVVCXIVO2TLWECcA/S2b5UoQeH6GYO3vorrUrwCp9bqbx1eLBRDPm35zWDn34QOgveUGrE7d9DX0Y5pBiPpCusQ6cngl0ngdTu0yI6DjtViQ3jgTSPnNJYUUjq9BdlAC1Y5NaIofcknsWKIuFQRbn+PeaphaAD7tvA45vmhQTFOpedO/mnxvAZGbzESpqXLkGX31zuIrDyMo5kgdUJ7tYQTlC+TnFkkAhqKng6yPQbi4VJqahhyjrvecZqFX8pSGt/y8FlDishEMXiI5co5WOz9vv2NuJQbRqlHqwx7LSlleFdgCmzZHGFr0PL7m3m5V609h/iPsiHb0tLaWhFdgQIMNjcvf4Usbtpp8AtBhD+aHkPUEKQiLuNEnfTpl5GVF5d3Iz/FxmPx3AM8yeQCBzxOLqo55AydcewnFH9HBdJsaMFc0bIa23QxQEkV9wWVZvoSET8T3wEQuNc2yfAUf9F6EczoO2tqCpRcsf30vER8IM6VQyXiI5hRTJLTQjxToLyArKpdgHN9HuSdA0pfVq/RXDlMpKNQoXBZYjA5clSiPU9w9C+r2pkVvQFlWeS+FGEsikdSFJcFN+8m4FRYIzy/N6S0NuGpcGnoaXf9nVPQHkMrjbTopOopPWdqeWqAvWEVaXwb+dF0m8hnFwidTa2gvHdV+LvqNccpxQT18vRW+hMtrA/ORKAw0SCFi4TkYpL/lqy8ALVn9HXf/LajRgsfTJFbX7HgNNVfPyxjVU/y7mdSNDXxD/xdo0lNZqmzHLZTzaESj5YFblAW75yHnCUeh1YWFsAyhge2vUJjWJAlHcFOkQE7MJBxVNW12sFTmYsncqQp1Er6DyxfZdsEvIe+yVZm6xHCNQSpAaJNahjx50bIkfA4ZWVU1GEGWZeB9bpZqe9DGVtw6Ww6NWEUH+6/lil8fkMbqERSRV1GnJKgHDfK+HCfHgYSepyLGjpXFwQSDdAE1Ti2lcJ/nUOJtseobmCtX8pT6IOIftAyFA2Vz5XVgdTegILCmxCTyNpYsflvhPkrlDR90tfSkfsbR1Df0TbC/HNVxad34L1aLWUHlxB7EE8ZTmJVKFaglJzSP9nBDxsOtVTlNQLp+y6zTyI2/Dk6qMTXUT6BVX8cdxcxBfUWidjKH7wd0NrLJfPWXTbgSxC9j2eDuI28H3QHwjUDd+wM/HHVG4TkzRchAIQl97Gm1sw0eLn5VxEqr7MnQZF38UV9APkBbS9HmPanGOFvd5IFYVLD005FdhMdTS/2Dt9g/8eSHt1lkSaDehps3zsQg1V2e4/FOtnFJ1N3K7Ib2LsNVnDmJiwa6krRccQzFi6C1MhmIgWjnCLyTtUbFhpiiwOP7PC6BEv0nTMVzeOeUsgtILZ0VVUpAlYajK1HM3qmQ/kaDywDoO4YfYrdw6H48XwVJ1nYyVFcag48HOMDG+tRTxfwoKksmOn3kGL0zQm17m1A+wdCob2UH28ZQOBalgTs6eGxwhdjQdBPotOP61tnuTUvQvwqL33aEZmfw1PrVFi4jqDWqacsQnJNORJgTHrcgGAa/hp2B0AwValED34tnPeDX8Hn7Ofg871BB6Xrf1c/IOIHUO+wROKQynR/Q8Wf4mdQ5+kJCgOwx1KmAFFftk/QN16YICaord9Ck+ruzzW5nPfIc0OMKaHg01t37yqn8cPX4PGjzYuC1l63LhTB5zvn5/LDZpYBUw9qvCZcuhHGbhmxQR5/LItdS+e/W9URQelA5/tFHoLB7PfpSk9QXQuAvXHA+bBW29PylYLBd8MRaUD/Y/Q+Q/QRQxCLHHoUtPn5kjfJDLHxewYTPNRZuwyOYsgEWc7Qvz9JnheMy32uyKHsAdltAPm9ZNn0Ugt7NmEHLVdelO2FRmihWcAtXLPjcp+/tWwfOBrarHXUenjJMjr0zKht2E0z6Q135Mz3tR84CUg1Jy6xjqKPjB7AB6T+TJFJa9AKeJ/ADksd78gMSabm6L36bcREEPhETcRGUN3UyVDdeQk9uoIn1b6TGeFRhvlKPBOQ3Ls2VI+Fj/BSzeiFwXnTPL/TecQzyPQzkJSyNtzDoj7Cb4ZY8Phc78FPUf18gt5icUD8cjL+EIwMuemtHcxR4WkeFBFOlL4TfWQjch/LaBXm7PJpgn+nVKwH5DKVl5hnwvO9FfiSevj4+b2/v4sFm8PsF7jfX+mGLvPHvhFFeBKT460/Gj88sxVFAhThroDG2Ie2kC50UqQvtQov1z6wGf7itNw5fJ610WpQ3AdmteA7mh0Pxa52TsZTOg/jw4BNxcAfaJvdgwe9giTeARp3X/oB6+BmVsz5fP61Mb7B7mEMioExN692of/vRFA4NwK3+UoQpwrBf6sS/nziyi+J7PqWpSw8eSoObqV+HcYclcFgChyXw9yyB/wOlyvPVoO0DCQAAAABJRU5ErkJggg==",''.
+          File: Splunk_TA_censys.aob_meta Line Number: 9'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: Splunk_TA_censys.aob_meta
+        message_line: '10'
+        message: 'Found possible hard-coded path ''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",''.
+          File: Splunk_TA_censys.aob_meta Line Number: 10'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: LICENSE
+        message_line: '3'
+        message: 'Found possible hard-coded path ''/licenses/''. File: LICENSE Line Number: 3'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: LICENSE
+        message_line: '195'
+        message: 'Found possible hard-coded path ''/licenses/LICENSE-2.0''. File: LICENSE Line Number: 195'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: app.manifest
+        message_line: '31'
+        message: 'Found possible hard-coded path ''/licenses/LICENSE-2.0.html"''. File: app.manifest Line Number: 31'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: app.manifest
+        message_line: '36'
+        message: 'Found possible hard-coded path ''/privacy-policy/"''. File: app.manifest Line Number: 36'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/censys_asm.py
+        message_line: '8'
+        message: 'Found possible hard-coded path ''/api"''. File: bin/censys_asm.py Line Number: 8'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/censys_asm.py
+        message_line: '32'
+        message: 'Found possible hard-coded path ''/json",''. File: bin/censys_asm.py Line Number: 32'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/censys_asm.py
+        message_line: '33'
+        message: 'Found possible hard-coded path ''/json",''. File: bin/censys_asm.py Line Number: 33'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/input_module_censys_asm_risks.py
+        message_line: '73'
+        message: 'Found possible hard-coded path ''/risk-events",''. File: bin/input_module_censys_asm_risks.py Line Number:
+          73'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/sockshandler.py
+        message_line: '110'
+        message: 'Found possible hard-coded path ''/ip").read().decode())''. File: bin/splunk_ta_censys/aob_py3/sockshandler.py
+          Line Number: 110'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/sockshandler.py
+        message_line: '111'
+        message: 'Found possible hard-coded path ''/ip").read().decode())''. File: bin/splunk_ta_censys/aob_py3/sockshandler.py
+          Line Number: 111'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/socks.py
+        message_line: '488'
+        message: 'Found possible hard-coded path ''/password"''. File: bin/splunk_ta_censys/aob_py3/socks.py Line Number:
+          488'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/socks.py
+        message_line: '675'
+        message: 'Found possible hard-coded path ''/1.1"),''. File: bin/splunk_ta_censys/aob_py3/socks.py Line Number: 675'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/socks.py
+        message_line: '700'
+        message: 'Found possible hard-coded path ''/"):''. File: bin/splunk_ta_censys/aob_py3/socks.py Line Number: 700'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/pyparsing.py
+        message_line: '3273'
+        message: 'Found possible hard-coded path ''/3/library/re.html>`_.''. File: bin/splunk_ta_censys/aob_py3/pyparsing.py
+          Line Number: 3273'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/pyparsing.py
+        message_line: '3384'
+        message: 'Found possible hard-coded path ''/3/library/re.html''. File: bin/splunk_ta_censys/aob_py3/pyparsing.py Line
+          Number: 3384'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/pyparsing.py
+        message_line: '6452'
+        message: 'Found possible hard-coded path ''/2''. File: bin/splunk_ta_censys/aob_py3/pyparsing.py Line Number: 6452'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/pyparsing.py
+        message_line: '6453'
+        message: 'Found possible hard-coded path ''/4''. File: bin/splunk_ta_censys/aob_py3/pyparsing.py Line Number: 6453'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/pyparsing.py
+        message_line: '6459'
+        message: 'Found possible hard-coded path ''/2''. File: bin/splunk_ta_censys/aob_py3/pyparsing.py Line Number: 6459'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/pyparsing.py
+        message_line: '6460'
+        message: 'Found possible hard-coded path ''/4''. File: bin/splunk_ta_censys/aob_py3/pyparsing.py Line Number: 6460'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/pyparsing.py
+        message_line: '6461'
+        message: 'Found possible hard-coded path ''/4''. File: bin/splunk_ta_censys/aob_py3/pyparsing.py Line Number: 6461'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/munch-2.3.2.dist-info/RECORD
+        message_line: '1'
+        message: 'Found possible hard-coded path ''/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4''. File:
+          bin/splunk_ta_censys/aob_py3/munch-2.3.2.dist-info/RECORD Line Number: 1'
+        result: manual_check
+        response: ' '
+      - filename: check_potentially_harmful_operations.py
+        line: 75
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/splunk_ta_censys/aob_py3/munch-2.3.2.dist-info/RECORD
+        message_line: '2'
+        message: 'Found possible hard-coded path ''/LICENSE.txt,sha256=V8qVySBZyDgGJRkkYpeb0ymUquP835Av9useRn7rBGk,1079''.
+          File: bin/splunk_ta_censys/aob_py3/munch-2.3.2.dist-info/RECORD Line Number: 2'
+        result: manual_check
+        response: ' '
+      - filename: feedback_file_generator.py
+        line: 78
+        code: 'for report_record in reporter.report_records():'
+        message_filename: null
+        message_line: null
+        message: Suppressed 4381 manual_check messages
+        result: warning
+        response: ' '
+  - name: check_security
+    description: Security vulnerabilities
+    checks:
+    - name: check_for_secret_disclosure
+      messages:
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: bin/splunk_ta_censys/aob_py3/requests-2.26.0.dist-info/METADATA
+        message_line: 47
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: https://api.github.com/user'',
+          auth=(''user'', File: bin/splunk_ta_censys/aob_py3/requests-2.26.0.dist-info/METADATA Line Number: 47'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: bin/splunk_ta_censys/aob_py3/requests-2.28.0.dist-info/METADATA
+        message_line: 49
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: in.org/basic-auth/user/pass'',
+          auth=(''user'', File: bin/splunk_ta_censys/aob_py3/requests-2.28.0.dist-info/METADATA Line Number: 49'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 15
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.0.token
+          = ##id## File: default/eventgen.conf Line Number: 15'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 19
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.1.token
+          = ##timestamp## File: default/eventgen.conf Line Number: 19'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 23
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.2.token
+          = ##operation## File: default/eventgen.conf Line Number: 23'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 27
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.3.token
+          = ##ip## File: default/eventgen.conf Line Number: 27'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 31
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.4.token
+          = ##sha256## File: default/eventgen.conf Line Number: 31'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 35
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.5.token
+          = ##dataInputName## File: default/eventgen.conf Line Number: 35'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 46
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.0.token
+          = ##id## File: default/eventgen.conf Line Number: 46'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 50
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.1.token
+          = ##timestamp## File: default/eventgen.conf Line Number: 50'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 54
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.2.token
+          = ##operation## File: default/eventgen.conf Line Number: 54'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 58
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.3.token
+          = ##hostname## File: default/eventgen.conf Line Number: 58'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 62
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.4.token
+          = ##ip## File: default/eventgen.conf Line Number: 62'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 66
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.5.token
+          = ##sha256## File: default/eventgen.conf Line Number: 66'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 70
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.6.token
+          = ##dataInputName## File: default/eventgen.conf Line Number: 70'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 81
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.0.token
+          = ##id## File: default/eventgen.conf Line Number: 81'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 85
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.1.token
+          = ##timestamp## File: default/eventgen.conf Line Number: 85'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 89
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.2.token
+          = ##operation## File: default/eventgen.conf Line Number: 89'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 93
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.3.token
+          = ##hostname## File: default/eventgen.conf Line Number: 93'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 97
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.4.token
+          = ##ip## File: default/eventgen.conf Line Number: 97'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 101
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.5.token
+          = ##port## File: default/eventgen.conf Line Number: 101'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 105
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.6.token
+          = ##dataInputName## File: default/eventgen.conf Line Number: 105'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 116
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.0.token
+          = ##id## File: default/eventgen.conf Line Number: 116'
+        result: manual_check
+        response: ' '
+      - filename: check_security.py
+        line: 113
+        code: reporter.manual_check(reporter_output, file_path, lineno)
+        message_filename: default/eventgen.conf
+        message_line: 120
+        message: 'The following line will be inspected during code review.Possible secret disclosure found. Match: token.1.token
+          = ##timestamp## File: default/eventgen.conf Line Number: 120'
+        result: manual_check
+        response: ' '
+      - filename: feedback_file_generator.py
+        line: 78
+        code: 'for report_record in reporter.report_records():'
+        message_filename: null
+        message_line: null
+        message: Suppressed 84 manual_check messages
+        result: warning
+        response: ' '
+  - name: check_documentation_standards
+    description: Documentation standards
+    checks:
+    - name: check_editing_and_proofreading
+      messages:
+      - filename: check_documentation_standards.py
+        line: 92
+        code: reporter.manual_check("Documentation will be read during code review.")
+        message_filename: null
+        message_line: null
+        message: Documentation will be read during code review.
+        result: manual_check
+        response: ' '
+  - name: check_support_requirements
+    description: Support requirements
+    checks:
+    - name: check_link_includes_contact_info
+      messages:
+      - filename: check_support_requirements.py
+        line: 29
+        code: reporter.manual_check("Documentation will be read during code review.")
+        message_filename: null
+        message_line: null
+        message: Documentation will be read during code review.
+        result: manual_check
+        response: ' '
