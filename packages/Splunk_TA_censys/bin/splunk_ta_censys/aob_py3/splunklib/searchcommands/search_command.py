@@ -22,7 +22,10 @@ from collections import namedtuple
 
 import io
 
-from collections import OrderedDict
+try:
+    from collections import OrderedDict  # must be python 2.7
+except ImportError:
+    from ..ordereddict import OrderedDict
 from copy import deepcopy
 from splunklib.six.moves import StringIO
 from itertools import chain, islice
@@ -646,19 +649,6 @@ class SearchCommand(object):
 
         debug('%s.process finished under protocol_version=1', class_name)
 
-    def _protocol_v2_option_parser(self, arg):
-        """ Determines if an argument is an Option/Value pair, or just a Positional Argument.
-            Method so different search commands can handle parsing of arguments differently.
-
-            :param arg: A single argument provided to the command from SPL
-            :type arg: str
-
-            :return: [OptionName, OptionValue] OR [PositionalArgument]
-            :rtype: List[str]
-
-        """
-        return arg.split('=', 1)
-
     def _process_protocol_v2(self, argv, ifile, ofile):
         """ Processes records on the `input stream optionally writing records to the output stream.
 
@@ -729,7 +719,7 @@ class SearchCommand(object):
 
             if args and type(args) == list:
                 for arg in args:
-                    result = self._protocol_v2_option_parser(arg)
+                    result = arg.split('=', 1)
                     if len(result) == 1:
                         self.fieldnames.append(str(result[0]))
                     else:
@@ -934,7 +924,7 @@ class SearchCommand(object):
         except Exception as error:
             raise RuntimeError('Failed to read body of length {}: {}'.format(body_length, error))
 
-        return metadata, six.ensure_str(body, errors="replace")
+        return metadata, six.ensure_str(body)
 
     _header = re.compile(r'chunked\s+1.0\s*,\s*(\d+)\s*,\s*(\d+)\s*\n')
 

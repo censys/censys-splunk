@@ -8,7 +8,7 @@ all: help
 
 .PHONY: install
 install:  ## Install developer dependencies
-	poetry install --with dev
+	poetry install --with dev,slim,docs,test
 	yarn install
 
 .PHONY: build-add-on
