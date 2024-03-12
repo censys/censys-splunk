@@ -27,9 +27,12 @@ If you want a friendlier interface to the Splunk REST API, use the
 from __future__ import absolute_import
 
 import io
+import json
 import logging
 import socket
 import ssl
+import sys
+import time
 from base64 import b64encode
 from contextlib import contextmanager
 from datetime import datetime
@@ -37,6 +40,7 @@ from functools import wraps
 from io import BytesIO
 from xml.etree.ElementTree import XML
 
+from splunklib import __version__
 from splunklib import six
 from splunklib.six.moves import urllib
 
@@ -47,6 +51,7 @@ try:
 except ImportError as e:
     from xml.parsers.expat import ExpatError as ParseError
 
+logger = logging.getLogger(__name__)
 
 __all__ = [
     "AuthenticationError",
@@ -56,11 +61,16 @@ __all__ = [
     "HTTPError"
 ]
 
+SENSITIVE_KEYS = ['Authorization', 'Cookie', 'action.email.auth_password', 'auth', 'auth_password', 'clear_password', 'clientId',
+                  'crc-salt', 'encr_password', 'oldpassword', 'passAuth', 'password', 'session', 'suppressionKey',
+                  'token']
+
 # If you change these, update the docstring
 # on _authority as well.
 DEFAULT_HOST = "localhost"
 DEFAULT_PORT = "8089"
 DEFAULT_SCHEME = "https"
+
 
 def _log_duration(f):
     @wraps(f)
@@ -68,9 +78,31 @@ def _log_duration(f):
         start_time = datetime.now()
         val = f(*args, **kwargs)
         end_time = datetime.now()
-        logging.debug("Operation took %s", end_time-start_time)
+        logger.debug("Operation took %s", end_time-start_time)
         return val
     return new_f
+
+
+def mask_sensitive_data(data):
+    '''
+    Masked sensitive fields data for logging purpose
+    '''
+    if not isinstance(data, dict):
+        try:
+            data = json.loads(data)
+        except Exception as ex:
+            return data
+
+    # json.loads will return "123"(str) as 123(int), so return the data if it's not 'dict' type
+    if not isinstance(data, dict):
+        return data
+    mdata = {}
+    for k, v in data.items():
+        if k in SENSITIVE_KEYS:
+            mdata[k] = "******"
+        else:
+            mdata[k] = mask_sensitive_data(v)
+    return mdata
 
 
 def _parse_cookies(cookie_str, dictionary):
@@ -294,8 +326,7 @@ def _authentication(request_fun):
                 with _handle_auth_error("Autologin failed."):
                     self.login()
                 with _handle_auth_error(
-                        "Autologin succeeded, but there was an auth error on "
-                        "next request. Something is very wrong."):
+                        "Authentication Failed! If session token is used, it seems to have been expired."):
                     return request_fun(self, *args, **kwargs)
             elif he.status == 401 and not self.autologin:
                 raise AuthenticationError(
@@ -344,7 +375,8 @@ def _authority(scheme=DEFAULT_SCHEME, host=DEFAULT_HOST, port=DEFAULT_PORT):
             "http://splunk.utopia.net:471"
 
     """
-    if ':' in host:
+    # check if host is an IPv6 address and not enclosed in [ ]
+    if ':' in host and not (host.startswith('[') and host.endswith(']')):
         # IPv6 addresses must be enclosed in [ ] in order to be well
         # formed.
         host = '[' + host + ']'
@@ -452,6 +484,12 @@ class Context(object):
     :type splunkToken: ``string``
     :param headers: List of extra HTTP headers to send (optional).
     :type headers: ``list`` of 2-tuples.
+    :param retires: Number of retries for each HTTP connection (optional, the default is 0).
+                    NOTE THAT THIS MAY INCREASE THE NUMBER OF ROUND TRIP CONNECTIONS TO THE SPLUNK SERVER AND BLOCK THE
+                    CURRENT THREAD WHILE RETRYING.
+    :type retries: ``int``
+    :param retryDelay: How long to wait between connection attempts if `retries` > 0 (optional, defaults to 10s).
+    :type retryDelay: ``int`` (in seconds)
     :param handler: The HTTP request handler (optional).
     :returns: A ``Context`` instance.
 
@@ -469,7 +507,8 @@ class Context(object):
     """
     def __init__(self, handler=None, **kwargs):
         self.http = HttpLib(handler, kwargs.get("verify", False), key_file=kwargs.get("key_file"),
-                            cert_file=kwargs.get("cert_file"), context=kwargs.get("context"))  # Default to False for backward compat
+                            cert_file=kwargs.get("cert_file"),  context=kwargs.get("context"), # Default to False for backward compat
+                            retries=kwargs.get("retries", 0), retryDelay=kwargs.get("retryDelay", 10))
         self.token = kwargs.get("token", _NoAuthenticationToken)
         if self.token is None: # In case someone explicitly passes token=None
             self.token = _NoAuthenticationToken
@@ -498,13 +537,13 @@ class Context(object):
         return self.http._cookies
 
     def has_cookies(self):
-        """Returns true if the ``HttpLib`` member of this instance has at least
-        one cookie stored.
+        """Returns true if the ``HttpLib`` member of this instance has auth token stored.
 
-        :return: ``True`` if there is at least one cookie, else ``False``
+        :return: ``True`` if there is auth token present, else ``False``
         :rtype: ``bool``
         """
-        return len(self.get_cookies()) > 0
+        auth_token_key = "splunkd_"
+        return any(auth_token_key in key for key in self.get_cookies().keys())
 
     # Shared per-context request headers
     @property
@@ -517,23 +556,27 @@ class Context(object):
 
         :returns: A list of 2-tuples containing key and value
         """
+        header = []
         if self.has_cookies():
             return [("Cookie", _make_cookie_header(list(self.get_cookies().items())))]
         elif self.basic and (self.username and self.password):
             token = 'Basic %s' % b64encode(("%s:%s" % (self.username, self.password)).encode('utf-8')).decode('ascii')
-            return [("Authorization", token)]
         elif self.bearerToken:
             token = 'Bearer %s' % self.bearerToken
-            return [("Authorization", token)]
         elif self.token is _NoAuthenticationToken:
-            return []
+            token = []
         else:
             # Ensure the token is properly formatted
             if self.token.startswith('Splunk '):
                 token = self.token
             else:
                 token = 'Splunk %s' % self.token
-            return [("Authorization", token)]
+        if token:
+            header.append(("Authorization", token))
+        if self.get_cookies():
+            header.append(("Cookie", _make_cookie_header(list(self.get_cookies().items()))))
+
+        return header
 
     def connect(self):
         """Returns an open connection (socket) to the Splunk instance.
@@ -616,7 +659,7 @@ class Context(object):
         """
         path = self.authority + self._abspath(path_segment, owner=owner,
                                               app=app, sharing=sharing)
-        logging.debug("DELETE request to %s (body: %s)", path, repr(query))
+        logger.debug("DELETE request to %s (body: %s)", path, mask_sensitive_data(query))
         response = self.http.delete(path, self._auth_headers, **query)
         return response
 
@@ -679,7 +722,7 @@ class Context(object):
 
         path = self.authority + self._abspath(path_segment, owner=owner,
                                               app=app, sharing=sharing)
-        logging.debug("GET request to %s (body: %s)", path, repr(query))
+        logger.debug("GET request to %s (body: %s)", path, mask_sensitive_data(query))
         all_headers = headers + self.additional_headers + self._auth_headers
         response = self.http.get(path, all_headers, **query)
         return response
@@ -757,14 +800,15 @@ class Context(object):
             headers = []
 
         path = self.authority + self._abspath(path_segment, owner=owner, app=app, sharing=sharing)
-        logging.debug("POST request to %s (body: %s)", path, repr(query))
+
+        logger.debug("POST request to %s (body: %s)", path, mask_sensitive_data(query))
         all_headers = headers + self.additional_headers + self._auth_headers
         response = self.http.post(path, all_headers, **query)
         return response
 
     @_authentication
     @_log_duration
-    def request(self, path_segment, method="GET", headers=None, body="",
+    def request(self, path_segment, method="GET", headers=None, body={},
                 owner=None, app=None, sharing=None):
         """Issues an arbitrary HTTP request to the REST path segment.
 
@@ -793,9 +837,6 @@ class Context(object):
         :type app: ``string``
         :param sharing: The sharing mode of the namespace (optional).
         :type sharing: ``string``
-        :param query: All other keyword arguments, which are used as query
-            parameters.
-        :type query: ``string``
         :return: The response from the server.
         :rtype: ``dict`` with keys ``body``, ``headers``, ``reason``,
                 and ``status``
@@ -824,13 +865,27 @@ class Context(object):
         path = self.authority \
             + self._abspath(path_segment, owner=owner,
                             app=app, sharing=sharing)
+
         all_headers = headers + self.additional_headers + self._auth_headers
-        logging.debug("%s request to %s (headers: %s, body: %s)",
-                      method, path, str(all_headers), repr(body))
-        response = self.http.request(path,
-                                     {'method': method,
-                                     'headers': all_headers,
-                                     'body': body})
+        logger.debug("%s request to %s (headers: %s, body: %s)",
+                     method, path, str(mask_sensitive_data(dict(all_headers))), mask_sensitive_data(body))
+        if body:
+            body = _encode(**body)
+
+            if method == "GET":
+                path = path + UrlEncoded('?' + body, skip_encode=True)
+                message = {'method': method,
+                           'headers': all_headers}
+            else:
+                message = {'method': method,
+                           'headers': all_headers,
+                           'body': body}
+        else:
+            message = {'method': method,
+                       'headers': all_headers}
+
+        response = self.http.request(path, message)
+
         return response
 
     def login(self):
@@ -1135,12 +1190,14 @@ class HttpLib(object):
 
     If using the default handler, SSL verification can be disabled by passing verify=False.
     """
-    def __init__(self, custom_handler=None, verify=False, key_file=None, cert_file=None, context=None):
+    def __init__(self, custom_handler=None, verify=False, key_file=None, cert_file=None, context=None, retries=0, retryDelay=10):
         if custom_handler is None:
             self.handler = handler(verify=verify, key_file=key_file, cert_file=cert_file, context=context)
         else:
             self.handler = custom_handler
         self._cookies = {}
+        self.retries = retries
+        self.retryDelay = retryDelay
 
     def delete(self, url, headers=None, **kwargs):
         """Sends a DELETE request to a URL.
@@ -1254,7 +1311,16 @@ class HttpLib(object):
             its structure).
         :rtype: ``dict``
         """
-        response = self.handler(url, message, **kwargs)
+        while True:
+            try:
+                response = self.handler(url, message, **kwargs)
+                break
+            except Exception:
+                if self.retries <= 0:
+                    raise
+                else:
+                    time.sleep(self.retryDelay)
+                    self.retries -= 1
         response = record(response)
         if 400 <= response.status:
             raise HTTPError(response)
@@ -1290,7 +1356,10 @@ class ResponseReader(io.RawIOBase):
         self._buffer = b''
 
     def __str__(self):
-        return self.read()
+        if six.PY2:
+            return self.read()
+        else:
+            return str(self.read(), 'UTF-8')
 
     @property
     def empty(self):
@@ -1389,7 +1458,7 @@ def handler(key_file=None, cert_file=None, timeout=None, verify=False, context=N
         head = {
             "Content-Length": str(len(body)),
             "Host": host,
-            "User-Agent": "splunk-sdk-python/1.6.18",
+            "User-Agent": "splunk-sdk-python/%s" % __version__,
             "Accept": "*/*",
             "Connection": "Close",
         } # defaults

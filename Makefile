@@ -17,6 +17,11 @@ build-add-on:  ## Build Splunk Add-on
 
 .PHONY: build-app
 build-app:  ## Build Splunk App
+	yarn workspace @splunk/censys run build
+	poetry run slim package ./packages/censys/censys
+
+.PHONY: build-app-prod
+build-app-prod:  ## Build Splunk App
 	yarn workspace @splunk/censys run build:prod
 	poetry run slim package ./packages/censys/censys
 

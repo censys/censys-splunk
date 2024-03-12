@@ -16,14 +16,14 @@ const entries = fs
 module.exports = webpackMerge(baseConfig, {
     entry: entries,
     output: {
-        path: path.join(__dirname, 'stage/appserver/static/pages/'),
+        path: path.join(__dirname, 'censys/appserver/static/pages/'),
         filename: '[name].js',
     },
     plugins: [
         new CopyWebpackPlugin([
             {
                 from: path.join(__dirname, 'src/main/resources/splunk'),
-                to: path.join(__dirname, 'stage'),
+                to: path.join(__dirname, 'censys'),
             },
         ]),
     ],
