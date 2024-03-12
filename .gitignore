@@ -124,6 +124,7 @@ events.pickle
 generator.lock
 helmut.log
 pytest_splunk_addon.log
+**/stage/
 
 # Splunk JS
 node_modules/

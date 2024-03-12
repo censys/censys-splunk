@@ -9,13 +9,13 @@ import ReportSearchIcon from '@splunk/react-icons/ReportSearch';
 import SearchIcon from '@splunk/react-icons/Search';
 import layout from '@splunk/react-page';
 import { defaultFetchInit } from '@splunk/splunk-utils/fetch';
-import { defaultTheme, getThemeOptions } from '@splunk/splunk-utils/themes';
+import { getThemeOptions } from '@splunk/splunk-utils/themes';
 import { createRESTURL } from '@splunk/splunk-utils/url';
 import { SplunkThemeProvider } from '@splunk/themes';
 
 import CensysGettingStarted from '@splunk/censys-getting-started';
 
-const themeProviderSettings = getThemeOptions(defaultTheme() || 'enterprise');
+const themeProviderSettings = getThemeOptions('enterprise');
 
 const getLocalApps = (signal = null) => {
     return fetch(
