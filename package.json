@@ -26,6 +26,7 @@
     "node": ">=8"
   },
   "dependencies": {
-    "@splunk/splunk-utils": "^3.0.1"
+    "@splunk/splunk-utils": "^3.0.1",
+    "follow-redirects": "^1.15.6"
   }
 }
