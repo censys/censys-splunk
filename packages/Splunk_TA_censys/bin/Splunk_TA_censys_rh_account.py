@@ -15,8 +15,8 @@ util.remove_http_proxy_env_vars()
 fields = [
     field.RestField(
         "asm_api_key",
-        required=False,
-        encrypted=False,
+        required=True,
+        encrypted=True,
         default=None,
         validator=validator.String(
             min_len=36,
