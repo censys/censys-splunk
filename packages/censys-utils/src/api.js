@@ -5,7 +5,7 @@ import * as config from '@splunk/splunk-utils/config';
 import { defaultFetchInit } from '@splunk/splunk-utils/fetch';
 import { createRESTURL } from '@splunk/splunk-utils/url';
 
-const defaultApp = config.app;
+export const defaultApp = config.app;
 export const appBaseUrl = `/app/${defaultApp}`;
 
 export const raiseOnError = (response) => {

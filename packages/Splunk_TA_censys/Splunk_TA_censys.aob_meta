@@ -2,7 +2,7 @@
     "basic_builder": {
         "appname": "Splunk_TA_censys",
         "friendly_name": "Censys Add-on for Splunk",
-        "version": "1.1.6",
+        "version": "1.1.7",
         "author": "Censys, Inc.",
         "description": "The Censys Add-on for Splunk brings an outside-in perspective of organizations Internet-facing networks to security operations.",
         "theme": "#f07a35",
