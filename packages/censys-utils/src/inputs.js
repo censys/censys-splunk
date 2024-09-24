@@ -196,7 +196,7 @@ export const getIndexes = (count = -1, app = defaultApp, signal = null) => {
     params.append('count', count);
     const paramsString = params.toString();
 
-    return fetch(`${makeJsonUrl(url)  }&${paramsString}`, {
+    return fetch(`${makeJsonUrl(url)}&${paramsString}`, {
         ...defaultFetchInit,
         signal,
         method: 'GET',

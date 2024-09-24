@@ -1,4 +1,5 @@
 /* eslint-env jest */
+/* @jest-environment jsdom */
 import { assert } from 'chai';
 import Enzyme, { mount } from 'enzyme';
 import EnzymeAdapterReact16 from 'enzyme-adapter-react-16';

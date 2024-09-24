@@ -8,9 +8,23 @@ from splunktaucclib.rest_handler.endpoint import (
     field,
     validator,
 )
+import requests
+
 
 util.remove_http_proxy_env_vars()
 
+def validate_api_key(value, *args, **kwargs):
+    base_url = "https://app.censys.io/api"
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Censys-Api-Key": value,
+        "User-Agent": "Splunk_TA_censys",
+    }
+    try:
+        resp = requests.get(f"{base_url}/integrations/v1/account", headers=headers)
+    except requests.RequestException as e:
+        raise validator.ValidationFailed("Failed to validate the API key")
 
 fields = [
     field.RestField(
@@ -18,10 +32,7 @@ fields = [
         required=True,
         encrypted=True,
         default=None,
-        validator=validator.String(
-            min_len=36,
-            max_len=36,
-        ),
+        validator=validator.UserDefined(validate_api_key),
     ),
 ]
 model = RestModel(fields, name=None)

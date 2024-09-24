@@ -54,22 +54,26 @@ class CensysAsmApi:
     def validate(self):
         """Validate the API key."""
         res = self._make_call(
-            "/v1/assets/hosts", "GET", parameters={"pageSize": 1, "pageNumber": 1}
+            "/integrations/v1/account", "GET"
         )
         res.raise_for_status()
 
-
-def validate_api_key(helper: BaseModInput, censys_asm_api_key: Optional[str]):
+def validate_api_key(censys_asm_api_key: Optional[str]):
     """Validate the input.
 
     Args:
-        helper: The modular input helper.
         censys_asm_api_key: The censys ASM API key.
+        args: The arguments. (none used here)
 
     Raises:
         ValueError: If the API key is missing.
     """
     if not censys_asm_api_key:
         raise ValueError("Censys ASM API key is missing.")
+    helper = BaseModInput()
     api = CensysAsmApi(censys_asm_api_key, helper)
-    api.validate()
+    try:
+        api.validate()
+    except requests.HTTPError as e:
+        raise ValueError(f"Invalid Censys ASM API key:
+        {str(e)}") from e
