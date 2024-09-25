@@ -29,7 +29,7 @@ const CensysSetup = ({ appId, title }) => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [formErrors, setFormErrors] = useState({
-        asmApiKey: ''
+        asmApiKey: '',
     });
     const [secretExists, setSecretExists] = useState(true);
     const [asmApiKey, setAsmApiKey] = useState('');
@@ -41,7 +41,7 @@ const CensysSetup = ({ appId, title }) => {
 
     const asmHelp = (
         <span>
-            Get your API key from the{' '}
+            Get your API key from the
             <Link to="https://app.censys.io/integrations" openInNewContext>
                 ASM integrations page
             </Link>
