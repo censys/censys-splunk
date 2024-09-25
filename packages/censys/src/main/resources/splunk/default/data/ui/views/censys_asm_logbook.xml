@@ -16,7 +16,7 @@
       <search>
         <query>sourcetype="censys:asm:logbook" | stats count by dataInputName</query>
         <earliest>0</earliest>
-        <latest />
+        <latest></latest>
       </search>
       <choice value="*">All data inputs</choice>
       <default>*</default>
@@ -27,8 +27,7 @@
       <title>Hosts Added</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST" operation="ASSOCIATE" | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="HOST" operation="ASSOCIATE" | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -47,9 +46,7 @@
         <option name="unitPosition">before</option>
         <option name="useColors">0</option>
         <drilldown>
-          <link
-                        target="_blank"
-                    >search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST%22%20operation%3D%22ASSOCIATE%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
+          <link target="_blank">search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST%22%20operation%3D%22ASSOCIATE%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
         </drilldown>
       </single>
     </panel>
@@ -57,8 +54,7 @@
       <title>Hosts Removed</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST" operation="DISASSOCIATE" | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="HOST" operation="DISASSOCIATE" | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -69,9 +65,7 @@
         <option name="showSparkline">0</option>
         <option name="showTrendIndicator">0</option>
         <drilldown>
-          <link
-                        target="_blank"
-                    >search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST%22%20operation%3D%22DISASSOCIATE%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
+          <link target="_blank">search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST%22%20operation%3D%22DISASSOCIATE%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
         </drilldown>
       </single>
     </panel>
@@ -79,8 +73,7 @@
       <title>Software Added</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST_SOFTWARE" operation="ADD" | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="HOST_SOFTWARE" operation="ADD" | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -96,8 +89,7 @@
       <title>Software Removed</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST_SOFTWARE" operation="REMOVE" | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="HOST_SOFTWARE" operation="REMOVE" | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -113,8 +105,7 @@
       <title>Subdomain Names Added</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="DOMAIN_SUBDOMAIN" operation="ADD" | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="DOMAIN_SUBDOMAIN" operation="ADD" | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -132,8 +123,7 @@
       <title>Ports Added</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST_PORT" operation="ADD" | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="HOST_PORT" operation="ADD" | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -144,9 +134,7 @@
         <option name="showSparkline">0</option>
         <option name="showTrendIndicator">0</option>
         <drilldown>
-          <link
-                        target="_blank"
-                    >search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST_PORT%22%20operation%3D%22ADD%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
+          <link target="_blank">search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST_PORT%22%20operation%3D%22ADD%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
         </drilldown>
       </single>
     </panel>
@@ -154,8 +142,7 @@
       <title>Protocols Added</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST_PROTOCOL" operation="ADD" | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="HOST_PROTOCOL" operation="ADD" | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -166,9 +153,7 @@
         <option name="showSparkline">0</option>
         <option name="showTrendIndicator">0</option>
         <drilldown>
-          <link
-                        target="_blank"
-                    >search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST_PROTOCOL%22%20operation%3D%22ADD%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
+          <link target="_blank">search?q=sourcetype%3D%22censys%3Aasm%3Alogbook%22%20type%3D%22HOST_PROTOCOL%22%20operation%3D%22ADD%22%20dataInputName%3D$dataInputName$%20%7C%20accum%20count%20as%20count&amp;earliest=$time_range.earliest$&amp;latest=$time_range.latest$</link>
         </drilldown>
       </single>
     </panel>
@@ -176,8 +161,7 @@
       <title>Certificates Added</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="CERT" operation="ASSOCIATE" | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="CERT" operation="ASSOCIATE" | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -193,8 +177,7 @@
       <title>CVEs Added</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST_VULNERABILITY" operation="ADD" | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="HOST_VULNERABILITY" operation="ADD" | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -215,8 +198,7 @@
       <title>CDN Hosts Added</title>
       <single>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST_CDN" operation="ADD" NOT [search sourcetype="censys:asm:logbook" type="HOST_CDN" operation="REMOVE"] | timechart count | accum count as count</query>
+          <query>sourcetype="censys:asm:logbook" type="HOST_CDN" operation="ADD" NOT [search sourcetype="censys:asm:logbook" type="HOST_CDN" operation="REMOVE"] | timechart count | accum count as count</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -231,55 +213,10 @@
   </row>
   <row>
     <panel>
-      <title>Top Host Risks</title>
-      <table>
-        <search>
-          <query>sourcetype="censys:asm:logbook" type="HOST_RISK" operation="ADD"
-| table entity.ipAddress data.severity data.transportProtocol data.port data.title
-| rename low as "potaot"
-| rename entity.ipAddress as "IP Address"
-| rename data.severity as "Severity"
-| rename data.transportProtocol as "Protocol"
-| rename data.port as "Port"
-| rename data.title as "Risk"
-| eval sort_field=case(Severity="critical",1, Severity="high",2, Severity="medium",3, Severity="low",4)
-| sort sort_field | fields - sort_field</query>
-          <earliest>$time_range.earliest$</earliest>
-          <latest>$time_range.latest$</latest>
-        </search>
-        <option name="count">12</option>
-        <option name="drilldown">cell</option>
-        <option name="refresh.display">progressbar</option>
-      </table>
-    </panel>
-  </row>
-  <row>
-    <panel>
-      <title>New Host Risks by Severity</title>
-      <chart>
-        <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST_RISK" operation="ADD" | timechart count by data.severity</query>
-          <earliest>$time_range.earliest$</earliest>
-          <latest>$time_range.latest$</latest>
-        </search>
-        <option name="charting.axisTitleX.text">Date</option>
-        <option name="charting.axisY.scale">linear</option>
-        <option name="charting.chart">column</option>
-        <option name="charting.chart.showDataLabels">none</option>
-        <option name="charting.chart.stackMode">stacked</option>
-        <option name="charting.drilldown">all</option>
-        <option name="charting.layout.splitSeries">0</option>
-        <option name="height">355</option>
-        <option name="refresh.display">progressbar</option>
-      </chart>
-    </panel>
-    <panel>
       <title>New CVE Risks by Severity Score</title>
       <chart>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="HOST_VULNERABILITY" operation="ADD" | timechart count by data.cvss</query>
+          <query>sourcetype="censys:asm:logbook" type="HOST_VULNERABILITY" operation="ADD" | timechart count by data.cvss</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -316,8 +253,7 @@
       <title>New CDNs</title>
       <chart>
         <search>
-          <query
-                    >source="censys_asm_logbook" type="HOST_CDN" operation="ADD" | chart count by data.newCdn</query>
+          <query>source="censys_asm_logbook" type="HOST_CDN" operation="ADD" | chart count by data.newCdn</query>
           <earliest>$time_range.earliest$</earliest>
           <latest>$time_range.latest$</latest>
         </search>
@@ -331,8 +267,7 @@
       <title>Expiring Domains</title>
       <table>
         <search>
-          <query
-                    >sourcetype="censys:asm:logbook" type="DOMAIN_RISK" operation="ADD" | eval epochtime=strptime(timestamp, "%Y-%m-%dT%H:%M:%S") | eval desired_time=strftime(epochtime, "%+")
+          <query>sourcetype="censys:asm:logbook" type="DOMAIN_RISK" operation="ADD" | eval epochtime=strptime(timestamp, "%Y-%m-%dT%H:%M:%S") | eval desired_time=strftime(epochtime, "%+")
 | table entity.domain desired_time data.title
 | rename entity.domain as "Domain"
 | rename desired_time as "Warning Date"
