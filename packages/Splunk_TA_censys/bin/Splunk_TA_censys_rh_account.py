@@ -13,6 +13,7 @@ import requests
 
 util.remove_http_proxy_env_vars()
 
+# TODO: Use this as the validator for the API key input
 def validate_api_key(value, *args, **kwargs):
     base_url = "https://app.censys.io/api"
     headers = {
@@ -32,7 +33,10 @@ fields = [
         required=True,
         encrypted=True,
         default=None,
-        validator=validator.UserDefined(validate_api_key),
+        validator=validator.String(
+            min_len=36,
+            max_len=36,
+        )
     ),
 ]
 model = RestModel(fields, name=None)
