@@ -28,12 +28,12 @@ model = RestModel(fields, name=None)
 
 
 endpoint = SingleModel(
-    "splunk_ta_censys_account",
+    'splunk_ta_censys_account',
     model,
 )
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     admin_external.handle(
         endpoint,
         handler=ConfigMigrationHandler,
