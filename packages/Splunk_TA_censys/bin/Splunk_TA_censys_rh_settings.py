@@ -1,3 +1,4 @@
+
 import splunk_ta_censys_declare
 
 from splunk_aoblib.rest_migration import ConfigMigrationHandler
@@ -10,7 +11,6 @@ from splunktaucclib.rest_handler.endpoint import (
 )
 
 util.remove_http_proxy_env_vars()
-
 
 fields_proxy = [
     field.RestField(
@@ -65,22 +65,27 @@ fields_proxy = [
 ]
 model_proxy = RestModel(fields_proxy, name="proxy")
 
-
 fields_logging = [
     field.RestField(
-        "loglevel", required=False, encrypted=False, default="INFO", validator=None
+        'loglevel',
+        required=False,
+        encrypted=False,
+        default='INFO',
+        validator=None
     )
 ]
-model_logging = RestModel(fields_logging, name="logging")
-
+model_logging = RestModel(fields_logging, name='logging')
 
 endpoint = MultipleModel(
-    "splunk_ta_censys_settings",
-    models=[model_proxy, model_logging],
+    'splunk_ta_censys_settings',
+    models=[
+        model_proxy,
+        model_logging,
+    ],
 )
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     admin_external.handle(
         endpoint,
         handler=ConfigMigrationHandler,

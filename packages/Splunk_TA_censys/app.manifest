@@ -1,22 +1,22 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "info": {
     "title": "Censys Add-on for Splunk",
     "id": {
       "group": null,
       "name": "Splunk_TA_censys",
-      "version": "1.1.7"
+      "version": "1.2.0"
     },
     "author": [
       {
         "name": "Censys, Inc.",
-        "email": "support@censys.io",
+        "email": "support@censys.com",
         "company": "Censys, Inc."
       }
     ],
     "releaseDate": null,
     "description": "The Censys Add-on for Splunk brings an outside-in perspective of organizations' Internet-facing networks to security operations.",
-    "classification": {
+   "classification": {
       "intendedAudience": "IT Professionals",
       "categories": [
         "IT Operations",
@@ -41,13 +41,22 @@
       "uri": null
     }
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "tasks": [],
-  "inputGroups": {},
-  "incompatibleApps": {},
+  "inputGroups": {
+  },
+  "incompatibleApps": {
+  },
   "platformRequirements": {
     "splunk": {
       "Enterprise": "*"
     }
-  }
+  },
+  "supportedDeployments": [
+    "*"
+  ],
+  "targetWorkloads": [
+    "*"
+  ]
 }

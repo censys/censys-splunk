@@ -6,6 +6,7 @@ import requests
 from modinput_wrapper.base_modinput import BaseModInput
 
 BASE_URL = "https://app.censys.io/api"
+APP_NAME = "Splunk_TA_censys"
 
 
 class CensysAsmApi:
