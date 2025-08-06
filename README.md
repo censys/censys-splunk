@@ -13,7 +13,7 @@
 
 ## Compatibility
 
-Python 3.7 is required at this time. See [Python 3 migration with the Splunk platform](https://docs.splunk.com/Documentation/SplunkCloud/8.2.2202/Python3Migration/AboutMigration) for more information.
+Python 3.9 is required at this time. See [Python 3 migration with the Splunk platform](https://docs.splunk.com/Documentation/Splunk/9.4.2/Python3Migration/ChangesEnterprise) for more information.
 
 ## License
 

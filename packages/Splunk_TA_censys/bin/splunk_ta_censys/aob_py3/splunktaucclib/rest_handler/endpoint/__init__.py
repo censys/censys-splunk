@@ -1,5 +1,5 @@
 #
-# Copyright 2024 Splunk Inc.
+# Copyright 2025 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -115,7 +115,7 @@ class SingleModel(RestEndpoint):
         model,
         user="nobody",
         app=None,
-        need_reload=True,
+        need_reload=False,
         *args,
         **kwargs,
     ):
@@ -153,7 +153,7 @@ class MultipleModel(RestEndpoint):
         models,
         user="nobody",
         app=None,
-        need_reload=True,
+        need_reload=False,
         *args,
         **kwargs,
     ):
