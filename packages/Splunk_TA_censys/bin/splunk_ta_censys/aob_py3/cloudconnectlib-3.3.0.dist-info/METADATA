@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: cloudconnectlib
-Version: 3.2.0
+Version: 3.3.0
 Summary: APP Cloud Connect
 License: Apache-2.0
 Author: Addon Factory template
@@ -25,4 +25,4 @@ Requires-Dist: munch (>=2.3.2,<3.0.0)
 Requires-Dist: requests (>=2.27.1,<3.0.0)
 Requires-Dist: solnlib (>=6.0.1,<7.0.0)
 Requires-Dist: splunktalib (==3.0.5)
-Requires-Dist: splunktaucclib (==6.5.3)
+Requires-Dist: splunktaucclib (>=6.5.3,<9.0.0)

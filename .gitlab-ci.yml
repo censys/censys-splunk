@@ -12,7 +12,7 @@ variables:
   PIP_REQUIREMENTS_FILE: "requirements.txt"
 
 .poetry:
-  image: python:3.7
+  image: python:3.9
 
   variables:
     PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"

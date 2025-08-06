@@ -34,7 +34,7 @@ class CensysAsmRisksApi(CensysAsmApi):
         """Initialize the CensysAsmLogbookApi class."""
         self.input_stanza: str = helper.get_input_stanza_names()
         opt_global_account = helper.get_arg("global_account", self.input_stanza)
-        self.helper.log_debug(f"Global account: {opt_global_account}")
+        helper.log_debug(f"Global account: {opt_global_account}")
         censys_asm_api_key = opt_global_account.get("asm_api_key")
         super().__init__(censys_asm_api_key, helper)
         self.risk_types = {}

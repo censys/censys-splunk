@@ -1,5 +1,5 @@
 #
-# Copyright 2024 Splunk Inc.
+# Copyright 2025 Splunk Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,4 +17,4 @@
 Cloud Connect library
 """
 
-__version__ = "3.2.0"
+__version__ = "3.3.0"
