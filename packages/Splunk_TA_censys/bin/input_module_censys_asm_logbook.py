@@ -42,7 +42,7 @@ class CensysAsmLogbookApi(CensysAsmApi):
         today = today.replace(hour=0, minute=0, second=0, microsecond=0)
         todays_date = today.strftime("%Y-%m-%dT%H:%M:%SZ")
         response = self._make_call(
-            "/v1/logbook-cursor", "POST", parameters={"dateFrom": todays_date}
+            "/v1/logbook-cursor", "POST", payload={"dateFrom": todays_date}
         )
         logbook_cursor = response.json().get("cursor")
         if logbook_cursor is None:

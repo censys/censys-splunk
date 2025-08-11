@@ -2,17 +2,18 @@ version: '3.8'
 
 services:
   censys_splunk:
-    image: splunk/splunk
+    image: splunk/splunk:10.0
     container_name: censys_splunk
     ports:
       - 8000:8000
     restart: "no"
     environment:
+      - SPLUNK_GENERAL_TERMS=--accept-sgt-current-at-splunk-com
       - SPLUNK_START_ARGS=--accept-license
       - SPLUNK_HOME=/opt/splunk
       - SPLUNK_PASSWORD=I<3bigDATA
       - SPLUNK_LICENSE_URI=/tmp/splunk.license
     volumes:
       #- ./packages/Splunk_TA_censys/stage:/opt/splunk/etc/apps/Splunk_TA_censys
-      - ./packages/censys/stage:/opt/splunk/etc/apps
-      - /home/bodn/splunk/splunk.license:/tmp/splunk.license
+      - ./packages/censys/stage:/opt/splunk/etc/apps # Allows splunk web state to persist restarts
+      - ~/splunk/splunk.license:/tmp/splunk.license

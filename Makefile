@@ -94,3 +94,11 @@ splunk-stop:  ## Stop local Splunk
 .PHONY: help
 help:  ## Show make help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: clean-vol
+clean-vol: # Delete the splunk docker volume data refreshing the splunk web state
+	sudo rm -rf ./packages/censys/stage
+
+.PHONY: package-addon
+package-addon: # Build the addon spl. Note that you should manually version the resulting spl file name.
+	cd ./packages && tar -zvcf Splunk_TA_censys.spl Splunk_TA_censys && cd ..
