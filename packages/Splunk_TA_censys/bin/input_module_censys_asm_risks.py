@@ -112,12 +112,12 @@ class CensysAsmRisksApi(CensysAsmApi):
                 return None
             return response.json()
         except requests.HTTPError as e:
-            self.helper.log_info(
+            self.helper.log_error(
                 f"Enrichment API failed for riskID={risk_id}: {e.__class__.__name__} {e}"
             )
             return None
         except json.JSONDecodeError as e:
-            self.helper.log_info(
+            self.helper.log_error(
                 f"Enrichment API failed for riskID={risk_id}: "
                 f"invalid JSON in response ({e})"
             )
@@ -130,7 +130,7 @@ class CensysAsmRisksApi(CensysAsmApi):
         severity = risk_instance.get("severity")
         if severity:
             risk_event["severity"] = severity
-        context = risk_instance.get("context") or {}
+        context = risk_instance.get("context")
         if context:
             if context.get("ip") is not None:
                 risk_event["ip"] = context["ip"]

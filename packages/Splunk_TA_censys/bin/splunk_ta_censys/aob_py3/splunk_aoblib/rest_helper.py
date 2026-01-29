@@ -17,10 +17,6 @@ class TARestHelper(object):
             'https://', requests.adapters.HTTPAdapter(max_retries=3))
         if proxy_uri:
             self.requests_proxy = {'http': proxy_uri, 'https': proxy_uri}
-            # Log proxy URI without credentials for security
-            safe_uri = proxy_uri.split('@')[-1] if '@' in proxy_uri else proxy_uri
-            if self.logger:
-                self.logger.debug('Initializing HTTP session with proxy: {0}'.format(safe_uri))
 
     def send_http_request(self, url, method, parameters=None, payload=None, headers=None, cookies=None, verify=True,
                           cert=None, timeout=None, proxy_uri=None):
@@ -44,7 +40,4 @@ class TARestHelper(object):
             requests_args['timeout'] = timeout
         if self.requests_proxy:
             requests_args['proxies'] = self.requests_proxy
-            if self.logger:
-                safe_proxy = str(self.requests_proxy).split('@')[-1] if '@' in str(self.requests_proxy) else str(self.requests_proxy)
-                self.logger.debug('Making {0} request to {1} via proxy'.format(method, url))
         return self.http_session.request(method, url, **requests_args)

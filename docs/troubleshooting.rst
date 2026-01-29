@@ -42,7 +42,6 @@ The Censys Add-on for Splunk supports proxy configuration for outbound API traff
    - **Proxy Type**: Select the proxy protocol type:
      
      - ``http`` - HTTP proxy (most common, supports both HTTP and HTTPS traffic)
-     - ``https`` - HTTPS proxy (proxy server requires HTTPS connection)
      - ``socks4`` - SOCKS4 proxy
      - ``socks5`` - SOCKS5 proxy
    
@@ -56,6 +55,7 @@ The Censys Add-on for Splunk supports proxy configuration for outbound API traff
 **Important Notes:**
 
 - Proxy settings are automatically applied to all API calls made by the Add-on.
+- To use an HTTPS destination behind your proxy, you can configure your proxy server to forward HTTP proxy traffic to HTTPS.
 - To verify proxy configuration is working, enable debug logging and check the logs for messages containing "proxy" or "Proxy configured".
 
 **Where Censys ASM Risks Input Logs Are Written**

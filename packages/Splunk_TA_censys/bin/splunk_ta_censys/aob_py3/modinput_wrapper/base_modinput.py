@@ -489,9 +489,6 @@ class BaseModInput(smi.Script):
                     'proxy_username'], proxy['proxy_password'], uri)
             else:
                 uri = '{0}://{1}'.format(proxy['proxy_type'], uri)
-            self.log_debug('Proxy configured: {0}'.format(uri.split('@')[-1] if '@' in uri else uri))
-        else:
-            self.log_debug('No proxy configured in Splunk settings')
         return uri
 
     # Checkpointing related functions
