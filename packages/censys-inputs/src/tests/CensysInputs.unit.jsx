@@ -4,40 +4,35 @@ import Enzyme, { mount } from 'enzyme';
 import EnzymeAdapterReact16 from 'enzyme-adapter-react-16';
 import React from 'react';
 
-// import { inputs } from '@splunk/censys-utils';
 import CensysInputs from '../CensysInputs';
+
+// Mock @splunk/censys-utils so no real fetch runs (avoids "Only absolute URLs are supported" in Jest)
+jest.mock('@splunk/censys-utils', () => {
+    const ASM_RISKS_INPUT_TYPE = 'censys_asm_risks';
+    const ASM_LOGBOOK_INPUT_TYPE = 'censys_asm_logbook';
+    return {
+        defaultApp: 'Splunk_TA_censys',
+        inputs: {
+            ASM_RISKS_INPUT_TYPE,
+            ASM_LOGBOOK_INPUT_TYPE,
+            inputTypeNames: {
+                [ASM_RISKS_INPUT_TYPE]: 'Censys ASM Risks',
+                [ASM_LOGBOOK_INPUT_TYPE]: 'Censys ASM Logbook',
+            },
+            getInputs: jest.fn().mockResolvedValue([]),
+            getIndexes: jest.fn().mockResolvedValue(['main', 'security']),
+            createInput: jest.fn().mockResolvedValue(undefined),
+            updateInput: jest.fn().mockResolvedValue(undefined),
+            setDisabledStatus: jest.fn().mockResolvedValue(undefined),
+        },
+    };
+});
 
 // This sets up the enzyme adapter
 const adapter = new EnzymeAdapterReact16();
 Enzyme.configure({ adapter });
 
-// Mock the inputs module
-// jest.mock('@splunk/censys-utils');
-
 describe('CensysInputs', () => {
-    // beforeAll(() => {
-    //     inputs.getInputs = jest.fn().mockResolvedValue([
-    //         {
-    //             name: 'smoke_test_risks',
-    //             type: inputs.ASM_RISKS_INPUT_TYPE,
-    //             interval: 3600,
-    //             index: 'main',
-    //             authentication: 'Global',
-    //             status: true,
-    //             selected: false,
-    //         },
-    //         {
-    //             name: 'smoke_test_logbook',
-    //             type: inputs.ASM_LOGBOOK_INPUT_TYPE,
-    //             interval: 3600,
-    //             index: 'main',
-    //             authentication: 'Global',
-    //             status: true,
-    //             selected: false,
-    //         },
-    //     ]);
-    // });
-
     it('renders with default title', () => {
         const wrapper = mount(<CensysInputs />);
         assert.include(wrapper.text(), 'Censys Inputs');

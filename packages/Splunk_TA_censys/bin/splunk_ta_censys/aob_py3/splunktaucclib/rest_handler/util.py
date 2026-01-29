@@ -108,7 +108,7 @@ def get_proxy_uri(proxy: Dict[str, Any]) -> Optional[str]:
                 "proxy_port": aa,
                 "proxy_username": bb,
                 "proxy_password": cc,
-                "proxy_type": http,sock4,sock5,
+                "proxy_type": http,https,sock4,sock5,
                 "proxy_rdns": 0 or 1,
             }
     :return: proxy uri or None
@@ -123,8 +123,8 @@ def get_proxy_uri(proxy: Dict[str, Any]) -> Optional[str]:
         ):
             proxy["proxy_type"] = "socks5h"
         # setting default value of proxy_type to "http" if
-        # its value is not from ["http", "socks4", "socks5"]
-        if proxy.get("proxy_type") not in ["http", "socks4", "socks5"]:
+        # its value is not from ["http", "https", "socks4", "socks5"]
+        if proxy.get("proxy_type") not in ["http", "https", "socks4", "socks5"]:
             proxy["proxy_type"] = "http"
         if proxy.get("proxy_port"):
             uri = "{}:{}".format(uri, proxy.get("proxy_port"))
