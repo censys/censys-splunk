@@ -132,7 +132,6 @@ class CensysAsmRisksApi(CensysAsmApi):
                 risk_event["dataInputName"] = self.input_stanza
                 risk_type = risk_event.get("riskType")
                 risk_event["riskName"] = self.get_risk_type_name(risk_type)
-
                 event = self.helper.new_event(
                     data=json.dumps(risk_event),
                     index=output_index,
