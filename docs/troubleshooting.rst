@@ -24,7 +24,11 @@ Troubleshooting Add-on
 
 **Configure Proxy Settings**
 
-The Censys Add-on for Splunk supports proxy configuration for outbound API traffic. This is useful in environments where direct internet access is restricted.
+The Censys Add-on for Splunk supports proxy configuration for outbound API traffic. This is useful in environments where direct internet access is restricted. How you configure the proxy depends on whether you use modular inputs (Inputs tab) or search commands (Search tab).
+
+**Proxy for modular inputs (Inputs tab)**
+
+Modular inputs (e.g. Censys ASM Risks, Censys ASM Logbook) use the proxy configured in the add-on's Configuration page.
 
 1. Navigate to the **Censys Add-on for Splunk**.
 
@@ -52,25 +56,13 @@ The Censys Add-on for Splunk supports proxy configuration for outbound API traff
 
 5. Save the configuration.
 
-**Important Notes:**
+   Proxy settings are then applied automatically to all API calls made by the modular inputs.
 
-- Proxy settings are automatically applied to all API calls made by the Add-on.
-- To use an HTTPS destination behind your proxy, you can configure your proxy server to forward HTTP proxy traffic to HTTPS.
-- To verify proxy configuration is working, enable debug logging and check the logs for messages containing "proxy" or "Proxy configured".
+**Proxy for search commands (Search tab)**
 
-**Where Censys ASM Risks Input Logs Are Written**
+Search commands (e.g. ``censysasmrisktypes``, ``censysasmriskinstances``) do not use the Configuration proxy. They respect the **HTTPS_PROXY**, **HTTP_PROXY**, and **NO_PROXY** environment variables in the environment where Splunk runs the search.
 
-The Censys ASM Risks modular input writes its logs to a dedicated file (not splunkd.log). After you run "Collect data" or when the input runs on schedule, check:
+- Set **HTTPS_PROXY** (and **HTTP_PROXY** if needed) to your proxy URL, for example ``https://proxy.example.com:8080`` or ``http://proxy.example.com:8080``.
+- Set **NO_PROXY** to a comma-separated list of hostnames or IPs that should bypass the proxy (e.g. ``localhost,127.0.0.1``).
 
-- **Path:** ``$SPLUNK_HOME/var/log/splunk/splunk_ta_censys_censys_asm_risks.log``
-- **Example (macOS):** ``/Applications/Splunk/var/log/splunk/splunk_ta_censys_censys_asm_risks.log``
-
-Look for lines such as:
-
-- ``Censys ASM Risks: collect_events started`` / ``collect_events finished``
-- ``write_risk_events started for stanza '…'``
-- ``Pulling risk events for input '…'``
-- ``Processing N risk event(s)``
-- ``Enrichment applied for riskID=…``
-
-If you see none of these after running the input, Splunk may be using a different build of the add-on (for example from ``etc/apps/Splunk_TA_censys``). Reload or redeploy the add-on so your changes are used, then run the input again and recheck that log file.
+Configure these in the environment of the Splunk process (e.g. in the systemd unit, init script, or shell that starts Splunk), depending on how your deployment is set up.

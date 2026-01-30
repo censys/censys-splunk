@@ -154,7 +154,6 @@ class TestRiskInput(CensysTestCase):
         for event in test_risk_events["events"]:
             event["dataInputName"] = test_input_stanza
             event["riskName"] = test_risk_types[event["riskType"]]["name"]
-            event["operation"] = event.get("op")  # implementation adds this
             expected_calls.append(
                 {
                     "data": json.dumps(event),
