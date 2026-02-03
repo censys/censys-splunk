@@ -60,9 +60,29 @@ Modular inputs (e.g. Censys ASM Risks, Censys ASM Logbook) use the proxy configu
 
 **Proxy for search commands (Search tab)**
 
-Search commands (e.g. ``censysasmrisktypes``, ``censysasmriskinstances``) do not use the Configuration proxy. They respect the **HTTPS_PROXY**, **HTTP_PROXY**, and **NO_PROXY** environment variables in the environment where Splunk runs the search.
+Search commands (e.g. ``censysasmrisktypes``, ``censysasmriskinstances``) do not use the Configuration proxy. They use **HTTPS_PROXY** and **NO_PROXY** from the environment. Search commands run in worker subprocesses that often do not receive app-level environment variables from ``server.conf``. Use **splunk-launch.conf** so the variables apply to all Splunk processes, including search workers.
 
-- Set **HTTPS_PROXY** (and **HTTP_PROXY** if needed) to your proxy URL, for example ``https://proxy.example.com:8080`` or ``http://proxy.example.com:8080``.
-- Set **NO_PROXY** to a comma-separated list of hostnames or IPs that should bypass the proxy (e.g. ``localhost,127.0.0.1``).
+**Configure proxy using splunk-launch.conf (recommended)**
 
-Configure these in the environment of the Splunk process (e.g. in the systemd unit, init script, or shell that starts Splunk), depending on how your deployment is set up.
+1. Open **splunk-launch.conf** on the Splunk server:
+
+   - Path: ``$SPLUNK_HOME/etc/splunk-launch.conf``
+   - Examples: ``/opt/splunk/etc/splunk-launch.conf`` (Linux), ``C:\Program Files\Splunk\etc\splunk-launch.conf`` (Windows)
+
+2. Add or edit an ``[env]`` stanza at the end of the file:
+
+   .. code-block:: ini
+
+      [env]
+      HTTPS_PROXY = https://your-proxy-host:8080
+      NO_PROXY = localhost,127.0.0.1
+
+   Use your actual proxy URL and port. The proxy URL itself can use ``https://`` or ``http://`` (e.g. ``http://proxy.example.com:8080`` is fine for HTTPS traffic); **HTTPS_PROXY** is the variable that must be set for the Censys search commands.
+
+3. Restart Splunk so the new environment is picked up:
+
+   .. code-block:: bash
+
+      $SPLUNK_HOME/bin/splunk restart
+
+4. Run a search that uses a Censys search command (e.g. ``| censysasmriskinstances``).
