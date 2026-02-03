@@ -57,6 +57,8 @@ Install from File
 
 ----
 
+.. _configure-the-add-on:
+
 Configure the Add-on
 --------------------
 
@@ -112,10 +114,10 @@ If you are not familiar with Splunk search syntax, Splunk has the following help
 ASM search commands
 -------------------
 
-Two search commands pull live data from the Censys ASM API and can be used to enrich your existing data: ``censysasmrisktypes`` and ``censysasmriskinstances``. They require your ASM API key to be configured in the add-on (see :ref:`Configure the Add-on <add-on/index:configure-the-add-on>`)..
+Two search commands pull live data from the Censys ASM API and can be used to enrich your existing data: ``censysasmrisktypes`` and ``censysasmriskinstances``. They require your ASM API key to be configured in the add-on (see :ref:`configure-the-add-on`).
 
 ``censysasmrisktypes``
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 Returns the list of risk types defined in your ASM workspace (e.g. open ports, vulnerable software). Use it to see available risk types or to join/lookup with other data.
 
