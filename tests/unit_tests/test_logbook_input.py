@@ -34,6 +34,10 @@ class TestLogbookInput(CensysTestCase):
     def test_get_logbook_cursor(self):
         # Test data
         test_cursor = "test_cursor"
+        today = datetime.datetime.now().replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        todays_date = today.strftime("%Y-%m-%dT%H:%M:%SZ")
 
         # Mock
         mock_helper = self.mock_helper()
@@ -44,13 +48,11 @@ class TestLogbookInput(CensysTestCase):
         # Actual call
         cursor = logbook_api.get_logbook_cursor()
 
-        # Assertions
+        # Assertions (implementation uses payload= for POST body, not parameters=)
         mock_make_call.assert_called_once_with(
             "/v1/logbook-cursor",
             "POST",
-            parameters={
-                "dateFrom": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-            },
+            payload={"dateFrom": todays_date},
         )
         assert cursor == test_cursor
 
