@@ -2,7 +2,8 @@
 
 import datetime
 import json
-from typing import Dict, Optional
+from concurrent.futures import ThreadPoolExecutor
+from typing import Dict, List, Optional, Tuple
 
 import requests
 from modinput_wrapper.base_modinput import BaseModInput
@@ -24,6 +25,7 @@ def use_single_instance_mode():
 """
 
 CHECKPOINT_KEY_PREFIX = "asm_risks_cursor_"
+ENRICHMENT_MAX_WORKERS = 8
 
 
 class CensysAsmRisksApi(CensysAsmApi):
@@ -97,6 +99,37 @@ class CensysAsmRisksApi(CensysAsmApi):
             self.helper.log_error(f"Risk type {risk_type} not found.")
         return risk_name
 
+    def get_risk_instance(self, risk_id: int) -> Optional[dict]:
+        try:
+            response = self._make_call(f"/v2/risk-instances/{risk_id}", "GET")
+            return response.json()
+        except requests.HTTPError as e:
+            self.helper.log_error(
+                f"Failed to fetch risk instance riskID={risk_id}: {e}"
+            )
+            return None
+
+    def _apply_enrichment(
+        self,
+        risk_event: dict,
+        risk_id: int,
+        risk_instance: dict,
+    ) -> None:
+        severity = risk_instance.get("severity")
+        if severity:
+            risk_event["severity"] = severity
+
+        context = risk_instance.get("context")
+        if context:
+            if context.get("ip") is not None:
+                risk_event["ip"] = context["ip"]
+            if context.get("port") is not None:
+                risk_event["port"] = context["port"]
+            if context.get("service") is not None:
+                risk_event["protocol"] = context["service"]
+            if context.get("name") is not None:
+                risk_event["hostname"] = context["name"]
+
     def write_risk_events(self, event_writer: EventWriter):
         """Write the risk events."""
         cursor = self.get_risk_events_cursor_check_point()
@@ -124,7 +157,7 @@ class CensysAsmRisksApi(CensysAsmApi):
                 self.helper.log_error(str(e))
                 break
 
-            risk_events: list[dict] = res.get("events", [])
+            risk_events: List[dict] = res.get("events", [])
             total_events: int = res.get("total", 0)
             self.helper.log_debug(f"Adding {total_events} risk events...")
 
@@ -132,6 +165,53 @@ class CensysAsmRisksApi(CensysAsmApi):
                 risk_event["dataInputName"] = self.input_stanza
                 risk_type = risk_event.get("riskType")
                 risk_event["riskName"] = self.get_risk_type_name(risk_type)
+                risk_event["operation"] = risk_event.get("op")
+
+            # Collect (index, risk_id) for events that need enrichment
+            to_enrich: List[Tuple[int, int]] = [
+                (i, risk_events[i]["riskID"])
+                for i in range(len(risk_events))
+                if risk_events[i].get("riskID") is not None
+            ]
+
+            # Fetch risk instances in parallel (dedupe risk_ids to avoid redundant API calls)
+            risk_id_to_instance: Dict[int, Optional[dict]] = {}
+            if to_enrich:
+                unique_risk_ids = list(
+                    dict.fromkeys(rid for _, rid in to_enrich)
+                )
+                with ThreadPoolExecutor(
+                    max_workers=ENRICHMENT_MAX_WORKERS
+                ) as executor:
+                    instances = list(
+                        executor.map(self.get_risk_instance, unique_risk_ids)
+                    )
+                risk_id_to_instance = dict(zip(unique_risk_ids, instances))
+
+            # Apply enrichment and write events
+            for i, risk_event in enumerate(risk_events):
+                risk_id = risk_event.get("riskID")
+                if risk_id is not None:
+                    risk_instance = risk_id_to_instance.get(risk_id)
+                    if risk_instance:
+                        self._apply_enrichment(
+                            risk_event, risk_id, risk_instance
+                        )
+                        self.helper.log_info(
+                            f"Enrichment applied for riskID={risk_id} "
+                            f"(event id={risk_event.get('id')})"
+                        )
+                    else:
+                        self.helper.log_error(
+                            f"Enrichment failed for riskID={risk_id}: "
+                            "risk instance API returned no data"
+                        )
+                else:
+                    self.helper.log_debug(
+                        f"Event id={risk_event.get('id')} has no riskID, "
+                        "skipping enrichment"
+                    )
+
                 event = self.helper.new_event(
                     data=json.dumps(risk_event),
                     index=output_index,

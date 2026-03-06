@@ -114,7 +114,7 @@ If you are not familiar with Splunk search syntax, Splunk has the following help
 ASM search commands
 -------------------
 
-Two search commands pull live data from the Censys ASM API and can be used to enrich your existing data: ``censysasmrisktypes`` and ``censysasmriskinstances``. They require your ASM API key to be configured in the add-on (see :ref:`configure-the-add-on`).
+Two search commands pull live data from the Censys ASM API: ``censysasmrisktypes`` and ``censysasmriskinstances``. They require your ASM API key to be configured in the add-on (see :ref:`configure-the-add-on`).
 
 ``censysasmrisktypes``
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -153,29 +153,6 @@ Returns the current risk instances from ASM (each instance is a specific finding
    | censysasmriskinstances
 
    | censysasmriskinstances | spath | table id, displayName, severity, status
-
-Enriching risk events with risk instances
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To enrich ingested risk events (sourcetype ``censys:asm:risks``) with current severity and display name from the API, join events to the output of ``censysasmriskinstances`` by risk ID:
-
-.. code-block:: text
-
-   index=* sourcetype="censys:asm:risks"
-   | spath
-   | eval riskID=id
-   | join type=left riskID [
-       | censysasmriskinstances
-       | spath
-       | eval riskID=id
-       | table riskID severity displayName
-     ]
-   | where isnotnull(severity) AND severity!=""
-   | table id, op, reason, riskID, severity, displayName, delta.*
-
-This keeps only events that matched a risk instance with a non-empty severity. For large or repeated use, consider populating the ``asm_risk_instances_lookup`` lookup (via the scheduled search that runs ``| censysasmriskinstances | ... | outputlookup asm_risk_instances_lookup``) and using ``lookup asm_risk_instances_lookup`` instead of the join to avoid calling the API on every search.
-
---------
 
 FAQs
 ----
