@@ -155,7 +155,7 @@ Returns the current risk instances from ASM (each instance is a specific finding
    | censysasmriskinstances | spath | table id, displayName, severity, status
 
 Enriching risk events with risk instances
----------------------
+-----------------------------------------
 
 To enrich risk events with fields from the risk instances lookup:
 
