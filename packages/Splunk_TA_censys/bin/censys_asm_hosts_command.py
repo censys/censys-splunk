@@ -15,6 +15,10 @@
 #
 #     Pipeline progress uses stderr (see _report_progress). Splunk may label those lines ERROR in
 #     logs; the text ``progress:`` means informational—not a command failure.
+#
+#     Optional throttling when piped (defaults batch_size=20 batch_delay=10):
+#       batch_size=0   — no batching (one request at a time per event).
+#       batch_delay=0  — no sleep between batches.
 
 import json
 import sys
@@ -26,7 +30,7 @@ from typing import Any, Dict, Iterator, List, Optional, Tuple
 import requests
 import splunk_ta_censys_declare
 
-from splunklib.searchcommands import Configuration, dispatch, Option
+from splunklib.searchcommands import Configuration, dispatch, Integer, Option
 from splunklib.searchcommands import StreamingCommand
 from splunklib.client import Service
 
@@ -37,9 +41,9 @@ SECRET_KEY_ASM_API = "censys_asm_api_key"
 HOSTS_SOURCETYPE = "censys:asm:hosts"
 HOSTS_SOURCE = "censys_asm_hosts"
 
-# Pipeline mode only: throttle by parallel batch size + pause between batches (not Splunk options).
-PIPELINE_BATCH_SIZE = 20
-PIPELINE_BATCH_DELAY_SECONDS = 10
+# Piped mode only: defaults for optional batch_size / batch_delay (whole seconds).
+DEFAULT_BATCH_SIZE = 20
+DEFAULT_BATCH_DELAY = 10
 
 
 def get_asm_api_key(service: Service) -> str:
@@ -132,6 +136,22 @@ class CensysAsmHostsCommand(StreamingCommand):
     ip_field = Option(
         default="ip",
         doc="Field on piped events with the IP (e.g. riskIP).",
+    )
+    batch_size = Option(
+        default=DEFAULT_BATCH_SIZE,
+        validate=Integer(0),
+        doc=(
+            "When piped in: max parallel ASM host GETs per batch. "
+            "0 = no batching (sequential). Default: %d." % DEFAULT_BATCH_SIZE
+        ),
+    )
+    batch_delay = Option(
+        default=DEFAULT_BATCH_DELAY,
+        validate=Integer(0),
+        doc=(
+            "When piped in: seconds to sleep after each batch. "
+            "0 = no delay. Default: %d." % DEFAULT_BATCH_DELAY
+        ),
     )
 
     # --- Shared: HTTP + JSON fetch (both modes) ---
@@ -244,8 +264,12 @@ class CensysAsmHostsCommand(StreamingCommand):
     ) -> Iterator[dict]:
         # Upstream events: read IP per row, optional batching + delay, yield same records enriched.
         ip_field = (self.ip_field or "ip").strip() or "ip"
-        batch_sz = PIPELINE_BATCH_SIZE
-        delay_sec = PIPELINE_BATCH_DELAY_SECONDS
+        batch_sz = self.batch_size
+        if batch_sz is None:
+            batch_sz = DEFAULT_BATCH_SIZE
+        delay_sec = self.batch_delay
+        if delay_sec is None:
+            delay_sec = DEFAULT_BATCH_DELAY
 
         pending: List[Tuple[dict, str]] = []
         total_records = len(records)
