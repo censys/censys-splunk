@@ -10,8 +10,8 @@
 #   PIPED IN — one or more upstream events.
 #     Example: | ... | censysasmhosts ip_field=riskIP
 #     Read the lookup address from each row: record[ip_field] or fallback record["ip"].
-#     Same rows are passed through; we only add/set domain and host_ip (ASM enrichment).
-#     Original fields (e.g. ip, riskIP) are not cleared — only domain and host_ip are written.
+#     Same rows are passed through; we only add/set seed and host_ip (ASM enrichment).
+#     Original fields (e.g. ip, riskIP) are not cleared — only seed and host_ip are written.
 #
 #     Pipeline progress uses stderr (see _report_progress). Splunk may label those lines ERROR in
 #     logs; the text ``progress:`` means informational—not a command failure.
@@ -73,7 +73,7 @@ def _is_blank(value: Any) -> bool:
     return not s or s.lower() == "null"
 
 
-def _domain_from_discovery_trail(trail: Any) -> str:
+def _seed_from_discovery_trail(trail: Any) -> str:
     """Return seed DOMAIN_NAME assetId from discoveryTrail, or ""."""
     if not trail or not isinstance(trail, list):
         return ""
@@ -125,7 +125,7 @@ class CensysAsmHostsCommand(StreamingCommand):
     Fetch host asset(s) from Censys ASM by IP (GET .../v1/assets/hosts/{ip}).
 
     Not piped: | censysasmhosts ip="..."  →  new events per host.
-    Piped:    | ... | censysasmhosts      →  enrich each row (domain, host_ip only).
+    Piped:    | ... | censysasmhosts      →  enrich each row (seed, host_ip only).
     """
 
     # Used only when NOT piped in (standalone search). Ignored when upstream events exist.
@@ -191,23 +191,23 @@ class CensysAsmHostsCommand(StreamingCommand):
             "source": HOSTS_SOURCE,
             "output_mode": "json",
             "ip": _host_primary_ip(host, requested_ip),
-            "domain": _domain_from_discovery_trail(trail),
+            "seed": _seed_from_discovery_trail(trail),
         }
         if trail is not None:
             event["discoveryTrail"] = json.dumps(trail)
         return event
 
-    # --- Piped in: mutate each incoming record; only touch domain + host_ip ---
+    # --- Piped in: mutate each incoming record; only touch seed + host_ip ---
 
     def _clear_enrichment_fields(self, record: dict) -> None:
         # Empty ASM enrichment only. Does not remove ip, ip_field, or other piped columns.
-        self.add_field(record, "domain", "")
+        self.add_field(record, "seed", "")
         self.add_field(record, "host_ip", "")
 
     def _apply_asm_to_record(self, record: dict, host: dict, requested_ip: str) -> None:
         trail = host.get("discoveryTrail")
         self.add_field(record, "host_ip", _host_primary_ip(host, requested_ip))
-        self.add_field(record, "domain", _domain_from_discovery_trail(trail))
+        self.add_field(record, "seed", _seed_from_discovery_trail(trail))
 
     def _enrich_record_from_fetch(
         self, record: dict, requested_ip: str, headers: Dict[str, str]
