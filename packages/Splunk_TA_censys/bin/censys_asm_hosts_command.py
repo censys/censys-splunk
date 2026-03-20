@@ -19,6 +19,7 @@
 #     Optional throttling when piped (defaults batch_size=20 batch_delay=10):
 #       batch_size=0   — no batching (one request at a time per event).
 #       batch_delay=0  — no sleep between batches.
+#     Each distinct IP causes at most one ASM host GET per search (piped or ip= list).
 
 import json
 import sys
@@ -209,14 +210,14 @@ class CensysAsmHostsCommand(StreamingCommand):
         self.add_field(record, "host_ip", _host_primary_ip(host, requested_ip))
         self.add_field(record, "seed", _seed_from_discovery_trail(trail))
 
-    def _enrich_record_from_fetch(
-        self, record: dict, requested_ip: str, headers: Dict[str, str]
+    def _enrich_record_from_cache(
+        self, record: dict, ip: str, cache: Dict[str, Tuple[Optional[dict], bool]]
     ) -> dict:
-        host, failed = self._fetch_host_json(requested_ip, headers)
+        host, failed = cache[ip]
         if failed or not host:
             self._clear_enrichment_fields(record)
         else:
-            self._apply_asm_to_record(record, host, requested_ip)
+            self._apply_asm_to_record(record, host, ip)
         return record
 
     def _flush_pending_batch(
@@ -224,20 +225,26 @@ class CensysAsmHostsCommand(StreamingCommand):
         pending: List[Tuple[dict, str]],
         headers: Dict[str, str],
         batch_size: int,
+        ip_cache: Dict[str, Tuple[Optional[dict], bool]],
     ) -> Iterator[dict]:
-        """Run parallel fetches for pending (record, ip) pairs; yield records in order."""
+        """One GET per distinct IP in pending; yield one row per pending record."""
         if not pending:
             return
-        ips = [ip for _, ip in pending]
-        workers = min(len(ips), batch_size or 1)
+        unique_ips: List[str] = []
+        seen: set = set()
+        for _, ip in pending:
+            if ip not in seen:
+                seen.add(ip)
+                unique_ips.append(ip)
+        workers = min(len(unique_ips), batch_size or 1)
         with ThreadPoolExecutor(max_workers=workers) as pool:
-            results = list(pool.map(lambda ip: self._fetch_host_json(ip, headers), ips))
-        for (record, ip), (host, failed) in zip(pending, results):
-            if failed or not host:
-                self._clear_enrichment_fields(record)
-            else:
-                self._apply_asm_to_record(record, host, ip)
-            yield record
+            fetched = list(
+                pool.map(lambda i: self._fetch_host_json(i, headers), unique_ips)
+            )
+        for ip, pair in zip(unique_ips, fetched):
+            ip_cache[ip] = pair
+        for record, ip in pending:
+            yield self._enrich_record_from_cache(record, ip, ip_cache)
         pending.clear()
 
     def _stream_without_pipeline(self, headers: Dict[str, str]) -> Iterator[dict]:
@@ -247,11 +254,17 @@ class CensysAsmHostsCommand(StreamingCommand):
                 "The ip option is required when no events are piped in "
                 "(calls api/v1/assets/hosts/{ip})"
             )
-        ips = [
+        raw_ips = [
             s.strip()
             for s in str(self.ip).split(",")
             if s and s.strip().lower() != "null"
         ]
+        seen_ip: set = set()
+        ips: List[str] = []
+        for ip in raw_ips:
+            if ip not in seen_ip:
+                seen_ip.add(ip)
+                ips.append(ip)
         if not ips:
             raise ValueError("The ip option must contain at least one IP address")
         for ip in ips:
@@ -272,6 +285,7 @@ class CensysAsmHostsCommand(StreamingCommand):
             delay_sec = DEFAULT_BATCH_DELAY
 
         pending: List[Tuple[dict, str]] = []
+        ip_cache: Dict[str, Tuple[Optional[dict], bool]] = {}
         total_records = len(records)
         records_with_ip = 0
         for rec in records:
@@ -291,16 +305,23 @@ class CensysAsmHostsCommand(StreamingCommand):
         batch_num = 0
 
         for record in records:
-            ip = record.get(ip_field) or record.get("ip")
-            if _is_blank(ip):
+            raw_ip = record.get(ip_field) or record.get("ip")
+            if _is_blank(raw_ip):
                 self._clear_enrichment_fields(record)
                 yield record
+                continue
+
+            ip = str(raw_ip).strip()
+            if ip in ip_cache:
+                yield self._enrich_record_from_cache(record, ip, ip_cache)
                 continue
 
             if batch_sz > 0:
                 pending.append((record, ip))
                 if len(pending) >= batch_sz:
-                    yield from self._flush_pending_batch(pending, headers, batch_sz)
+                    yield from self._flush_pending_batch(
+                        pending, headers, batch_sz, ip_cache
+                    )
                     batch_num += 1
                     _report_progress(
                         "censysasmhosts",
@@ -309,10 +330,11 @@ class CensysAsmHostsCommand(StreamingCommand):
                     if delay_sec > 0:
                         time.sleep(delay_sec)
             else:
-                yield self._enrich_record_from_fetch(record, ip, headers)
+                ip_cache[ip] = self._fetch_host_json(ip, headers)
+                yield self._enrich_record_from_cache(record, ip, ip_cache)
 
         n_final = len(pending)
-        yield from self._flush_pending_batch(pending, headers, batch_sz)
+        yield from self._flush_pending_batch(pending, headers, batch_sz, ip_cache)
         if n_final > 0:
             batch_num += 1
             _report_progress(
