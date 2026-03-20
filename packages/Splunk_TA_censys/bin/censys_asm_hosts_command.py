@@ -74,11 +74,11 @@ def _is_blank(value: Any) -> bool:
 
 
 def _seed_from_discovery_trail(trail: Any) -> str:
-    """Return seed DOMAIN_NAME assetId from discoveryTrail, or ""."""
+    """Return seed assetId from discoveryTrail, or ""."""
     if not trail or not isinstance(trail, list):
         return ""
     for entry in trail:
-        if not isinstance(entry, dict) or entry.get("type") != "DOMAIN_NAME":
+        if not isinstance(entry, dict):
             continue
         is_seed = entry.get("isSeed")
         if is_seed is True or str(is_seed).lower() == "true" or str(is_seed) == "1":
