@@ -2,10 +2,10 @@
 #
 # Two modes (see stream()): Splunk passes an iterator of records into stream().
 #
-#   NOT PIPED IN — records_list is empty after list(records).
-#     Example: | censysasmhosts ip="192.0.2.1,192.0.2.2"
-#     Use the ip= option (comma-separated). ip_field is ignored.
-#     Each successful API response becomes a NEW event (_raw = full host JSON).
+#   NOT PIPED IN — bounded materialization of records yields an empty list.
+#     With ip= set: | censysasmhosts ip="192.0.2.1,192.0.2.2" — standalone ASM fetch.
+#       ip= is comma-separated; ip_field is ignored. Each successful GET is a NEW event (_raw = JSON).
+#     With no ip= and empty upstream: yield zero rows (no error); ASM API key is not loaded.
 #
 #   PIPED IN — one or more upstream events.
 #     Example: | ... | censysasmhosts ip_field=riskIP
@@ -17,16 +17,17 @@
 #     logs; the text ``progress:`` means informational—not a command failure.
 #
 #     Optional throttling when piped (defaults batch_size=20 batch_delay=10):
-#       batch_size=0   — no batching (one request at a time per event).
-#       batch_delay=0  — no sleep between batches.
+#       batch_size 1–100 — max parallel ASM GETs per batch; use 1 for strictly sequential batches.
+#       batch_delay 0–60 — whole seconds to sleep after each batch; 0 = no sleep.
 #     Each distinct IP causes at most one ASM host GET per search (piped or ip= list).
+#     Piped input is capped (MAX_PIPELINE_RECORDS) so the command does not buffer unbounded rows.
 
 import json
 import sys
 import time
 import traceback
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any, Dict, Iterator, List, Optional, Tuple
+from typing import Any, Dict, Iterable, Iterator, List, Optional, Tuple
 
 import requests
 import splunk_ta_censys_declare
@@ -42,9 +43,27 @@ SECRET_KEY_ASM_API = "censys_asm_api_key"
 HOSTS_SOURCETYPE = "censys:asm:hosts"
 HOSTS_SOURCE = "censys_asm_hosts"
 
-# Piped mode only: defaults for optional batch_size / batch_delay (whole seconds).
+# Piped mode only: defaults and bounds for batch_size / batch_delay (whole seconds).
 DEFAULT_BATCH_SIZE = 20
 DEFAULT_BATCH_DELAY = 10
+MIN_BATCH_SIZE = 1
+MAX_BATCH_SIZE = 100
+MAX_BATCH_DELAY_SEC = 60
+# Piped mode: max events buffered in memory (fail fast if upstream returns more).
+MAX_PIPELINE_RECORDS = 50_000
+
+
+def _materialize_records_bounded(records: Iterable[dict]) -> List[dict]:
+    """Collect pipeline records up to MAX_PIPELINE_RECORDS; raise if the stream is larger."""
+    out: List[dict] = []
+    for i, rec in enumerate(records):
+        if i >= MAX_PIPELINE_RECORDS:
+            raise ValueError(
+                f"Piped input exceeds the maximum of {MAX_PIPELINE_RECORDS:,} events. "
+                "Use a narrower search (time range, filters, head) or split into multiple runs."
+            )
+        out.append(rec)
+    return out
 
 
 def get_asm_api_key(service: Service) -> str:
@@ -125,8 +144,9 @@ class CensysAsmHostsCommand(StreamingCommand):
     """
     Fetch host asset(s) from Censys ASM by IP (GET .../v1/assets/hosts/{ip}).
 
-    Not piped: | censysasmhosts ip="..."  →  new events per host.
-    Piped:    | ... | censysasmhosts      →  enrich each row (seed, host_ip only).
+    Not piped + ip=: | censysasmhosts ip="..."  →  new events per host.
+    Not piped, no ip=, empty upstream →  zero rows (not an error).
+    Piped: | ... | censysasmhosts →  enrich each row (seed, host_ip only).
     """
 
     # Used only when NOT piped in (standalone search). Ignored when upstream events exist.
@@ -140,18 +160,20 @@ class CensysAsmHostsCommand(StreamingCommand):
     )
     batch_size = Option(
         default=DEFAULT_BATCH_SIZE,
-        validate=Integer(0),
+        validate=Integer(MIN_BATCH_SIZE, MAX_BATCH_SIZE),
         doc=(
-            "When piped in: max parallel ASM host GETs per batch. "
-            "0 = no batching (sequential). Default: %d." % DEFAULT_BATCH_SIZE
+            "When piped in: max parallel ASM host GETs per batch (%d–%d). "
+            "Use %d for one IP per batch (minimal parallelism). Default: %d."
+            % (MIN_BATCH_SIZE, MAX_BATCH_SIZE, MIN_BATCH_SIZE, DEFAULT_BATCH_SIZE)
         ),
     )
     batch_delay = Option(
         default=DEFAULT_BATCH_DELAY,
-        validate=Integer(0),
+        validate=Integer(0, MAX_BATCH_DELAY_SEC),
         doc=(
-            "When piped in: seconds to sleep after each batch. "
-            "0 = no delay. Default: %d." % DEFAULT_BATCH_DELAY
+            "When piped in: seconds to sleep after each batch (%d–%d). "
+            "0 = no delay. Default: %d."
+            % (0, MAX_BATCH_DELAY_SEC, DEFAULT_BATCH_DELAY)
         ),
     )
 
@@ -236,7 +258,7 @@ class CensysAsmHostsCommand(StreamingCommand):
             if ip not in seen:
                 seen.add(ip)
                 unique_ips.append(ip)
-        workers = min(len(unique_ips), batch_size or 1)
+        workers = min(len(unique_ips), batch_size)
         with ThreadPoolExecutor(max_workers=workers) as pool:
             fetched = list(
                 pool.map(lambda i: self._fetch_host_json(i, headers), unique_ips)
@@ -293,9 +315,9 @@ class CensysAsmHostsCommand(StreamingCommand):
             if not _is_blank(rec_ip):
                 records_with_ip += 1
 
-        total_batches = 0
-        if batch_sz > 0 and records_with_ip > 0:
-            total_batches = (records_with_ip + batch_sz - 1) // batch_sz
+        total_batches = (
+            (records_with_ip + batch_sz - 1) // batch_sz if records_with_ip > 0 else 0
+        )
 
         _report_progress(
             "censysasmhosts",
@@ -316,22 +338,18 @@ class CensysAsmHostsCommand(StreamingCommand):
                 yield self._enrich_record_from_cache(record, ip, ip_cache)
                 continue
 
-            if batch_sz > 0:
-                pending.append((record, ip))
-                if len(pending) >= batch_sz:
-                    yield from self._flush_pending_batch(
-                        pending, headers, batch_sz, ip_cache
-                    )
-                    batch_num += 1
-                    _report_progress(
-                        "censysasmhosts",
-                        f"batch complete: {batch_num}/{total_batches}",
-                    )
-                    if delay_sec > 0:
-                        time.sleep(delay_sec)
-            else:
-                ip_cache[ip] = self._fetch_host_json(ip, headers)
-                yield self._enrich_record_from_cache(record, ip, ip_cache)
+            pending.append((record, ip))
+            if len(pending) >= batch_sz:
+                yield from self._flush_pending_batch(
+                    pending, headers, batch_sz, ip_cache
+                )
+                batch_num += 1
+                _report_progress(
+                    "censysasmhosts",
+                    f"batch complete: {batch_num}/{total_batches}",
+                )
+                if delay_sec > 0:
+                    time.sleep(delay_sec)
 
         n_final = len(pending)
         yield from self._flush_pending_batch(pending, headers, batch_sz, ip_cache)
@@ -343,7 +361,16 @@ class CensysAsmHostsCommand(StreamingCommand):
             )
 
     def stream(self, records):
-        # Materialize input once so we can tell "no pipeline" vs "piped" by count.
+        # Materialize input first (no API key yet) so empty upstream + no ip= can exit without auth.
+        try:
+            records_list = _materialize_records_bounded(records)
+        except Exception as e:
+            _report_error("censysasmhosts", e)
+            raise
+
+        if not records_list and _is_blank(self.ip):
+            return
+
         try:
             headers = self._request_headers()
         except Exception as e:
@@ -351,17 +378,9 @@ class CensysAsmHostsCommand(StreamingCommand):
             raise
 
         try:
-            records_list = list(records)
-        except Exception as e:
-            _report_error("censysasmhosts", e)
-            raise
-
-        try:
             if not records_list:
-                # Standalone: | censysasmhosts ip="..." — no events from the left.
                 yield from self._stream_without_pipeline(headers)
             else:
-                # Pipeline: | ... | censysasmhosts — enrich each incoming event.
                 yield from self._stream_with_pipeline(records_list, headers)
         except Exception as e:
             _report_error("censysasmhosts", e)
