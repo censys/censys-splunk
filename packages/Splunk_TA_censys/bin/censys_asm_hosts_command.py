@@ -25,6 +25,7 @@
 
 import json
 import sys
+import threading
 import time
 import traceback
 from concurrent.futures import ThreadPoolExecutor
@@ -52,6 +53,11 @@ MAX_BATCH_SIZE = 100
 MAX_BATCH_DELAY_SEC = 60
 # Piped mode: max events buffered in memory (fail fast if upstream returns more).
 MAX_PIPELINE_RECORDS = 50_000
+# Per-request timeout for GET .../v1/assets/hosts/{ip} (connect + read, seconds).
+ASM_HOST_GET_TIMEOUT_SEC = 5
+
+# ThreadPoolExecutor workers may log fetch failures concurrently; keep stderr lines intact.
+_FETCH_ERR_LOG_LOCK = threading.Lock()
 
 
 def _materialize_records_bounded(records: Iterable[dict]) -> List[dict]:
@@ -136,8 +142,10 @@ def _report_fetch_error(cmd_name: str, ip: str, exc: BaseException) -> None:
     detail = str(exc)
     if isinstance(exc, requests.HTTPError) and exc.response is not None:
         detail = f"HTTP {exc.response.status_code} {detail}"
-    sys.stderr.write(f"{cmd_name} fetch error: ip={ip!r} {detail}\n")
-    sys.stderr.flush()
+    line = f"{cmd_name} fetch error: ip={ip!r} {detail}\n"
+    with _FETCH_ERR_LOG_LOCK:
+        sys.stderr.write(line)
+        sys.stderr.flush()
 
 
 @Configuration()
@@ -211,7 +219,7 @@ class CensysAsmHostsCommand(StreamingCommand):
             r = requests.get(
                 url,
                 headers=headers,
-                timeout=30,
+                timeout=ASM_HOST_GET_TIMEOUT_SEC,
                 proxies=self._requests_proxies(),
             )
             r.raise_for_status()
