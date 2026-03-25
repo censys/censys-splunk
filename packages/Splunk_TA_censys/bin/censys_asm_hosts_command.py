@@ -19,6 +19,7 @@
 #     Optional throttling when piped (defaults batch_size=20 batch_delay=10):
 #       batch_size 1–100 — max parallel ASM GETs per batch; use 1 for strictly sequential batches.
 #       batch_delay 0–60 — whole seconds to sleep after each batch; 0 = no sleep.
+#     Optional proxy= for v1/assets/hosts GETs (e.g. http://host:port); same URL used for http/https.
 #     Each distinct IP causes at most one ASM host GET per search (piped or ip= list).
 #     Piped input is capped (MAX_PIPELINE_RECORDS) so the command does not buffer unbounded rows.
 
@@ -144,6 +145,8 @@ class CensysAsmHostsCommand(StreamingCommand):
     """
     Fetch host asset(s) from Censys ASM by IP (GET .../v1/assets/hosts/{ip}).
 
+    Optional proxy= forwards those GETs through the given proxy URL.
+
     Not piped + ip=: | censysasmhosts ip="..."  →  new events per host.
     Not piped, no ip=, empty upstream →  zero rows (not an error).
     Piped: | ... | censysasmhosts →  enrich each row (seed, host_ip only).
@@ -176,8 +179,20 @@ class CensysAsmHostsCommand(StreamingCommand):
             % (0, MAX_BATCH_DELAY_SEC, DEFAULT_BATCH_DELAY)
         ),
     )
+    proxy = Option(
+        doc=(
+            "Optional proxy URL for ASM host GETs (e.g. http://proxy.example.com:8080). "
+            "Applied to https://app.censys.io/... requests; omit to use direct connections."
+        ),
+    )
 
     # --- Shared: HTTP + JSON fetch (both modes) ---
+
+    def _requests_proxies(self) -> Optional[Dict[str, str]]:
+        if _is_blank(self.proxy):
+            return None
+        url = str(self.proxy).strip()
+        return {"http": url, "https": url}
 
     def _request_headers(self) -> Dict[str, str]:
         api_key = get_asm_api_key(self.service)
@@ -193,7 +208,12 @@ class CensysAsmHostsCommand(StreamingCommand):
             return None, True
         url = f"{BASE_URL}/v1/assets/hosts/{ip}"
         try:
-            r = requests.get(url, headers=headers, timeout=30)
+            r = requests.get(
+                url,
+                headers=headers,
+                timeout=30,
+                proxies=self._requests_proxies(),
+            )
             r.raise_for_status()
             return r.json(), False
         except requests.RequestException as e:
