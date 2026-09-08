@@ -1,2 +1,2 @@
-splunk-sdk==1.7.3
+splunk-sdk==2.1.0
 censys==2.1.6
