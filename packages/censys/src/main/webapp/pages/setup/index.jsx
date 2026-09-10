@@ -6,7 +6,11 @@ import { SplunkThemeProvider } from '@splunk/themes';
 
 import CensysSetup from '@splunk/censys-setup';
 
+import injectAppStyles from '../../appStyles';
+
 const themeProviderSettings = getThemeOptions('enterprise');
+
+injectAppStyles();
 
 layout(
     <SplunkThemeProvider {...themeProviderSettings}>

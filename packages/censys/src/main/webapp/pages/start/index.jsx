@@ -15,6 +15,8 @@ import { SplunkThemeProvider } from '@splunk/themes';
 
 import CensysGettingStarted from '@splunk/censys-getting-started';
 
+import injectAppStyles from '../../appStyles';
+
 const themeProviderSettings = getThemeOptions('enterprise');
 
 const getLocalApps = (signal = null) => {
@@ -136,6 +138,8 @@ const CensysAppGettingStarted = () => {
 
     return <CensysGettingStarted appLabel="Censys for Splunk" tasks={tasks} links={footerLinks} />;
 };
+
+injectAppStyles();
 
 layout(
     <SplunkThemeProvider {...themeProviderSettings}>

@@ -19,7 +19,8 @@ Splunkbase: `Censys ASM App for Splunk <https://splunkbase.splunk.com/app/4830/>
 ASM App Prerequisites
 ---------------------
 
-1. A Splunk account and installation.
+1. A Splunk account and installation running Splunk Enterprise 10.4 or later,
+   or Splunk Cloud Platform.
 
 2. :ref:`Censys Add-on for Splunk <add-on/index:censys add-on for splunk>` installed and configured with your Censys API key.
 
