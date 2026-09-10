@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production webpack --bail",
-    "build:prod": "NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production webpack --bail --config webpack.prod.config.js",
+    "build": "yarn run clean && NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production webpack --bail",
+    "build:prod": "yarn run clean && NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production webpack --bail --config webpack.prod.config.js",
+    "clean": "rm -rf censys",
     "eslint": "eslint src --ext \".js,.jsx\"",
     "eslint:ci": "yarn run eslint -f junit -o test-reports/lint-results.xml",
     "eslint:fix": "eslint src --ext \".js, .jsx\" --fix",
